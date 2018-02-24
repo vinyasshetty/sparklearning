@@ -6,11 +6,13 @@
 * Optionally, a Partitioner for key-value RDDs \(e.g. to say that the RDD is hash-partitioned\)
 * Optionally, a list of preferred locations to compute each split on \(e.g. block locations for an HDFS file\)
 
-
-
 Dependency abstract class has just one abstract method called rdd.
 
-It is implemented by class NarrowDependency,OneToOneDependency,ShuffleDependency and RangeDependency.
+It is implemented by abstract class NarrowDependency.It has two method
 
+def getParents\(partitionId: Int\): Seq\[Int\]
 
+override def rdd: RDD\[T\] = \_rdd
+
+These extends NarrowDependency : OneToOneDependency and RangeDependency. ShuffleDependency extends from Depedency.
 
