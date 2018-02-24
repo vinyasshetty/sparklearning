@@ -51,8 +51,6 @@ Cogroup also has the same problem like groupByKey ie if values belonging to one 
 
 Some narrow transformations like mapValues preserve the partitioning.
 
-
-
 ## Partitioning
 
 * **Hashpartitioning **does the hashing of the keys and determines to which partition the key and its value should go.This requires the key and the number of partitions which is determined using the deafultPartition method.
@@ -76,6 +74,7 @@ Some narrow transformations like mapValues preserve the partitioning.
 
 * **Co-Partitioned RDD's mean that two rdds have been partitioned using the same partitioner but as a part of two different jobs,now this means that when you join them it does NOT need a full shuffle but the partitions needs to be aligned so there will be some network transfer.=&gt;com.acc.vin.CoPartitioned**
 
-* 
+* rdd.keys will return RDD\[K\],here keys will not be distinct if input has duplicate keys, we also have rdd.values=&gt; RDD\[V\]
+
 
 
