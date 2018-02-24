@@ -35,6 +35,7 @@
 
   `}`
 
-* 
+* Main difference between reduceByKey/foldByKey vs combineByKey/aggregateByKey is reduce expects the output also to be same as the input type while in combine the output needs to same as the intial value type which can be different from the input dataset type.See above the U and V types ,
+
 
 
