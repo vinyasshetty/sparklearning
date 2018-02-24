@@ -16,8 +16,8 @@
 * One of the dangerous function is groupByKey because this will make all the values belonging to a key to be avaiable in exceutor memory at once and if it cant fit then it causes OOM in Executor.
 * aggregateByKey,combineByKey in these operators a "combining" of values belonging to the same happens once on the map side also,hence the number of values for a given key to shuffle is less.
 * Most of the bykey operations is built on "combineByKey" 
-* combineByKey\(f:V=&gt;U\)\(f1:\(U,V\)=&gt;U,f2:\(U,U\)=&gt;U\)  ,f and f1 are run within a partition and f2 is run usig data from across partition.f is run when a new key's value has been found and f1 is run using the value when a key has been found again.f2 is run when all the vlues belonging to a given key are shuffled.
-* aggregateByKey\(z:U\)\(f:\(U,V\)=&gt;U,f1:\(U,U\)=&gt;U\),same as combineByKey but iniitial is a value instead of a function.
+* combineByKey\(f:V=&gt;U\)\(f1:\(U,V\)=&gt;U,f2:\(U,U\)=&gt;U\):RDD\[\(K,U\)\]  ,f and f1 are run within a partition and f2 is run usig data from across partition.f is run when a new key's value has been found and f1 is run using the value when a key has been found again.f2 is run when all the vlues belonging to a given key are shuffled.
+* aggregateByKey\(z:U\)\(f:\(U,V\)=&gt;U,f1:\(U,U\)=&gt;U\):RDD\[\(K,U\)\],same as combineByKey but iniitial is a value instead of a function.
 * all the ByKey functions are overloaded into 3 types,where 1\)is just the function,2\) is it takes the function and the numPartitions:Int ,3\)is it takes the function and the partitioner:org.apache.spark.Partitioner.
 * **ByKey and join operators in RDD ,the partitioner and partition count is selected using below method:**
 * `def defaultPartitioner(rdd: RDD[_], others: RDD[_]*): Partitioner = {`  
@@ -35,7 +35,7 @@
 
   `}`
 
-* Main difference between reduceByKey/foldByKey vs combineByKey/aggregateByKey is reduce expects the output also to be same as the input type while in combine the output needs to same as the intial value type which can be different from the input dataset type.See above the U and V types ,
+* Main difference between reduceByKey/foldByKey vs combineByKey/aggregateByKey is reduce expects the output also to be same as the input type while in combine the output needs to same as the intial value type which can be different from the input dataset type.See above the U and V types .Look at the method types in PairRDDFunctions.scala.
 
 
 
