@@ -4,6 +4,7 @@
 * org.apache.spark.rdd.RDD
 * org.apache.spark.Partition
 * org.apache.spark.Dependency
+* org.apache.spark.rdd.PairRDDFunctions
 
 
 

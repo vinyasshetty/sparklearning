@@ -37,5 +37,13 @@
 
 * Main difference between reduceByKey/foldByKey vs combineByKey/aggregateByKey is reduce expects the output value type also to be same as the input value type while in combine the output value type needs to same as the intial value type set by us which can be different from the input dataset value type.See above the U and V types .Look at the method signature  in PairRDDFunctions.scala.
 
+* **CombineByKey and all of the aggregation operators built on top of it \(reduceByKey, foldLeft, foldRight, aggregateByKey\) are no better than groupByKey in terms of memory errors if they cause the accumulator to become too large for one key. In fact, if you look up the implementation of groupByKey, you can see that it is actually implemented using combineByKey where the accumulator is an iterator with all the data. Thus, the accumulator is the size of all the data for that key. In other words, these operations are unlikely to cause memory errors as long as the combining steps make the data smaller. However, if the accumulator gets larger with the addition of each new record, it will eventually cause memory errors if there are many records associated with one key.**
 
+* Beyond being less likely to run out of memory than groupByKey, the following four functions—reduceByKey, treeAggregate, aggregateByKey, and foldByKey—are implemented to use map-side combinations, meaning that records with the same key are combined before they are shuffled. This can greatly reduce the shuffled read.
+
+## Multiple RDD Operations
+
+As much of the byKey operatios are implemented using combineByKey, much of the join operations are implemented using cogroup operations. Returns a CoGroupedRDD type.
+
+PairRDDFunctions provides several implementations of co-group methods and it can take one, two or three RDD's to co group.It expects all of them to have the same Key Type but the Value types can be different.This also follows the same default partitioner logic.CoGroup returns a RDD of K and a tuple of Iterable values.Size of tuple can be two or three based on \# of RDD cogrouped.
 
