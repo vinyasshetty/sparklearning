@@ -9,7 +9,7 @@ Partition corresponds to one task in Spark..This is the basic unit of Parallelis
 * Creating a RangePartitioner not only requires the number of partitions but also required the RDD of key value type ,so that sampling can be done on keys and it expects keys to have Ordering defined.SInce sampling of RDD needs to be done RangePartitioner is slower then HashPartitioner.
 * **CustomPartitioning** : This can be done by extending Partitioner class and implementing :
 
-  ++  numpartitions
+  ++    numpartitions
 
 
 
