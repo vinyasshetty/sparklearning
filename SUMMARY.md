@@ -6,4 +6,5 @@
 * [RDD](rdd.md)
 * [DataFrame](dataframe.md)
 * DataSet
+* [General](general.md)
 
