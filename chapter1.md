@@ -11,6 +11,9 @@
 * **flatMap** is very useful method it can be used to as a combination of map+filter and also can be used to increade the count of RDD elements.
 * **df.rdd.flatMap\(row =&gt; Range\(0,df.columns.length\).map\(x=&gt;\(x,row.get\(x\)\)\)**
 * Actons usually move data out of the executors into either driver or to some external target like hdfs.
+* countByKey,lookup,collect,collectAsMap are all actions.
+* **Key/value transformations can also cause memory errors, most often in the executors,if they require all the data associated with one key to be kept in memory on one partition.**
+* One of the dangerous function is groupByKey because this will make all the values belonging to a key to be avaiable in exceutor memory at once and if it cant fit then it causes OOM in Executor.
 
 
 
