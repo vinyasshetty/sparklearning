@@ -49,5 +49,5 @@ PairRDDFunctions provides several implementations of co-group methods and it can
 
 Cogroup also has the same problem like groupByKey ie if values belonging to one key cannot fit in memory then OOM error.
 
-
+Some narrow transformations like mapValues preserve the partitioning.
 

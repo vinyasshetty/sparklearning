@@ -18,3 +18,7 @@ These extends NarrowDependency : OneToOneDependency and RangeDependency. Shuffle
 
 repartition and coalesce is used to change the partition count.repartition is implemented using coalesce.If you have to reduce the number of partitions then we use coalesce \(though this is a type of wide transformation it does not shuffle since we dont have to know about data in the partition\) but repartition will cause a shuffle and it will use HashPartitioner to shuffle.
 
+rdd.partitioner will return a Option\[Partitioner\] ,so we can use isDefined to check if Rdd has a partitioner set.
+
+
+
