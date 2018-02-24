@@ -9,8 +9,7 @@
 * Always SHUFFLE LESS AND SHUFFLE BETTER.
 * Advantage of Key Value type data comes from the fact that each key and its corresponding value can be calcualted in parallel.
 * **flatMap** is very useful method it can be used to as a combination of map+filter and also can be used to increade the count of RDD elements.
-
-
+* **df.rdd.flatMap\(row =&gt; Range\(0,df.columns.length\).map\(x=&gt;\(x,row.get\(x\)\)\)**
 
 
 
