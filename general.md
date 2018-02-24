@@ -11,7 +11,7 @@ Partition corresponds to one task in Spark..This is the basic unit of Parallelis
 
 * **Concept of Partitioner comes into picture only for RDD of Key Value Pair Type.**
 
-* rdd.partitioner will return a Option\[Partitioner\] ,if we use some transformation which has the potential of changing the key then the resulting RDD  will lose its partitioner and will becoe None.
+* rdd.partitioner will return a Option\[Partitioner\] ,if we use some transformation which has the potential of changing the key then the resulting RDD  will lose its partitioner and will become None.
 
 
 
