@@ -1,4 +1,5 @@
-* Partition corresponds to one task in Spark..This is the basic unit of Parallelism.
+Partition corresponds to one task in Spark..This is the basic unit of Parallelism.
+
 * A Rdd without partition ,in that data is assigned based on partition size and data size.
 * A Rdd with partition will gurantee that either a value beloging to a given will always end up same partition or a range of keys will always go to a same partition.
 * ** transformations with narrow dependencies as those in which “each partition of the parent RDD is used by at most one partition of the child RDD.” The creators define transformations with wide dependencies as transformations in which “multiple child partitions may depend on \[each partition in the parent\].” **
@@ -8,9 +9,9 @@
 * Creating a RangePartitioner not only requires the number of partitions but also required the RDD of key value type ,so that sampling can be done on keys and it expects keys to have Ordering defined.SInce sampling of RDD needs to be done RangePartitioner is slower then HashPartitioner.
 * **CustomPartitioning** : This can be done by extending Partitioner class and implementing :
 
-      \*\*     numPartitions  
-
-
+  ```
+  ++    numPartitions  
+  ```
 
 
 
