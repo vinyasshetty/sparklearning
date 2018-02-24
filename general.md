@@ -11,7 +11,12 @@ Partition corresponds to one task in Spark..This is the basic unit of Parallelis
 
 * **Concept of Partitioner comes into picture only for RDD of Key Value Pair Type.**
 
+* When we do a wide transformation on RDD\[\(K,V\)\] like cogroup , combineByKey,sortByKey etc then the resulting RDD will always have a partitioner.What sort of Partitioner and \# of partitions is set depends on teh defaultPartition method in Partitioner object.
+
 * rdd.partitioner will return a Option\[Partitioner\] ,if we use some transformation which has the potential of changing the key then the resulting RDD  will lose its partitioner and will become None.
 
+* mapParitions and mapParitionsWithIndex can preserve partitions if preservesPartitioning is set to true ,default its false.
+
+* 
 
 

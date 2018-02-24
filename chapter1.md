@@ -45,7 +45,7 @@
 
 As much of the byKey operatios are implemented using combineByKey, much of the join operations are implemented using cogroup operations. Returns a CoGroupedRDD type.
 
-PairRDDFunctions provides several implementations of co-group methods and it can take one, two or three RDD's to co group.It expects all of them to have the same Key Type but the Value types can be different.This also follows the same default partitioner logic.CoGroup returns a RDD of K and a tuple of Iterable values.Size of tuple can be two or three based on \# of RDD cogrouped.
+PairRDDFunctions provides several implementations of co-group methods and it can take  two or three RDD's to co group.It expects all of them to have the same Key Type but the Value types can be different.This also follows the same default partitioner logic.CoGroup returns a RDD of K and a tuple of Iterable values.Size of tuple can be two or three based on \# of RDD cogrouped.
 
 Cogroup also has the same problem like groupByKey ie if values belonging to one key cannot fit in memory then OOM error.
 
