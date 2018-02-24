@@ -51,3 +51,31 @@ Cogroup also has the same problem like groupByKey ie if values belonging to one 
 
 Some narrow transformations like mapValues preserve the partitioning.
 
+
+
+## Partitioning
+
+* **Hashpartitioning **does the hashing of the keys and determines to which partition the key and its value should go.This requires the key and the number of partitions which is determined using the deafultPartition method.
+* **RangePartitioning** : Here every rdd partition is sampled to determine the range to keys and for equal optimized distribution .Based on that each key and its value are sent to a partition based on the range of the partition.This is used for sorting.
+* Creating a RangePartitioner not only requires the number of partitions but also required the RDD of key value type ,so that sampling can be done on keys and it expects keys to have Ordering defined.SInce sampling of RDD needs to be done RangePartitioner is slower then HashPartitioner.
+* **CustomPartitioning** : This can be done by extending Partitioner class and implementing numPartitions:Int  and getPartition\(key:Ant\):Int  .  Optional methods =&gt; equals\(other:Any\):Boolean and hashcode\(\):Int
+
+* **Concept of Partitioner comes into picture only for RDD of Key Value Pair Type.**
+
+* When we do a wide transformation on RDD\[\(K,V\)\] like cogroup , combineByKey,sortByKey etc then the resulting RDD will always have a partitioner.What sort of Partitioner and \# of partitions is set depends on teh defaultPartition method in Partitioner object.
+
+* rdd.partitioner will return a Option\[Partitioner\] ,if we use some transformation which has the potential of changing the key then the resulting RDD  will lose its partitioner and will become None. =&gt; **com.acc.vin.MaintainPartitions**
+
+* mapParitions and mapParitionsWithIndex can preserve partitions if preservesPartitioning is set to true ,default its false.
+
+* When using two or more RDD's ,think about co-location and co-partitioning of RDD's.
+
+* **RDD's can be co-located if RDD's have the same Partitioner  and data associated with them is in the same excutor.This will happen if they partitioned during the lineage of the same job. ==&gt; com.acc.vin.CoLocated **
+
+* ** “same partitioner” means the partitioner objects are equal according to the equality function defined in the partitioner class.So this basically means for HashPartitioner the number of partitions also should be same.**
+
+* **Co-Partitioned RDD's mean that two rdds have been partitioned using the same partitioner but as a part of two different jobs,now this means that when you join them it does NOT need a full shuffle but the partitions needs to be aligned so there will be some network transfer.=&gt;com.acc.vin.CoPartitioned**
+
+* 
+
+
