@@ -76,5 +76,7 @@ Some narrow transformations like mapValues preserve the partitioning.
 
 * rdd.keys will return RDD\[K\],here keys will not be distinct if input has duplicate keys, we also have rdd.values=&gt; RDD\[V\]
 
+* OrderedRDDFunctions
+
 
 
