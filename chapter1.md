@@ -35,7 +35,7 @@
 
   `}`
 
-* Main difference between reduceByKey/foldByKey vs combineByKey/aggregateByKey is reduce expects the output also to be same as the input type while in combine the output needs to same as the intial value type which can be different from the input dataset type.See above the U and V types .Look at the method types in PairRDDFunctions.scala.
+* Main difference between reduceByKey/foldByKey vs combineByKey/aggregateByKey is reduce expects the output value type also to be same as the input value type while in combine the output value type needs to same as the intial value type set by us which can be different from the input dataset value type.See above the U and V types .Look at the method signature  in PairRDDFunctions.scala.
 
 
 
