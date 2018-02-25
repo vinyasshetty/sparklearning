@@ -5,6 +5,7 @@
 * org.apache.spark.Partition
 * org.apache.spark.Dependency
 * org.apache.spark.rdd.PairRDDFunctions
+* org.apache.spark.sql.expressions.Window
 
 
 
