@@ -76,7 +76,13 @@ Some narrow transformations like mapValues preserve the partitioning.
 
 * rdd.keys will return RDD\[K\],here keys will not be distinct if input has duplicate keys, we also have rdd.values=&gt; RDD\[V\]
 
-* OrderedRDDFunctions
+* OrderedRDDFunctions =&gt; sortByKey returns a RDD with RangePartitioner and also for sortByKey,it expects key to have implemented Ordered ,now most of the the regular scala basic types like Int,STring Double etch have already Ordered implemented.Also scala has **Tuple2 **type Ordered implemented so if you have a RDD\[\(\(K1,K2\),V\)\] works fine if you sortByKey=&gt; ** com.acc.vin.SortByKeyTupl2 **
+
+* We can sort Keys in RDD by first repartitioning using RangePartitioning and then use mapPartitions to sort the Key data,but internally spark's sortByKey is more efficient since it sorts within the shuffle stage onto the individaul machines.
+
+* SecondarySort is a technique  where if you want sort a value along with a key ,then you make the key as composite and then sort this composite key.This technique is called SecondarySort.To implement this in spark we have the reaprtitionAndSortWithinPartitions functions.This is a wide transformation and it takes a Partitioner object and implicit Ordering of the keys of the RDD.
+
+* ** If we are using hash partitioning, this function does not actually sort values by the first key. Rather, it groups keys with the same hash value on the same machine. Thus, if we run the function of the values one through five and use four partitions, the first partition will contain one and five. To force the keys to appear in true sorted order, we would need to define a range partitioner. **
 
 
 
