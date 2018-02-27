@@ -19,6 +19,8 @@ These extends NarrowDependency : OneToOneDependency and RangeDependency. Shuffle
 * repartition and coalesce is used to change the partition count.repartition is implemented using coalesce.
 * If you have to reduce the number of partitions then we use coalesce \(though this is a type of wide transformation it does not shuffle since we dont have to know about data in the partition\) but repartition will cause a shuffle and it will use HashPartitioner to shuffle.
 * rdd.partitioner will return a Option\[Partitioner\] ,so we can use isDefined to check if Rdd has a partitioner set.
+* **Using iterator-to-iterator transforms in mapPartitions prevents whole partitions from being loaded into memory.**
+* An important way to optimize Spark jobs for both time and space is to stick to primitive types rather than custom classes. Although it may make code less readable, using arrays rather than case classes or tuples can reduce GC overhead.  Scala arrays, which are exactly Java arrays under the hood, are the most memory-efficient of the Scala collection types. Scala tuples are objects, so in some instances it might be better to use a two- or three-element array rather than a tuple for expensive operations. The Scala collection types in general incur a higher GC overhead than arrays
 
 
 
