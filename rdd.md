@@ -21,6 +21,8 @@ These extends NarrowDependency : OneToOneDependency and RangeDependency. Shuffle
 * rdd.partitioner will return a Option\[Partitioner\] ,so we can use isDefined to check if Rdd has a partitioner set.
 * **Using iterator-to-iterator transforms in mapPartitions prevents whole partitions from being loaded into memory.**
 * An important way to optimize Spark jobs for both time and space is to stick to primitive types rather than custom classes. Although it may make code less readable, using arrays rather than case classes or tuples can reduce GC overhead.  Scala arrays, which are exactly Java arrays under the hood, are the most memory-efficient of the Scala collection types. Scala tuples are objects, so in some instances it might be better to use a two- or three-element array rather than a tuple for expensive operations. The Scala collection types in general incur a higher GC overhead than arrays
+* **Narrow Transformation** =&gt; One parent partition can send data to only one child partition.
+* **Wide Transformation **=&gt; Majority of the child partitions receieve data from all the parent partitions.
 
 
 
