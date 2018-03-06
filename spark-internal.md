@@ -6,7 +6,7 @@
 * SparkSession needs a SparkContext , Option\[SharedState\], Option\[SessionState\] , SparkSessionExtensions.
 * SparkContext object creation initializes several things :
 
-   private var \_conf: SparkConf = \_
+  private var \_conf: SparkConf = \_
 
   private var \_eventLogDir: Option\[URI\] = None
 
@@ -53,4 +53,18 @@
   private var \_shutdownHookRef: AnyRef = \_
 
   private var \_statusStore: AppStatusStore = \_
+
+*  private\[spark\] def conf: SparkConf = \_conf
+
+    /\*\*
+
+     \* Return a copy of this SparkContext's configuration. The configuration ''cannot'' be
+
+     \* changed at runtime.
+
+     \*/
+
+    def getConf: SparkConf = conf.clone\(\)
+
+
 
