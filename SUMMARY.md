@@ -7,4 +7,5 @@
 * [DataFrame](dataframe.md)
 * DataSet
 * [General](general.md)
+* [Spark Internal](spark-internal.md)
 
