@@ -1,4 +1,4 @@
-## Main Entrance Point
+## Main Entrance Point When We Do a Spark-Submit
 
 spark-submit shell script calls spark-class shell script:
 
@@ -278,8 +278,6 @@ private[spark] class Client(
 ```
 
 _**Under resource-managers project ,we have yarn related spark configurations and they stored in org.apache.spark.deploy.yarn.config object.**_
-
-
 
 ## Here Starts our User Class Main Method Execution Order:
 
