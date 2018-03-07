@@ -189,8 +189,15 @@ private[spark] class Client(
    * throw an appropriate SparkException.
    */
    def run(): Unit = {
+   /*
+   * Get a new application from our RM
+   * Verify whether the cluster has enough resources for our AM
+   * Set up the appropriate contexts to launch our AM
+   * Finally, submit and monitor the application
+   */
     this.appId = submitApplication()
-    if (!launcherBackend.isConnected() && fireAndForget) {
+    if (!launcherBackend.isConnected() && fireAndForget) {  // This is what decides whether a client should be active 
+                                                            // or should it just be fire and forget
       val report = getApplicationReport(appId)
       val state = report.getYarnApplicationState
       logInfo(s"Application report for $appId (state: $state)")
@@ -199,6 +206,10 @@ private[spark] class Client(
         throw new SparkException(s"Application $appId finished with status: $state")
       }
     } else {
+      /*
+      * This below will go into a loop in monitorApplication method and keep monitoring the status of the application
+      * from client shell.
+      */
       val (yarnApplicationState, finalApplicationStatus) = monitorApplication(appId)
       if (yarnApplicationState == YarnApplicationState.FAILED ||
         finalApplicationStatus == FinalApplicationStatus.FAILED) {
