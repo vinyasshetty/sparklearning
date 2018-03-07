@@ -104,6 +104,14 @@ This SparkConf created in prepareSubmitEnviornment still does NOT have access to
     val childClasspath = new ArrayBuffer[String]()
     val sparkConf = new SparkConf()
     var childMainClass = ""
+    
+    //Also make sure of below
+    if (master.startsWith("yarn")) {
+val hasHadoopEnv = env.contains("HADOOP_CONF_DIR") || env.contains("YARN_CONF_DIR")
+if (!hasHadoopEnv && !Utils.isTesting) {
+throw new Exception(s"When running with master '$master' " +
+"either HADOOP_CONF_DIR or YARN_CONF_DIR must be set in the environment.")
+}
 ```
 
 In the above method based on master and deploy-mode ,we will decide on the childMainClass to run,for yarn cluster ,childMainClass  is chosen as org.apache.spark.deploy.yarn.YarnClusterApplication and then childArgs will have Array\("--jars","vin.jar","--class","com.vin.Ex1","arg1"\) childClassPath will have all the required jars
@@ -130,8 +138,8 @@ printStream.println(s"Spark config:\n${Utils.redact(sparkConf.getAll.toMap).mkSt
 printStream.println(s"Classpath elements:\n${childClasspath.mkString("\n")}")
 printStream.println("\n")
 }
-** val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {
-mainClass.newInstance().asInstanceOf[SparkApplication] **
+ val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {
+mainClass.newInstance().asInstanceOf[SparkApplication] 
 } else {
 // SPARK-4170
 if (classOf[scala.App].isAssignableFrom(mainClass)) {
@@ -152,8 +160,11 @@ new JavaMainApplication(mainClass)
         }
     }
 }
-
 ```
+
+Point to note here is : 
+
+
 
 `if (master.startsWith("yarn")) {`
 
