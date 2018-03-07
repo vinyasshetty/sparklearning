@@ -88,13 +88,23 @@ var submissionToRequestStatusFor: String = null
 var useRest: Boolean = true // used internally
 ```
 
-
-
 Then SparkSubmit  calls the submit method, which prepares the envt by calling :
 
-`val (childArgs, childClasspath, sparkConf, childMainClass) = prepareSubmitEnvironment(args:SparkSubmitArguments)` 
+`val (childArgs, childClasspath, sparkConf, childMainClass) = prepareSubmitEnvironment(args:SparkSubmitArguments)`
 
-This SparkConf still does NOT have access to the conf created by user in the code.This will take command line,spark-defaults conf file and env variable in that order.
+This SparkConf created in prepareSubmitEnviornment still does NOT have access to the conf created by user in the code.This will take command line,spark-defaults conf file and env variable in that order.This uses the sparkproperties hashmap from SparkSubmitArguments.
+
+```
+ private[deploy] def prepareSubmitEnvironment(
+      args: SparkSubmitArguments,
+      conf: Option[HadoopConfiguration] = None)
+      : (Seq[String], Seq[String], SparkConf, String) = {
+    // Return values
+    val childArgs = new ArrayBuffer[String]()
+    val childClasspath = new ArrayBuffer[String]()
+    val sparkConf = new SparkConf()
+    var childMainClass = ""
+```
 
 Then it calls :
 
@@ -128,10 +138,6 @@ printWarning("Subclasses of scala.App may not work correctly. Use a main() metho
 new JavaMainApplication(mainClass)
 }
 ```
-
-
-
-
 
 `if (master.startsWith("yarn")) {`
 
