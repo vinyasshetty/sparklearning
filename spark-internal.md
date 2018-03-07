@@ -130,8 +130,8 @@ printStream.println(s"Spark config:\n${Utils.redact(sparkConf.getAll.toMap).mkSt
 printStream.println(s"Classpath elements:\n${childClasspath.mkString("\n")}")
 printStream.println("\n")
 }
-val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {
-mainClass.newInstance().asInstanceOf[SparkApplication]
+** val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {
+mainClass.newInstance().asInstanceOf[SparkApplication] **
 } else {
 // SPARK-4170
 if (classOf[scala.App].isAssignableFrom(mainClass)) {
@@ -139,6 +139,20 @@ printWarning("Subclasses of scala.App may not work correctly. Use a main() metho
 }
 new JavaMainApplication(mainClass)
 }
+  try {
+      app.start(childArgs.toArray, sparkConf)
+    } catch {
+      case t: Throwable =>
+        findCause(t) match {
+          case SparkUserAppException(exitCode) =>
+            System.exit(exitCode)
+
+          case t: Throwable =>
+            throw t
+        }
+    }
+}
+
 ```
 
 `if (master.startsWith("yarn")) {`
