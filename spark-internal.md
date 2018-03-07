@@ -106,6 +106,8 @@ This SparkConf created in prepareSubmitEnviornment still does NOT have access to
     var childMainClass = ""
 ```
 
+In the above method based on master and deploy-mode ,we will decide on the childMainClass to run,for yarn cluster this is chosen as org.apache.spark.deploy.yarn.YarnClusterApplication and then childArgs will have Array\("--jars","vin.jar","--class","com.vin.Ex1","arg1"\) childClassPath will have all the required jars
+
 Then it calls :
 
 `runMain(childArgs, childClasspath, sparkConf, childMainClass, args.verbose)`
