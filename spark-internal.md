@@ -114,7 +114,7 @@ throw new Exception(s"When running with master '$master' " +
 }
 ```
 
-In the above method based on master and deploy-mode ,we will decide on the childMainClass to run,for yarn cluster ,childMainClass  is chosen as org.apache.spark.deploy.yarn.YarnClusterApplication and then childArgs will have Array\("--jars","vin.jar","--class","com.vin.Ex1","arg1"\) childClassPath will have all the required jars
+In the above method based on master and deploy-mode ,we will decide on the childMainClass to run,for yarn cluster ,childMainClass  is chosen as org.apache.spark.deploy.yarn.YarnClusterApplication\(these are under resource-manager project\) and then childArgs will have Array\("--jars","vin.jar","--class","com.vin.Ex1","arg1"\) childClassPath will have all the required jars
 
 Then it calls :
 
@@ -175,6 +175,7 @@ private[spark] class Client(
 
   private val yarnClient = YarnClient.createYarnClient
   private val hadoopConf = new YarnConfiguration(SparkHadoopUtil.newConfiguration(sparkConf))
+ private val fireAndForget = isClusterMode && !sparkConf.get(WAIT_FOR_APP_COMPLETION)
 
 
 /**
@@ -187,14 +188,33 @@ private[spark] class Client(
    * If the application finishes with a failed, killed, or undefined status,
    * throw an appropriate SparkException.
    */
-  def run(): Unit = {
+   def run(): Unit = {
+    this.appId = submitApplication()
+    if (!launcherBackend.isConnected() && fireAndForget) {
+      val report = getApplicationReport(appId)
+      val state = report.getYarnApplicationState
+      logInfo(s"Application report for $appId (state: $state)")
+      logInfo(formatReportDetails(report))
+      if (state == YarnApplicationState.FAILED || state == YarnApplicationState.KILLED) {
+        throw new SparkException(s"Application $appId finished with status: $state")
+      }
+    } else {
+      val (yarnApplicationState, finalApplicationStatus) = monitorApplication(appId)
+      if (yarnApplicationState == YarnApplicationState.FAILED ||
+        finalApplicationStatus == FinalApplicationStatus.FAILED) {
+        throw new SparkException(s"Application $appId finished with failed status")
+      }
+      if (yarnApplicationState == YarnApplicationState.KILLED ||
+        finalApplicationStatus == FinalApplicationStatus.KILLED) {
+        throw new SparkException(s"Application $appId is killed")
+      }
+      if (finalApplicationStatus == FinalApplicationStatus.UNDEFINED) {
+        throw new SparkException(s"The final status of application $appId is undefined")
+      }
+    }
+  }
+  
 ```
-
-
-
-
-
-
 
 `if (master.startsWith("yarn")) {`
 
