@@ -49,81 +49,81 @@ Below are the values/fields that are set in SparkSubmitArguments class based on 
 
 \`\`\`
 
-`var master: String = null`
+var master: String = null
 
-`var deployMode: String = null`
+var deployMode: String = null
 
-`var executorMemory: String = null`
+var executorMemory: String = null
 
-`var executorCores: String = null`
+var executorCores: String = null
 
-`var totalExecutorCores: String = null`
+var totalExecutorCores: String = null
 
-`var propertiesFile: String = null`
+var propertiesFile: String = null
 
-`var driverMemory: String = null`
+var driverMemory: String = null
 
-`var driverExtraClassPath: String = null`
+var driverExtraClassPath: String = null
 
-`var driverExtraLibraryPath: String = null`
+var driverExtraLibraryPath: String = null
 
-`var driverExtraJavaOptions: String = null`
+var driverExtraJavaOptions: String = null
 
-`var queue: String = null`
+var queue: String = null
 
-`var numExecutors: String = null`
+var numExecutors: String = null
 
-`var files: String = null`
+var files: String = null
 
-`var archives: String = null`
+var archives: String = null
 
-`var mainClass: String = null`
+var mainClass: String = null
 
-`var primaryResource: String = null`
+var primaryResource: String = null
 
-`var name: String = null`
+var name: String = null
 
-`var childArgs: ArrayBuffer[String] = new ArrayBuffer[String]()`
+var childArgs: ArrayBuffer\[String\] = new ArrayBuffer\[String\]\(\)
 
-`var jars: String = null`
+var jars: String = null
 
-`var packages: String = null`
+var packages: String = null
 
-`var repositories: String = null`
+var repositories: String = null
 
-`var ivyRepoPath: String = null`
+var ivyRepoPath: String = null
 
-`var packagesExclusions: String = null`
+var packagesExclusions: String = null
 
-`var verbose: Boolean = false`
+var verbose: Boolean = false
 
-`var isPython: Boolean = false`
+var isPython: Boolean = false
 
-`var pyFiles: String = null`
+var pyFiles: String = null
 
-`var isR: Boolean = false`
+var isR: Boolean = false
 
-`var action: SparkSubmitAction = null`
+var action: SparkSubmitAction = null
 
-`val sparkProperties: HashMap[String, String] = new HashMap[String, String]()`
+val sparkProperties: HashMap\[String, String\] = new HashMap\[String, String\]\(\)
 
-`var proxyUser: String = null`
+var proxyUser: String = null
 
-`var principal: String = null`
+var principal: String = null
 
-`var keytab: String = null`
+var keytab: String = null
 
-`// Standalone cluster mode only`
+// Standalone cluster mode only
 
-`var supervise: Boolean = false`
+var supervise: Boolean = false
 
-`var driverCores: String = null`
+var driverCores: String = null
 
-`var submissionToKill: String = null`
+var submissionToKill: String = null
 
-`var submissionToRequestStatusFor: String = null`
+var submissionToRequestStatusFor: String = null
 
-`var useRest: Boolean = true // used internally `
+var useRest: Boolean = true // used internally
 
 \`\`\`
 
@@ -171,27 +171,19 @@ Some Main parts of runMain Method :
 
 `mainClass.newInstance().asInstanceOf[SparkApplication]`
 
-` } else {`
+`} else {`
 
-`      // SPARK-4170`
+`// SPARK-4170`
 
-`      if (classOf[scala.App].isAssignableFrom(mainClass)) {`
+`if (classOf[scala.App].isAssignableFrom(mainClass)) {`
 
-`        printWarning("Subclasses of scala.App may not work correctly. Use a main() method instead.")`
+`printWarning("Subclasses of scala.App may not work correctly. Use a main() method instead.")`
 
-`      }`
+`}`
 
-`      new JavaMainApplication(mainClass)`
+`new JavaMainApplication(mainClass)`
 
-`    }`
-
-
-
-
-
-
-
-
+`}`
 
 `if (master.startsWith("yarn")) {`
 
