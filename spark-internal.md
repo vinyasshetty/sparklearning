@@ -7,33 +7,33 @@
 
 ## Main Entrance Point
 
-spark-submit shell script calls spark-class shell script: 
+spark-submit shell script calls spark-class shell script:
 
-`if [ -z "${SPARK_HOME}" ]; then`
+`if [ -z "${SPARK_HOME}" ]; then`
 
-``  export SPARK_HOME="$(cd "`dirname "$0"`"/..; pwd)"``
+``export SPARK_HOME="$(cd "`dirname "$0"`"/..; pwd)"``
 
-`fi`
+`fi`
 
 `exec "${SPARK_HOME}"/bin/spark-class org.apache.spark.deploy.SparkSubmit "$@"`
 
-spak-class gets the java jar\(RUNNER\),spark jars\(LAUNCH\__CLASSPATH\) ,hadoop jars\(HADOOP\__LZO\_JARS\).Then runs below :
+spak-class gets the java jar\(RUNNER\),spark jars\(LAUNCH\_\_CLASSPATH\) ,hadoop jars\(HADOOP\_\_LZO\_JARS\).Then runs below :
 
 `"$RUNNER" -Xmx128m -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "$@"`
 
 org.apache.spark.launcher.Main is a java class where the classname is set to agrs\(0\) ie org.apache.spark.deploy.SparkSubmit.
 
-Now `org.apache.spark.launcher.Main will create a Spark Running Command and return that to a variable in spark-class which is exceuted ,to view the command set `SPARK\_PRINT\_LAUNCH\_COMMAND=&lt;somevalue&gt; in the shell.
+Now `org.apache.spark.launcher.Main will create a Spark Running Command and return that to a variable in spark-class which is exceuted ,to view the command set`SPARK\_PRINT\_LAUNCH\_COMMAND=&lt;somevalue&gt; in the shell.
 
 `boolean printLaunchCommand = !isEmpty(System.getenv("SPARK_PRINT_LAUNCH_COMMAND"));`
 
-`if (printLaunchCommand) {`
+`if (printLaunchCommand) {`
 
-`      System.err.println("Spark Command: " + join(" ", cmd));`
+`System.err.println("Spark Command: " + join(" ", cmd));`
 
-`      System.err.println("========================================");`
+`System.err.println("========================================");`
 
-`    }`
+`}`
 
 If SPARK\_PRINT\_LAUNCH\_COMMAND env variable is set then it will print your "actual running command".
 
