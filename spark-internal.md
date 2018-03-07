@@ -218,9 +218,12 @@ private[spark] class ClientArguments(args: Array[String]) {
           throw new IllegalArgumentException(getUsageMessage(args))
       }
     }
+    
+    
 ```
 
 ```
+
 private[spark] class Client(
     val args: ClientArguments,
     val sparkConf: SparkConf)
@@ -283,6 +286,10 @@ private[spark] class Client(
     }
   }
 ```
+
+_**Under resource-managers project ,we have yarn related spark configurations and they stored in org.apache.spark.deploy.yarn.config object**_
+
+
 
 * SparkContext object creation initializes several things :
 
