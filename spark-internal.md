@@ -164,6 +164,38 @@ new JavaMainApplication(mainClass)
 
 Point to note here is : we create a instance from mainClass ie org.apache.spark.deploy.yarn.YarnClusterApplication  which extends trait org.apache.spark.deploy.yarn.SparkApplication and has to implement method start which creates a org.apache.spark.deploy.yarn.Client object and calls run method on it.
 
+```
+private[spark] class Client(
+    val args: ClientArguments,
+    val sparkConf: SparkConf)
+  extends Logging {
+
+  import Client._
+  import YarnSparkHadoopUtil._
+
+  private val yarnClient = YarnClient.createYarnClient
+  private val hadoopConf = new YarnConfiguration(SparkHadoopUtil.newConfiguration(sparkConf))
+
+
+/**
+   * Submit an application to the ResourceManager.
+   * If set spark.yarn.submit.waitAppCompletion to true, it will stay alive.Default is true ,what this means is 
+   * when you submit a spark job ,the client shell will wait until the job is completed and it keeps reporting 
+   * the status of the job in the client shell.
+   * reporting the application's status until the application has exited for any reason.
+   * Otherwise, the client process will exit after submission.
+   * If the application finishes with a failed, killed, or undefined status,
+   * throw an appropriate SparkException.
+   */
+  def run(): Unit = {
+```
+
+
+
+
+
+
+
 `if (master.startsWith("yarn")) {`
 
 `val hasHadoopEnv = env.contains("HADOOP_CONF_DIR") || env.contains("YARN_CONF_DIR")`
