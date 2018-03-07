@@ -7,6 +7,8 @@
 
 ## Main Entrance Point
 
+spark-submit shell script calls spark-class shell and pass all the arguments.
+
 When you submit a spark job ,the main entrance for the Job is **org.apache.spark.deploy.SparkSubmit**. This sets up the class path and other properties to be used by rest of the SparkCode written by users.
 
 All the arguments that you pass while running the spark-submit ,they are sent as a Array of Strings to  SparkSubmitArguments class,this class extends SparkSubmitOptionParser which has all the arguments parse list and it makes sure only the allowed parameters are available.
