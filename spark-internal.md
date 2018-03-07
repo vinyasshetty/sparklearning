@@ -9,13 +9,10 @@
 
 spark-submit shell script calls spark-class shell script:
 
-`if [ -z "${SPARK_HOME}" ]; then`
-
-``export SPARK_HOME="$(cd "`dirname "$0"`"/..; pwd)"``
-
-`fi`
-
-`exec "${SPARK_HOME}"/bin/spark-class org.apache.spark.deploy.SparkSubmit "$@"`
+    if [ -z "${SPARK_HOME}" ]; then
+    export SPARK_HOME="$(cd "`dirname "$0"`"/..; pwd)"
+    fi
+    exec "${SPARK_HOME}"/bin/spark-class org.apache.spark.deploy.SparkSubmit "$@"
 
 spak-class gets the java jar\(RUNNER\),spark jars\(LAUNCH\_\_CLASSPATH\) ,hadoop jars\(HADOOP\_\_LZO\_JARS\).Then runs below :
 
@@ -25,15 +22,15 @@ org.apache.spark.launcher.Main is a java class where the classname is set to agr
 
 Now `org.apache.spark.launcher.Main will create a Spark Running Command and return that to a variable in spark-class which is exceuted ,to view the command set`SPARK\_PRINT\_LAUNCH\_COMMAND=&lt;somevalue&gt; in the shell.
 
+```
+boolean printLaunchCommand = !isEmpty(System.getenv("SPARK_PRINT_LAUNCH_COMMAND"));
+if (printLaunchCommand) {
+System.err.println("Spark Command: " + join(" ", cmd));
+System.err.println("========================================");
+}
+```
+
 `boolean printLaunchCommand = !isEmpty(System.getenv("SPARK_PRINT_LAUNCH_COMMAND"));`
-
-`if (printLaunchCommand) {`
-
-`System.err.println("Spark Command: " + join(" ", cmd));`
-
-`System.err.println("========================================");`
-
-`}`
 
 If SPARK\_PRINT\_LAUNCH\_COMMAND env variable is set then it will print your "actual running command".
 
@@ -226,17 +223,7 @@ private[spark] class Client(
   }
 ```
 
-`if (master.startsWith("yarn")) {`
 
-`val hasHadoopEnv = env.contains("HADOOP_CONF_DIR") || env.contains("YARN_CONF_DIR")`
-
-`if (!hasHadoopEnv && !Utils.isTesting) {`
-
-`throw new Exception(s"When running with master '$master' " +`
-
-`"either HADOOP_CONF_DIR or YARN_CONF_DIR must be set in the environment.")`
-
-`}`
 
 * SparkContext object creation initializes several things :
 
