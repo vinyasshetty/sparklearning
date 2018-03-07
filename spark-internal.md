@@ -45,91 +45,56 @@ Next Utils.getDefaultPropertiesFile is called which looks at env value SPARK\__C
 
 SparkSubmit -&gt; SparkSubmitArguments -&gt; SparkSubmitOptionParse.
 
-Below are the values/fields that are set in SparkSubmitArguments class based on the command line,spark-default.conf and env variables.\(below i have given only the initial defaults\) .\`
+Below are the values/fields that are set in SparkSubmitArguments class based on the command line,spark-default.conf and env variables.\(below i have given only the initial defaults\) .
 
-` ` ` `
-
+```
 var master: String = null
-
 var deployMode: String = null
-
 var executorMemory: String = null
-
 var executorCores: String = null
-
 var totalExecutorCores: String = null
-
 var propertiesFile: String = null
-
 var driverMemory: String = null
-
 var driverExtraClassPath: String = null
-
 var driverExtraLibraryPath: String = null
-
 var driverExtraJavaOptions: String = null
-
 var queue: String = null
-
 var numExecutors: String = null
-
 var files: String = null
-
 var archives: String = null
-
 var mainClass: String = null
-
 var primaryResource: String = null
-
 var name: String = null
-
-var childArgs: ArrayBuffer\[String\] = new ArrayBuffer\[String\]\(\)
-
+var childArgs: ArrayBuffer[String] = new ArrayBuffer[String]()
 var jars: String = null
-
 var packages: String = null
-
 var repositories: String = null
-
 var ivyRepoPath: String = null
-
 var packagesExclusions: String = null
-
 var verbose: Boolean = false
-
 var isPython: Boolean = false
-
 var pyFiles: String = null
-
 var isR: Boolean = false
-
 var action: SparkSubmitAction = null
-
-val sparkProperties: HashMap\[String, String\] = new HashMap\[String, String\]\(\)
-
+val sparkProperties: HashMap[String, String] = new HashMap[String, String]()
 var proxyUser: String = null
-
 var principal: String = null
-
 var keytab: String = null
-
 // Standalone cluster mode only
-
 var supervise: Boolean = false
-
 var driverCores: String = null
-
 var submissionToKill: String = null
-
 var submissionToRequestStatusFor: String = null
-
 var useRest: Boolean = true // used internally
+```
 
-` ` ` `
+
 
 Then SparkSubmit  calls the submit method, which prepares the envt by calling :
 
-`val (childArgs, childClasspath, sparkConf, childMainClass) = prepareSubmitEnvironment(args:SparkSubmitArguments)`
+`val (childArgs, childClasspath, sparkConf, childMainClass) = prepareSubmitEnvironment(args:SparkSubmitArguments)` 
+
+This SparkConf still does NOT have access to the conf created by user in the code.This will take command line,spark-defaults conf file and env variable in that order.
 
 Then it calls :
 
@@ -137,53 +102,36 @@ Then it calls :
 
 Some Main parts of runMain Method :
 
-`private def runMain(`
+```
+private def runMain(
+childArgs: Seq[String],
+childClasspath: Seq[String],
+sparkConf: SparkConf,
+childMainClass: String,
+verbose: Boolean): Unit = {
+// scalastyle:off println
+if (verbose) {
+printStream.println(s"Main class:\n$childMainClass")
+printStream.println(s"Arguments:\n${childArgs.mkString("\n")}")
+// sysProps may contain sensitive information, so redact before printing
+printStream.println(s"Spark config:\n${Utils.redact(sparkConf.getAll.toMap).mkString("\n")}")
+printStream.println(s"Classpath elements:\n${childClasspath.mkString("\n")}")
+printStream.println("\n")
+}
+val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {
+mainClass.newInstance().asInstanceOf[SparkApplication]
+} else {
+// SPARK-4170
+if (classOf[scala.App].isAssignableFrom(mainClass)) {
+printWarning("Subclasses of scala.App may not work correctly. Use a main() method instead.")
+}
+new JavaMainApplication(mainClass)
+}
+```
 
-`childArgs: Seq[String],`
 
-`childClasspath: Seq[String],`
 
-`sparkConf: SparkConf,`
 
-`childMainClass: String,`
-
-`verbose: Boolean): Unit = {`
-
-`// scalastyle:off println`
-
-`if (verbose) {`
-
-`printStream.println(s"Main class:\n$childMainClass")`
-
-`printStream.println(s"Arguments:\n${childArgs.mkString("\n")}")`
-
-`// sysProps may contain sensitive information, so redact before printing`
-
-`printStream.println(s"Spark config:\n${Utils.redact(sparkConf.getAll.toMap).mkString("\n")}")`
-
-`printStream.println(s"Classpath elements:\n${childClasspath.mkString("\n")}")`
-
-`printStream.println("\n")`
-
-`}`
-
-`val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {`
-
-`mainClass.newInstance().asInstanceOf[SparkApplication]`
-
-`} else {`
-
-`// SPARK-4170`
-
-`if (classOf[scala.App].isAssignableFrom(mainClass)) {`
-
-`printWarning("Subclasses of scala.App may not work correctly. Use a main() method instead.")`
-
-`}`
-
-`new JavaMainApplication(mainClass)`
-
-`}`
 
 `if (master.startsWith("yarn")) {`
 
