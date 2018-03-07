@@ -13,7 +13,7 @@ spak-class gets the java jar\(RUNNER\),spark jars\(LAUNCH\_\_CLASSPATH\) ,hadoop
 
 org.apache.spark.launcher.Main is a java class where the classname is set to agrs\(0\) ie org.apache.spark.deploy.SparkSubmit.
 
-Now `org.apache.spark.launcher.Main will create a Spark Running Command and return that to a variable in spark-class which is exceuted ,to view the command set`SPARK\_PRINT\_LAUNCH\_COMMAND=&lt;somevalue&gt; in the shell.
+Now `org.apache.spark.launcher.Main will create a Spark Running Command and return that to a variable in spark-class shell which is executed ,to view the command set`SPARK\_PRINT\_LAUNCH\_COMMAND=&lt;somevalue&gt; in the shell.
 
 ```
 boolean printLaunchCommand = !isEmpty(System.getenv("SPARK_PRINT_LAUNCH_COMMAND"));
@@ -23,15 +23,13 @@ System.err.println("========================================");
 }
 ```
 
-`boolean printLaunchCommand = !isEmpty(System.getenv("SPARK_PRINT_LAUNCH_COMMAND"));`
-
 If SPARK\_PRINT\_LAUNCH\_COMMAND env variable is set then it will print your "actual running command".
 
 When you submit a spark job ,the main entrance for the Job is **org.apache.spark.deploy.SparkSubmit**. This sets up the class path and other properties to be used by rest of the SparkCode written by users.
 
 In **SparkSubmit main method , **SparkSubmitArguments  object is created.** **All the arguments that you pass while running the spark-submit ,they are sent as a Array of Strings to  SparkSubmitArguments class,this class extends SparkSubmitOptionParser which has all the arguments parse list and it makes sure only the allowed parameters are available.
 
-Next Utils.getDefaultPropertiesFile is called which looks at env value SPARK\__CONF_\_DIR or SPARK\_HOME to get the absolute path of spark-defaults.conf,also  **sys.props Map** is loaded with these properties and also we get all the properties from the conf file loaded into a hashmap spark.properties Map\(Anything that has been passed via --conf in command line will ahve preference over conf file and env\).Here the SparkSubmitArguments  has master, executor,action etc different fields which are set .The priority is given to one that has been passed via command line ,next to spark-default.conf and next to default.
+Next Utils.getDefaultPropertiesFile is called which looks at env value SPARK\__CONF_\_DIR or SPARK\_HOME to get the absolute path of spark-defaults.conf,also  **sys.props Map** is loaded with these properties and also we get all the properties from the conf file loaded into a hashmap spark.properties Map\(Anything that has been passed via --conf in command line will have preference over conf file and env\).Here the SparkSubmitArguments  has master, executor,action etc different fields which are set .The priority is given to one that has been passed via command line ,next to spark-default.conf and next to default.
 
 SparkSubmit -&gt; SparkSubmitArguments -&gt; SparkSubmitOptionParse.
 
