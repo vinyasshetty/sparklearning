@@ -5,8 +5,6 @@
 * So Fluent Interface is used to create a SparkSession object ie We have builder method inside SparkSession Companion object ,then when we call a builder method a Builder object is returned then we can use this to set various values using the setter method which sets the value\(using a HashMap ,options\) and returns the builder object ,finally when we call a getOrCreate method in builder object ,this will create a SparkSession object using the options HashMap.
 * SparkSession needs a SparkContext , Option\[SharedState\], Option\[SessionState\] , SparkSessionExtensions.
 
-
-
 ## Main Entrance Point
 
 When you submit a spark job ,the main entrance for the Job is **org.apache.spark.deploy.SparkSubmit**. This sets up the class path and other properties to be used by rest of the SparkCode written by users.
@@ -15,21 +13,19 @@ All the arguments that you pass while running the spark-submit ,they are sent as
 
 Next Utils.getDefaultPropertiesFile is called which looks at env value SPARK\__CONF_\_DIR or SPARK\_HOME to get the absolute path of spark-defaults.conf,also  sys.props Map is loaded with these properties and also we get all the properties from the conf file loaded into a hashmap spark.properties Map.Here the SparkSubmitArguments  has master, executor,action etc different fields which are set .The priority is given to one that has been passed via command line else to spark-default.conf and next to default.
 
- `if (master.startsWith("yarn")) {`
+SparkSubmit -&gt; SparkSubmitArguments -&gt; SparkSubmitOptionParse
 
-`      val hasHadoopEnv = env.contains("HADOOP_CONF_DIR") || env.contains("YARN_CONF_DIR")`
+`if (master.startsWith("yarn")) {`
 
-`      if (!hasHadoopEnv && !Utils.isTesting) {`
+`val hasHadoopEnv = env.contains("HADOOP_CONF_DIR") || env.contains("YARN_CONF_DIR")`
 
-`        throw new Exception(s"When running with master '$master' " +`
+`if (!hasHadoopEnv && !Utils.isTesting) {`
 
-`          "either HADOOP_CONF_DIR or YARN_CONF_DIR must be set in the environment.")`
+`throw new Exception(s"When running with master '$master' " +`
 
-`      }`
+`"either HADOOP_CONF_DIR or YARN_CONF_DIR must be set in the environment.")`
 
-
-
-
+`}`
 
 * SparkContext object creation initializes several things :
 
@@ -95,13 +91,13 @@ Next Utils.getDefaultPropertiesFile is called which looks at env value SPARK\__C
 
   _**def getConf: SparkConf = conf.clone\(\)**_
 
-*  ` def master: String = _conf.get("spark.master")  `
+* `def master: String = _conf.get("spark.master")`
 
-  `  def deployMode: String = _conf.getOption("spark.submit.deployMode").getOrElse("client")  `
+  `def deployMode: String = _conf.getOption("spark.submit.deployMode").getOrElse("client")`
 
-   `  def appName: String = _conf.get("spark.app.name")`
+  `def appName: String = _conf.get("spark.app.name")`
 
-`     private[spark] def isEventLogEnabled: Boolean = _conf.getBoolean("spark.eventLog.enabled", false)`
+`private[spark] def isEventLogEnabled: Boolean = _conf.getBoolean("spark.eventLog.enabled", false)`
 
 * 
 
