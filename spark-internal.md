@@ -174,8 +174,6 @@ private[spark] class YarnClusterApplication extends SparkApplication {
 }
 ```
 
-
-
 Point to note here is : we create a instance from mainClass ie org.apache.spark.deploy.yarn.YarnClusterApplication  which extends trait org.apache.spark.deploy.SparkApplication and has to implement method start which creates a org.apache.spark.deploy.yarn.Client object and calls run method on it. YarnClusterApplication and Client are in resource-managers project. ClientArguments method takes the array Array\("--jars","vin.jar","--class","com.vin.Ex1","arg1"\) and parses it accordingly to make them into fields of ClientArguments object as below :
 
 ```
@@ -253,7 +251,7 @@ private[spark] class Client(
    * Set up the appropriate contexts to launch our AM
    * Finally, submit and monitor the application.
    * In this the ApplicationMaster Launches the User Class Main method along with 
-   * any arguments required by 
+   * any arguments required by User class
    */
     this.appId = submitApplication()
     if (!launcherBackend.isConnected() && fireAndForget) {  // This is what decides whether a client should be active 
