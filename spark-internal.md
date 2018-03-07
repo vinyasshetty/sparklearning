@@ -162,7 +162,7 @@ new JavaMainApplication(mainClass)
 }
 ```
 
-Point to note here is : we create a instance from mainClass ie org.apache.spark.deploy.yarn.YarnClusterApplication  which extends trait org.apache.spark.deploy.yarn.SparkApplication and has to implement method start which creates a org.apache.spark.deploy.yarn.Client object and calls run method on it.
+Point to note here is : we create a instance from mainClass ie org.apache.spark.deploy.yarn.YarnClusterApplication  which extends trait org.apache.spark.deploy.SparkApplication and has to implement method start which creates a org.apache.spark.deploy.yarn.Client object and calls run method on it. YarnClusterApplication and Client are in resource-managers project.
 
 ```
 private[spark] class Client(
@@ -213,7 +213,6 @@ private[spark] class Client(
       }
     }
   }
-  
 ```
 
 `if (master.startsWith("yarn")) {`
