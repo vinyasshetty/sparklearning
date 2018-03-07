@@ -43,7 +43,151 @@ In **SparkSubmit main method , **SparkSubmitArguments  object is created.** **Al
 
 Next Utils.getDefaultPropertiesFile is called which looks at env value SPARK\__CONF_\_DIR or SPARK\_HOME to get the absolute path of spark-defaults.conf,also  **sys.props Map** is loaded with these properties and also we get all the properties from the conf file loaded into a hashmap spark.properties Map\(Anything that has been passed via --conf in command line will ahve preference over conf file and env\).Here the SparkSubmitArguments  has master, executor,action etc different fields which are set .The priority is given to one that has been passed via command line ,next to spark-default.conf and next to default.
 
-SparkSubmit -&gt; SparkSubmitArguments -&gt; SparkSubmitOptionParse
+SparkSubmit -&gt; SparkSubmitArguments -&gt; SparkSubmitOptionParse.
+
+Below are the values/fields that are set in SparkSubmitArguments class based on the command line,spark-default.conf and env variables.\(below i have given only the initial defaults\) .
+
+ `var master: String = null`
+
+`  var deployMode: String = null`
+
+`  var executorMemory: String = null`
+
+`  var executorCores: String = null`
+
+`  var totalExecutorCores: String = null`
+
+`  var propertiesFile: String = null`
+
+`  var driverMemory: String = null`
+
+`  var driverExtraClassPath: String = null`
+
+`  var driverExtraLibraryPath: String = null`
+
+`  var driverExtraJavaOptions: String = null`
+
+`  var queue: String = null`
+
+`  var numExecutors: String = null`
+
+`  var files: String = null`
+
+`  var archives: String = null`
+
+`  var mainClass: String = null`
+
+`  var primaryResource: String = null`
+
+`  var name: String = null`
+
+`  var childArgs: ArrayBuffer[String] = new ArrayBuffer[String]()`
+
+`  var jars: String = null`
+
+`  var packages: String = null`
+
+`  var repositories: String = null`
+
+`  var ivyRepoPath: String = null`
+
+`  var packagesExclusions: String = null`
+
+`  var verbose: Boolean = false`
+
+`  var isPython: Boolean = false`
+
+`  var pyFiles: String = null`
+
+`  var isR: Boolean = false`
+
+`  var action: SparkSubmitAction = null`
+
+`  val sparkProperties: HashMap[String, String] = new HashMap[String, String]()`
+
+`  var proxyUser: String = null`
+
+`  var principal: String = null`
+
+`  var keytab: String = null`
+
+`  // Standalone cluster mode only`
+
+`  var supervise: Boolean = false`
+
+`  var driverCores: String = null`
+
+`  var submissionToKill: String = null`
+
+`  var submissionToRequestStatusFor: String = null`
+
+`  var useRest: Boolean = true // used internally`
+
+
+
+Then SparkSubmit  calls the submit method, which prepares the envt by calling :
+
+`val (childArgs, childClasspath, sparkConf, childMainClass) = prepareSubmitEnvironment(args:SparkSubmitArguments)`
+
+Then it calls :
+
+`runMain(childArgs, childClasspath, sparkConf, childMainClass, args.verbose)`
+
+Some Main parts of runMain Method :
+
+ ` private def runMain(`
+
+`      childArgs: Seq[String],`
+
+`      childClasspath: Seq[String],`
+
+`      sparkConf: SparkConf,`
+
+`      childMainClass: String,`
+
+`      verbose: Boolean): Unit = {`
+
+`    // scalastyle:off println`
+
+`    if (verbose) {`
+
+`      printStream.println(s"Main class:\n$childMainClass")`
+
+`      printStream.println(s"Arguments:\n${childArgs.mkString("\n")}")`
+
+`      // sysProps may contain sensitive information, so redact before printing`
+
+`      printStream.println(s"Spark config:\n${Utils.redact(sparkConf.getAll.toMap).mkString("\n")}")`
+
+`      printStream.println(s"Classpath elements:\n${childClasspath.mkString("\n")}")`
+
+`      printStream.println("\n")`
+
+`    }`
+
+`val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {`
+
+`      mainClass.newInstance().asInstanceOf[SparkApplication]`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 `if (master.startsWith("yarn")) {`
 
