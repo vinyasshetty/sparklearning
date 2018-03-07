@@ -104,7 +104,7 @@ This SparkConf created in prepareSubmitEnviornment still does NOT have access to
     val childClasspath = new ArrayBuffer[String]()
     val sparkConf = new SparkConf()
     var childMainClass = ""
-    
+
     //Also make sure of below
     if (master.startsWith("yarn")) {
 val hasHadoopEnv = env.contains("HADOOP_CONF_DIR") || env.contains("YARN_CONF_DIR")
@@ -162,9 +162,7 @@ new JavaMainApplication(mainClass)
 }
 ```
 
-Point to note here is : 
-
-
+Point to note here is : we create a instance from mainClass ie org.apache.spark.deploy.yarn.YarnClusterApplication  which extends trait org.apache.spark.deploy.yarn.SparkApplication and has to implement method start which creates a org.apache.spark.deploy.yarn.Client object and calls run method on it.
 
 `if (master.startsWith("yarn")) {`
 
