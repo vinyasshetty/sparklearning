@@ -45,9 +45,11 @@ Next Utils.getDefaultPropertiesFile is called which looks at env value SPARK\__C
 
 SparkSubmit -&gt; SparkSubmitArguments -&gt; SparkSubmitOptionParse.
 
-Below are the values/fields that are set in SparkSubmitArguments class based on the command line,spark-default.conf and env variables.\(below i have given only the initial defaults\) .
+Below are the values/fields that are set in SparkSubmitArguments class based on the command line,spark-default.conf and env variables.\(below i have given only the initial defaults\) .\`
 
-\` \` \`var master: String = null
+` ` ` `
+
+var master: String = null
 
 var deployMode: String = null
 
@@ -123,7 +125,7 @@ var submissionToRequestStatusFor: String = null
 
 var useRest: Boolean = true // used internally
 
-\` \` \`
+` ` ` `
 
 Then SparkSubmit  calls the submit method, which prepares the envt by calling :
 
