@@ -159,7 +159,68 @@ new JavaMainApplication(mainClass)
 }
 ```
 
-Point to note here is : we create a instance from mainClass ie org.apache.spark.deploy.yarn.YarnClusterApplication  which extends trait org.apache.spark.deploy.SparkApplication and has to implement method start which creates a org.apache.spark.deploy.yarn.Client object and calls run method on it. YarnClusterApplication and Client are in resource-managers project.
+```
+private[spark] class YarnClusterApplication extends SparkApplication {
+
+  override def start(args: Array[String], conf: SparkConf): Unit = {
+    // SparkSubmit would use yarn cache to distribute files & jars in yarn mode,
+    // so remove them from sparkConf here for yarn mode.
+    conf.remove("spark.jars")
+    conf.remove("spark.files")
+
+    new Client(new ClientArguments(args), conf).run()
+  }
+
+}
+```
+
+
+
+Point to note here is : we create a instance from mainClass ie org.apache.spark.deploy.yarn.YarnClusterApplication  which extends trait org.apache.spark.deploy.SparkApplication and has to implement method start which creates a org.apache.spark.deploy.yarn.Client object and calls run method on it. YarnClusterApplication and Client are in resource-managers project. ClientArguments method takes the array Array\("--jars","vin.jar","--class","com.vin.Ex1","arg1"\) and parses it accordingly to make them into fields of ClientArguments object as below :
+
+```
+private[spark] class ClientArguments(args: Array[String]) {
+
+  var userJar: String = null
+  var userClass: String = null
+  var primaryPyFile: String = null
+  var primaryRFile: String = null
+  var userArgs: ArrayBuffer[String] = new ArrayBuffer[String]()
+
+  parseArgs(args.toList)
+
+  private def parseArgs(inputArgs: List[String]): Unit = {
+    var args = inputArgs
+
+    while (!args.isEmpty) {
+      args match {
+        case ("--jar") :: value :: tail =>
+          userJar = value
+          args = tail
+
+        case ("--class") :: value :: tail =>
+          userClass = value
+          args = tail
+
+        case ("--primary-py-file") :: value :: tail =>
+          primaryPyFile = value
+          args = tail
+
+        case ("--primary-r-file") :: value :: tail =>
+          primaryRFile = value
+          args = tail
+
+        case ("--arg") :: value :: tail =>
+          userArgs += value
+          args = tail
+
+        case Nil =>
+
+        case _ =>
+          throw new IllegalArgumentException(getUsageMessage(args))
+      }
+    }
+```
 
 ```
 private[spark] class Client(
@@ -190,7 +251,9 @@ private[spark] class Client(
    * Get a new application from our RM
    * Verify whether the cluster has enough resources for our AM
    * Set up the appropriate contexts to launch our AM
-   * Finally, submit and monitor the application
+   * Finally, submit and monitor the application.
+   * In this the ApplicationMaster Launches the User Class Main method along with 
+   * any arguments required by 
    */
     this.appId = submitApplication()
     if (!launcherBackend.isConnected() && fireAndForget) {  // This is what decides whether a client should be active 
@@ -222,8 +285,6 @@ private[spark] class Client(
     }
   }
 ```
-
-
 
 * SparkContext object creation initializes several things :
 
