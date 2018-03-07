@@ -47,83 +47,85 @@ SparkSubmit -&gt; SparkSubmitArguments -&gt; SparkSubmitOptionParse.
 
 Below are the values/fields that are set in SparkSubmitArguments class based on the command line,spark-default.conf and env variables.\(below i have given only the initial defaults\) .
 
- `var master: String = null`
+\`\`\`
 
-`  var deployMode: String = null`
+`var master: String = null`
 
-`  var executorMemory: String = null`
+`var deployMode: String = null`
 
-`  var executorCores: String = null`
+`var executorMemory: String = null`
 
-`  var totalExecutorCores: String = null`
+`var executorCores: String = null`
 
-`  var propertiesFile: String = null`
+`var totalExecutorCores: String = null`
 
-`  var driverMemory: String = null`
+`var propertiesFile: String = null`
 
-`  var driverExtraClassPath: String = null`
+`var driverMemory: String = null`
 
-`  var driverExtraLibraryPath: String = null`
+`var driverExtraClassPath: String = null`
 
-`  var driverExtraJavaOptions: String = null`
+`var driverExtraLibraryPath: String = null`
 
-`  var queue: String = null`
+`var driverExtraJavaOptions: String = null`
 
-`  var numExecutors: String = null`
+`var queue: String = null`
 
-`  var files: String = null`
+`var numExecutors: String = null`
 
-`  var archives: String = null`
+`var files: String = null`
 
-`  var mainClass: String = null`
+`var archives: String = null`
 
-`  var primaryResource: String = null`
+`var mainClass: String = null`
 
-`  var name: String = null`
+`var primaryResource: String = null`
 
-`  var childArgs: ArrayBuffer[String] = new ArrayBuffer[String]()`
+`var name: String = null`
 
-`  var jars: String = null`
+`var childArgs: ArrayBuffer[String] = new ArrayBuffer[String]()`
 
-`  var packages: String = null`
+`var jars: String = null`
 
-`  var repositories: String = null`
+`var packages: String = null`
 
-`  var ivyRepoPath: String = null`
+`var repositories: String = null`
 
-`  var packagesExclusions: String = null`
+`var ivyRepoPath: String = null`
 
-`  var verbose: Boolean = false`
+`var packagesExclusions: String = null`
 
-`  var isPython: Boolean = false`
+`var verbose: Boolean = false`
 
-`  var pyFiles: String = null`
+`var isPython: Boolean = false`
 
-`  var isR: Boolean = false`
+`var pyFiles: String = null`
 
-`  var action: SparkSubmitAction = null`
+`var isR: Boolean = false`
 
-`  val sparkProperties: HashMap[String, String] = new HashMap[String, String]()`
+`var action: SparkSubmitAction = null`
 
-`  var proxyUser: String = null`
+`val sparkProperties: HashMap[String, String] = new HashMap[String, String]()`
 
-`  var principal: String = null`
+`var proxyUser: String = null`
 
-`  var keytab: String = null`
+`var principal: String = null`
 
-`  // Standalone cluster mode only`
+`var keytab: String = null`
 
-`  var supervise: Boolean = false`
+`// Standalone cluster mode only`
 
-`  var driverCores: String = null`
+`var supervise: Boolean = false`
 
-`  var submissionToKill: String = null`
+`var driverCores: String = null`
 
-`  var submissionToRequestStatusFor: String = null`
+`var submissionToKill: String = null`
 
-`  var useRest: Boolean = true // used internally`
+`var submissionToRequestStatusFor: String = null`
 
+`var useRest: Boolean = true // used internally `
 
+\`\`\`
 
 Then SparkSubmit  calls the submit method, which prepares the envt by calling :
 
@@ -135,51 +137,53 @@ Then it calls :
 
 Some Main parts of runMain Method :
 
- ` private def runMain(`
+`private def runMain(`
 
-`      childArgs: Seq[String],`
+`childArgs: Seq[String],`
 
-`      childClasspath: Seq[String],`
+`childClasspath: Seq[String],`
 
-`      sparkConf: SparkConf,`
+`sparkConf: SparkConf,`
 
-`      childMainClass: String,`
+`childMainClass: String,`
 
-`      verbose: Boolean): Unit = {`
+`verbose: Boolean): Unit = {`
 
-`    // scalastyle:off println`
+`// scalastyle:off println`
 
-`    if (verbose) {`
+`if (verbose) {`
 
-`      printStream.println(s"Main class:\n$childMainClass")`
+`printStream.println(s"Main class:\n$childMainClass")`
 
-`      printStream.println(s"Arguments:\n${childArgs.mkString("\n")}")`
+`printStream.println(s"Arguments:\n${childArgs.mkString("\n")}")`
 
-`      // sysProps may contain sensitive information, so redact before printing`
+`// sysProps may contain sensitive information, so redact before printing`
 
-`      printStream.println(s"Spark config:\n${Utils.redact(sparkConf.getAll.toMap).mkString("\n")}")`
+`printStream.println(s"Spark config:\n${Utils.redact(sparkConf.getAll.toMap).mkString("\n")}")`
 
-`      printStream.println(s"Classpath elements:\n${childClasspath.mkString("\n")}")`
+`printStream.println(s"Classpath elements:\n${childClasspath.mkString("\n")}")`
 
-`      printStream.println("\n")`
+`printStream.println("\n")`
+
+`}`
+
+`val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {`
+
+`mainClass.newInstance().asInstanceOf[SparkApplication]`
+
+` } else {`
+
+`      // SPARK-4170`
+
+`      if (classOf[scala.App].isAssignableFrom(mainClass)) {`
+
+`        printWarning("Subclasses of scala.App may not work correctly. Use a main() method instead.")`
+
+`      }`
+
+`      new JavaMainApplication(mainClass)`
 
 `    }`
-
-`val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {`
-
-`      mainClass.newInstance().asInstanceOf[SparkApplication]`
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
