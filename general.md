@@ -7,6 +7,7 @@
 * ** transformations with narrow dependencies as those in which “each partition of the parent RDD is used by at most one partition of the child RDD.” The creators define transformations with wide dependencies as transformations in which “multiple child partitions may depend on \[each partition in the parent\].” **
 
 * Within a given stage the number of tasks used to complete a computation corresponds to each output partition rather than each input partition—when RDDs are evaluated; the tasks needed to compute a transformation are computed on the child partitions. ie say if i have a multi step narrow transformations where input/first-parent partition count is 200 and then a coalesce\(to 50\) and a action. Now this stage will run with just 50 tasks and not 200.
+
 * master can be given to run on local mode with avialable cores "local\[\*\]" .
 
 * Usually in Prod master is set to "yarn" ie if using yarn cluster manager.
@@ -20,8 +21,6 @@
 * To understand Complex DataTypes in Spark,Read the Accepted Answer  =&gt; [https://stackoverflow.com/questions/28332494/querying-spark-sql-dataframe-with-complex-types](https://stackoverflow.com/questions/28332494/querying-spark-sql-dataframe-with-complex-types)
 
 * To change logging information while running spark :
-
-  ` ` \`
 
 
 
