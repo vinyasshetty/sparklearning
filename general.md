@@ -20,7 +20,12 @@
 
 * To understand Complex DataTypes in Spark,Read the Accepted Answer  =&gt; [https://stackoverflow.com/questions/28332494/querying-spark-sql-dataframe-with-complex-types](https://stackoverflow.com/questions/28332494/querying-spark-sql-dataframe-with-complex-types)
 
-* To change logging information while running spark :
+To change logging information while running spark :
 
+```
+--conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=log4j-spark.properties" 
+--conf "spark.executor.extraJavaOptions=-Dlog4j.configuration=log4j-spark.properties"  
+```
 
+We can put the properties file in the resources folder while building the jar else make sure properties file is in the classpath.
 
