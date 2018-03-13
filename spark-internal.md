@@ -115,7 +115,7 @@ throw new Exception(s"When running with master '$master' " +
 }
 ```
 
-In the above method based on master and deploy-mode ,we will decide on the childMainClass to run,for yarn cluster ,childMainClass  is chosen as org.apache.spark.deploy.yarn.YarnClusterApplication\(these are under resource-manager project\) and then childArgs will have Array\("--jars","vin.jar","--class","com.vin.Ex1","arg1"\) childClassPath will have all the required jars
+In the above method based on master and deploy-mode ,we will decide on the childMainClass to run,for yarn cluster ,**childMainClass  is chosen as org.apache.spark.deploy.yarn.YarnClusterApplication**\(these are under resource-manager project\) and then childArgs will have Array\("--jars","vin.jar","--class","com.vin.Ex1","arg1"\) childClassPath will have all the required jars
 
 Then it calls :
 
@@ -139,6 +139,9 @@ printStream.println(s"Spark config:\n${Utils.redact(sparkConf.getAll.toMap).mkSt
 printStream.println(s"Classpath elements:\n${childClasspath.mkString("\n")}")
 printStream.println("\n")
 }
+
+ mainClass = Utils.classForName(childMainClass)  // This just does the Class.forName(childMainClass)
+ 
  val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {
 mainClass.newInstance().asInstanceOf[SparkApplication] 
 } else {
