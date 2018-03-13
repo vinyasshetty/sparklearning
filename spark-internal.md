@@ -7,7 +7,7 @@ spark-submit shell script calls spark-class shell script:
     fi
     exec "${SPARK_HOME}"/bin/spark-class org.apache.spark.deploy.SparkSubmit "$@"
 
-spak-class gets the java jar\(RUNNER\),spark jars\(LAUNCH\_\_CLASSPATH\) ,hadoop jars\(HADOOP\_\_LZO\_JARS\).Then runs below :
+spark-class shell gets the java jar\(RUNNER\),spark jars\(LAUNCH\_\_CLASSPATH\) ,hadoop jars\(HADOOP\_\_LZO\_JARS\).Then runs below :
 
 `"$RUNNER" -Xmx128m -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "$@"`
 
@@ -27,7 +27,6 @@ If SPARK\_PRINT\_LAUNCH\_COMMAND env variable is set then it will print your "ac
 
 ```
 Spark Command: /usr/jdk64/jdk1.7.0_67/bin/java -Dhdp.version=2.5.3.0-37 -cp /usr/hdp/current/spark2-client/conf/:/usr/hdp/current/spark2-client/jars/*:/usr/hdp/current/hadoop-client/conf/ -XX:MaxPermSize=256m org.apache.spark.deploy.SparkSubmit --master yarn --deploy-mode cluster --class com.spark2.viny.Spark1 sparklearning-1.0-SNAPSHOT.jar
-
 ```
 
 When you submit a spark job ,the main entrance for the Job is **org.apache.spark.deploy.SparkSubmit**. This sets up the class path and other properties to be used by rest of the SparkCode written by users.
