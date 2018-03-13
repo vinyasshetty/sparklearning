@@ -301,7 +301,15 @@ How Spark Application Id is set in Yarn Mode:
       appId = newAppResponse.getApplicationId()
 ```
 
-org.apache.spark.yarn.deploy.ApplicationMaster creates a new thread on which it runs the user main method and then blocks\(join\) until this thread is done**&lt;NEED TO add more details around Yarn creation of application master etc =&gt; run,runImpl,runDriver,startUserApplication &gt;. Yarn Seems to be running/calling the companion object ApplicationMaster main method which in turns creates the ApplicationMaster object and call the run method on it . BUt not sure where is the **object ApplicationMaster main method called from ?
+org.apache.spark.yarn.deploy.ApplicationMaster creates a new thread on which it runs the user main method and then blocks\(join\) until this thread is done**&lt;NEED TO add more details around Yarn creation of application master etc =&gt; run,runImpl,runDriver,startUserApplication &gt;. Yarn\(Application Manager\) seems to be running/calling the companion object ApplicationMaster main method which in turns creates the ApplicationMaster object and call the run method on it . BUt not sure where is the **object ApplicationMaster main method called from ?
+
+
+
+```
+
+```
+
+
 
 ## 
 
