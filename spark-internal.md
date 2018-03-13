@@ -80,6 +80,8 @@ var submissionToRequestStatusFor: String = null
 var useRest: Boolean = true // used internally
 ```
 
+action can be "submit","kill" or "request\_status" .Default is "submit"
+
 Then SparkSubmit  calls the submit method, which prepares the envt by calling :
 
 `val (childArgs, childClasspath, sparkConf, childMainClass) = prepareSubmitEnvironment(args:SparkSubmitArguments)`
