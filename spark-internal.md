@@ -29,7 +29,7 @@ If SPARK\_PRINT\_LAUNCH\_COMMAND env variable is set then it will print your "ac
 Spark Command: /usr/jdk64/jdk1.7.0_67/bin/java -Dhdp.version=2.5.3.0-37 -cp /usr/hdp/current/spark2-client/conf/:/usr/hdp/current/spark2-client/jars/*:/usr/hdp/current/hadoop-client/conf/ -XX:MaxPermSize=256m org.apache.spark.deploy.SparkSubmit --master yarn --deploy-mode cluster --class com.spark2.viny.Spark1 sparklearning-1.0-SNAPSHOT.jar
 ```
 
-When you submit a spark job ,the main entrance for the Job is **org.apache.spark.deploy.SparkSubmit**. This sets up the class path and other properties to be used by rest of the SparkCode written by users.
+As seen above ,when you submit a spark job ,the main entrance for the Job is **org.apache.spark.deploy.SparkSubmit**. This sets up the class path and other properties to be used by rest of the SparkCode written by users.
 
 In **SparkSubmit main method , **SparkSubmitArguments  object is created.** **All the arguments that you pass while running the spark-submit ,they are sent as a Array of Strings to  SparkSubmitArguments class,this class extends SparkSubmitOptionParser which has all the arguments parse list and it makes sure only the allowed parameters are available.
 
