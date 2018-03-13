@@ -301,7 +301,7 @@ How Spark Application Id is set in Yarn Mode:
       appId = newAppResponse.getApplicationId()
 ```
 
-org.apache.spark.yarn.deploy.ApplicationMaster creates a new thread on which it runs the user main method and then blocks\(join\) until this thread is done**&lt;NEED TO add more details around Yarn creation of application master etc =&gt; runDriver,startUserApplication &gt;**
+org.apache.spark.yarn.deploy.ApplicationMaster creates a new thread on which it runs the user main method and then blocks\(join\) until this thread is done**&lt;NEED TO add more details around Yarn creation of application master etc =&gt; run,runDriver,startUserApplication &gt;**
 
 ## 
 
