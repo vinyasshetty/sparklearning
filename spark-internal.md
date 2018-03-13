@@ -23,7 +23,7 @@ System.err.println("========================================");
 }
 ```
 
-If SPARK\_PRINT\_LAUNCH\_COMMAND env variable is set then it will print your "actual running command".
+If SPARK\_PRINT\_LAUNCH\_COMMAND env variable is set then it will print your "actual running command".See below.Now this below command is executed by spark-class shell script.
 
 ```
 Spark Command: /usr/jdk64/jdk1.7.0_67/bin/java -Dhdp.version=2.5.3.0-37 -cp /usr/hdp/current/spark2-client/conf/:/usr/hdp/current/spark2-client/jars/*:/usr/hdp/current/hadoop-client/conf/ -XX:MaxPermSize=256m org.apache.spark.deploy.SparkSubmit --master yarn --deploy-mode cluster --class com.spark2.viny.Spark1 sparklearning-1.0-SNAPSHOT.jar
