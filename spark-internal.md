@@ -88,7 +88,7 @@ Then SparkSubmit  calls the submit method, which prepares the envt by calling :
 
 `val (childArgs, childClasspath, sparkConf, childMainClass) = prepareSubmitEnvironment(args:SparkSubmitArguments)`
 
-This SparkConf created in prepareSubmitEnviornment still does NOT have access to the conf created by user in the code.This will take command line,spark-defaults conf file and env variable in that order.This uses the sparkproperties hashmap from SparkSubmitArguments.
+This SparkConf created in prepareSubmitEnviornment still does NOT have access to the conf created by user in the code.This will take command line,spark-defaults conf file  in that order.This uses the sparkproperties hashmap from SparkSubmitArguments.
 
 ```
  private[deploy] def prepareSubmitEnvironment(
