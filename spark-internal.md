@@ -141,7 +141,7 @@ printStream.println("\n")
 }
 
  mainClass = Utils.classForName(childMainClass)  // This just does the Class.forName(childMainClass)
- 
+
  val app: SparkApplication = if (classOf[SparkApplication].isAssignableFrom(mainClass)) {
 mainClass.newInstance().asInstanceOf[SparkApplication] 
 } else {
@@ -292,6 +292,18 @@ private[spark] class Client(
 ```
 
 _**Under resource-managers project ,we have yarn related spark configurations and they stored in org.apache.spark.deploy.yarn.config object.**_
+
+How Spark Application Id is set in Yarn Mode:
+
+```
+ val newApp = yarnClient.createApplication()
+      val newAppResponse = newApp.getNewApplicationResponse()
+      appId = newAppResponse.getApplicationId()
+```
+
+org.apache.spark.yarn.deploy.ApplicationMaster creates a new thread on which it runs the user main method and then blocks\(join\) until this thread is done**&lt;NEED TO add more details around Yarn creation of application master etc&gt;** 
+
+## 
 
 ## Here Starts our User Class Main Method Execution Order:
 
