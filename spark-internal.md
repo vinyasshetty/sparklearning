@@ -80,7 +80,9 @@ var submissionToRequestStatusFor: String = null
 var useRest: Boolean = true // used internally
 ```
 
-action can be "submit","kill" or "request\_status" .Default is "submit"
+action can be "submit","kill" or "request\_status" .Default is "submit".
+
+ master = Option\(master\).getOrElse\("local\[\*\]"\) // ie if master is not set anywhere\(default conf,command line,env\) then it uses .
 
 Then SparkSubmit  calls the submit method, which prepares the envt by calling :
 
