@@ -46,3 +46,13 @@ hi mike
 
 
 
+* Number of tasks is roughly equal to the number of partitions.
+* Tasks are the smallest unit of exceution
+* Tasks belong to a TaskSets
+* TaksSets belong to Stages
+* Stages belong to  Jobs
+
+
+
+
+
