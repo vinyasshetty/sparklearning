@@ -1,10 +1,11 @@
 ## Here Starts our User Class Main Method Execution Order:
 
-I am trying to follow the default path ,so will exclude some code.
+I am trying to follow the default path ,so will exclude some code.Now in the ApplicationMaster a Thread is created which launches the main method of the User code and the application master waits for this thread to complete using "join".
 
 SparkSession is a companion object which has the builder method which returns a Builder Object,.
 
 ```
+So we start our main method with :
 val spark = SparkSession.builder // returns a Builder object
             .appName("")  //calls config("spark.app.name",value)
             .master("")   //calls config("spark.master",value)
@@ -27,9 +28,12 @@ val spark = SparkSession.builder // returns a Builder object
 * SparkExtensions =&gt; This seems to be the the place for all the Rules Builders for different Plans.Will come back to this.
 
 * Builder class also has methods as appName,master,config\(k,v\).
-* So **Fluent Interface **is used to create a SparkSession object ie We have builder method inside SparkSession Companion object ,then when we call a builder method where a Builder object is returned then we can use this to set various values using the setter method which sets the value\(using a HashMap ,options\) and returns the builder object ,finally when we call a getOrCreate method in builder object ,this will create a SparkSession object using the options HashMap.
 
-  ```
+  * So **Fluent Interface **is used to create a SparkSession object ie We have builder method inside SparkSession Companion object ,then when we call a builder method where a Builder object is returned then we can use this to set various values using the setter method which sets the value\(using a HashMap ,options\) and returns the builder object ,finally when we call a getOrCreate method in builder object .This will check for active SparkSession\(InheritableLocalThread\) or global \(Atomic\) ,first time when launching these will ne null ,hence a SparkSession object is created ,as part if it SparkContext and a SparkConf\(using the config we set in builder\) is created.Then a map field in SparkSession called initialSessionOptions is set using the builder option map.Also the global AtomicReference is set to the new SparkSession we created.
+
+* ** &lt;Question&gt;Now wonder why we have global and active SparkSession and not just one SparkSession is created directly?May be i will know this once i get to the point as to how restart is happening?? **
+
+* ```
    /** The active SparkSession for the current thread. */
   private val activeThreadSession = new InheritableThreadLocal[SparkSession]
 
@@ -56,19 +60,19 @@ val spark = SparkSession.builder // returns a Builder object
             options.foreach { case (k, v) => session.initialSessionOptions.put(k, v) } //initialSessionOptions is map field
             defaultSession.set(session)  // Now global atomic reference is set.Have to come back to this.
 
+```
+        /*
+        class SparkSession private(
+    @transient val sparkContext: SparkContext,
+    @transient private val existingSharedState: Option[SharedState],
+    @transient private val parentSessionState: Option[SessionState],
+    @transient private[sql] val extensions: SparkSessionExtensions){
+    @transient
+  private[sql] val initialSessionOptions = new scala.collection.mutable.HashMap[String, String]
 
 
-            /*
-            class SparkSession private(
-        @transient val sparkContext: SparkContext,
-        @transient private val existingSharedState: Option[SharedState],
-        @transient private val parentSessionState: Option[SessionState],
-        @transient private[sql] val extensions: SparkSessionExtensions){
-        @transient
-      private[sql] val initialSessionOptions = new scala.collection.mutable.HashMap[String, String]
-
-
-        */
+    */
+```
 
 * SparkSession needs a SparkContext , Option\[SharedState\], Option\[SessionState\] , SparkSessionExtensions.
 
