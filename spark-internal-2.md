@@ -85,7 +85,7 @@ Firstly care is taken to make sure only one SparkContext is active per JVM/appli
 
 So basically a SparkContext object is created and this SparkContext object has lot of information in it in the form of several private fields.**SparkContext object creation always expects to have a SparkConf to be sent.If the SparkConf has values set then those parameters take the highest precedence. Then all the Java System Properties are set into conf\(Have question on this :**
 
-[https://stackoverflow.com/questions/49285615/spark-config-internal\](https://stackoverflow.com/questions/49285615/spark-config-internal\)\) .
+[https://stackoverflow.com/questions/49285615/spark-config-internal\](https://stackoverflow.com/questions/49285615/spark-config-internal%29\) .
 
 Below are the initial defaults of the private fields in SparkContext.
 
@@ -125,10 +125,6 @@ Below are the initial defaults of the private fields in SparkContext.
       private var _shutdownHookRef: AnyRef = _
       private var _statusStore: AppStatusStore = _
 
-
-
-
-
 Now SparkContext starts setting values for above parameters:
 
 As you see a clone of SparkConf is given to SparkContext ,so basically once u set the SparkConf and pass it to SparkContext,trying to get the conf back from sparkcontext and changing its values will NOT work. SparkConf is set only once.
@@ -167,7 +163,6 @@ By setting the spark.logConf to true ,we can see all\(default included\) the con
  if (_conf.getBoolean("spark.logConf", false)) {
       logInfo("Spark configuration:\n" + _conf.toDebugString)
     }
-
 ```
 
 Since SparkContext is created in the driver ,here the executor id is called as "driver"
@@ -176,10 +171,6 @@ Since SparkContext is created in the driver ,here the executor id is called as "
 val DRIVER_IDENTIFIER = "driver"
   _conf.set("spark.executor.id", SparkContext.DRIVER_IDENTIFIER)
 ```
-
-
-
-
 
 
 
