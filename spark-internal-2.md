@@ -76,14 +76,22 @@ val spark = SparkSession.builder // returns a Builder object
 
 * Before moving further ahead ,i will follow the SparkContext.getOrCreate\(sparkconf\) path.
 
-Firstly care is taken to make sure only one SparkContext is active per JVM/application by default.If we require multiple context ,we set the \(set spark.driver.allowMultipleContexts = true\),have to come back to this.Once the SparkContext is created ,its set to :
+Firstly care is taken to make sure only one SparkContext is active per JVM/application by default.If we require multiple context ,we need to set the \(set spark.driver.allowMultipleContexts = true\),have to come back to this.Once the SparkContext is created ,its set to :
 
 ```
  private val activeContext: AtomicReference[SparkContext] =
     new AtomicReference[SparkContext](null) .This is member of SparkContext companion object.
 ```
 
-So basically a SparkContext object is created and this SparkContext object has lot of information in it in the form of several private fields.Below are the initial defaults
+So basically a SparkContext object is created and this SparkContext object has lot of information in it in the form of several private fields.**SparkContext object creation always expects to have a SparkConf to be sent.If the SparkConf has values set then those parameters take the highest precedence. Then all the Java System Properties are set into conf\(Have question on this :**
+
+https://stackoverflow.com/questions/49285615/spark-config-internal\) .
+
+
+
+
+
+Below are the initial defaults
 
     /**
      * Main entry point for Spark functionality. A SparkContext represents the connection to a Spark
@@ -141,6 +149,14 @@ In SparkContext ,there is check to make sure SparkConf always contains spark.app
 Also spark.app.master ,in SparkSubmitArguments class ,is master is not set then it gets defaulted to "local\[\*\]"
 
 \*\*
+
+
+
+
+
+
+
+
 
 * SparkSession needs a SparkContext , Option\[SharedState\], Option\[SessionState\] , SparkSessionExtensions.
 
