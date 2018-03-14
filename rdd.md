@@ -24,8 +24,6 @@ These extends NarrowDependency : OneToOneDependency and RangeDependency. Shuffle
 * **Narrow Transformation** =&gt; One parent partition can send data to only one child partition.
 * **Wide Transformation **=&gt; Majority of the child partitions receive data from all the parent partitions.
 
-
-
 ```
 bash-4.1$ hadoop fs -ls hdfs://nn1/user/test1/
 Found 2 items
@@ -43,7 +41,7 @@ hi vinyas
 hi mike
 "))
 
-//Basically returns RDD[(filname,wholefiecontent)]
+//Basically returns RDD[(filname,wholefiecontent)].This can be useful while reading json spread across multiple line
 ```
 
 
