@@ -85,13 +85,9 @@ Firstly care is taken to make sure only one SparkContext is active per JVM/appli
 
 So basically a SparkContext object is created and this SparkContext object has lot of information in it in the form of several private fields.**SparkContext object creation always expects to have a SparkConf to be sent.If the SparkConf has values set then those parameters take the highest precedence. Then all the Java System Properties are set into conf\(Have question on this :**
 
-https://stackoverflow.com/questions/49285615/spark-config-internal\) .
+[https://stackoverflow.com/questions/49285615/spark-config-internal\](https://stackoverflow.com/questions/49285615/spark-config-internal\)\) .
 
-
-
-
-
-Below are the initial defaults
+Below are the initial defaults of the private fields in SparkContext.
 
     /**
      * Main entry point for Spark functionality. A SparkContext represents the connection to a Spark
@@ -129,109 +125,65 @@ Below are the initial defaults
       private var _shutdownHookRef: AnyRef = _
       private var _statusStore: AppStatusStore = _
 
-      try {
-        _conf = config.clone()
-        _conf.validateSettings()
-
-        if (!_conf.contains("spark.master")) {
-          throw new SparkException("A master URL must be set in your configuration")
-        }
-        if (!_conf.contains("spark.app.name")) {
-          throw new SparkException("An application name must be set in your configuration")
-        }
-
-SparkContext object creation always expects to have a SparkConf to be sent. Now when SparkContext Object is created at that within the class all these parameters are set it to "java.util.UUID.randomUUID\(\).toString"
-
-\*\*\*
-
-In SparkContext ,there is check to make sure SparkConf always contains spark.app.name and spark.app.master. Now as a user if i dont give spark.app.name\(ie appName method on builder\) then in SparkSession we have a code to set  it to java.util.UUID.randomUUID\(\).toString.
-
-Also spark.app.master ,in SparkSubmitArguments class ,is master is not set then it gets defaulted to "local\[\*\]"
-
-\*\*
 
 
 
 
+Now SparkContext starts setting values for above parameters:
+
+As you see a clone of SparkConf is given to SparkContext ,so basically once u set the SparkConf and pass it to SparkContext,trying to get the conf back from sparkcontext and changing its values will NOT work. SparkConf is set only once.
+
+```
+try {
+_conf = config.clone()  
+_conf.validateSettings()
+```
+
+In SparkContext ,there is check to make sure SparkConf always contains spark.app.name and spark.app.master. Now as a user if i dont give spark.app.name\(ie appName method on builder\) then in SparkSession we have a code to set  it to java.util.UUID.randomUUID\(\).toString.Also spark.app.master ,in SparkSubmitArguments class ,is master is not set then it gets defaulted to "local\[\*\]"
+
+```
+if (!_conf.contains("spark.master")) {
+throw new SparkException("A master URL must be set in your configuration")
+}
+if (!_conf.contains("spark.app.name")) {
+throw new SparkException("An application name must be set in your configuration")
+}
+logInfo(s"Submitted application: $appName")
+```
+
+Below spark.yarn.app.id is set to applicationId in ApplicationMaster code.
+
+```
+ // System property spark.yarn.app.id must be set if user code ran by AM on a YARN cluster
+    if (master == "yarn" && deployMode == "cluster" && !_conf.contains("spark.yarn.app.id")) {
+      throw new SparkException("Detected yarn cluster mode, but isn't running on a cluster. " +
+        "Deployment to YARN is not supported directly by SparkContext. Please use spark-submit.")
+    }
+```
+
+By setting the spark.logConf to true ,we can see all\(default included\) the conf values in our App code
+
+```
+ if (_conf.getBoolean("spark.logConf", false)) {
+      logInfo("Spark configuration:\n" + _conf.toDebugString)
+    }
+
+```
+
+Since SparkContext is created in the driver ,here the executor id is called as "driver"
+
+```
+val DRIVER_IDENTIFIER = "driver"
+  _conf.set("spark.executor.id", SparkContext.DRIVER_IDENTIFIER)
+```
 
 
 
 
 
-* SparkSession needs a SparkContext , Option\[SharedState\], Option\[SessionState\] , SparkSessionExtensions.
 
-* SparkContext object creation initializes several things :
 
-  private var \_conf: SparkConf = \_
 
-  private var \_eventLogDir: Option\[URI\] = None
 
-  private var \_eventLogCodec: Option\[String\] = None
-
-  private var \_listenerBus: LiveListenerBus = \_
-
-  private var \_env: SparkEnv = \_
-
-  private var \_statusTracker: SparkStatusTracker = \_
-
-  private var \_progressBar: Option\[ConsoleProgressBar\] = None
-
-  private var \_ui: Option\[SparkUI\] = None
-
-  private var \_hadoopConfiguration: Configuration = \_
-
-  private var \_executorMemory: Int = \_
-
-  private var \_schedulerBackend: SchedulerBackend = \_
-
-  private var \_taskScheduler: TaskScheduler = \_
-
-  private var \_heartbeatReceiver: RpcEndpointRef = \_
-
-  @volatile private var \_dagScheduler: DAGScheduler = \_
-
-  private var \_applicationId: String = \_
-
-  private var \_applicationAttemptId: Option\[String\] = None
-
-  private var \_eventLogger: Option\[EventLoggingListener\] = None
-
-  private var \_executorAllocationManager: Option\[ExecutorAllocationManager\] = None
-
-  private var \_cleaner: Option\[ContextCleaner\] = None
-
-  private var \_listenerBusStarted: Boolean = false
-
-  private var \_jars: Seq\[String\] = \_
-
-  private var \_files: Seq\[String\] = \_
-
-  private var \_shutdownHookRef: AnyRef = \_
-
-  private var \_statusStore: AppStatusStore = \_
-
-* SparkContext always requires a SparkConf ,if not given then it creates its own SparkConf .
-
-* _private\[spark\] def conf: SparkConf = \_conf_
-
-  _/\*\*_
-
-  _**\* Return a copy of this SparkContext's configuration. The configuration ''cannot'' be**_
-
-  _**\* changed at runtime.**_
-
-  _**\*/**_
-
-  _**def getConf: SparkConf = conf.clone\(\)**_
-
-* `def master: String = _conf.get("spark.master")`
-
-  `def deployMode: String = _conf.getOption("spark.submit.deployMode").getOrElse("client")`
-
-  `def appName: String = _conf.get("spark.app.name")`
-
-`private[spark] def isEventLogEnabled: Boolean = _conf.getBoolean("spark.eventLog.enabled", false)`
-
-* 
 
 
