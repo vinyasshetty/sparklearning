@@ -40,7 +40,7 @@ val spark = SparkSession.builder // returns a Builder object
   /** Reference to the root SparkSession. */
   private val defaultSession = new AtomicReference[SparkSession]
 
-  in getOrCreate we first check if we have active or default SParkSession available ,if not then :
+  in getOrCreate we first check if we have active or default SparkSession available ,if not then :
   ```
 
             // No active nor global default session. Create a new one.
