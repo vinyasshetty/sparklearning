@@ -38,7 +38,7 @@ As seen above ,when you submit a spark job ,the main entrance for the Job is **o
 
 In **SparkSubmit main method , **SparkSubmitArguments  object is created.** **All the arguments that you pass while running the spark-submit ,they are sent as a Array of Strings to  SparkSubmitArguments class,this class extends SparkSubmitOptionParser which has all the arguments parse list and it makes sure only the allowed parameters are available.As part of this sparkproperties hashmap is set with values coming from command line --conf.Also Here the SparkSubmitArguments  has master, executor,action etc different fields which are set.
 
-Next Utils.getDefaultPropertiesFile is called which looks at env value SPARK\__CONF_\_DIR or SPARK\_HOME/conf to get the absolute path of **spark-defaults.conf**. If the conf file is NOt there it does not throw a error.The priority is given to one that has been passed via command line ,next to spark-default.conf and next to default enviornment variable. Also any keys not starting with "spark." is removed.
+Next Utils.getDefaultPropertiesFile is called which looks at env value SPARK\__CONF_\_DIR or SPARK\_HOME/conf to get the absolute path of **spark-defaults.conf**. If the conf file is NOT there it does not throw a error.The priority is given to one that has been passed via command line ,next to spark-default.conf and next to default enviornment variable. Also any keys not starting with "spark." is removed.
 
 SparkSubmit -&gt; SparkSubmitArguments -&gt; SparkSubmitOptionParse.
 
@@ -93,7 +93,7 @@ Then SparkSubmit  calls the submit method, which prepares the envt by calling :
 
 `val (childArgs, childClasspath, sparkConf, childMainClass) = prepareSubmitEnvironment(args:SparkSubmitArguments)`
 
-This SparkConf created in prepareSubmitEnviornment still does NOT have access to the conf created by user in the code.This will take command line,spark-defaults conf file  in that order.This uses the sparkproperties hashmap from SparkSubmitArguments.
+This SparkConf created in `prepareSubmitEnvironment` still does NOT have access to the conf created by user in the code.This will take command line,spark-defaults conf file  in that order.This uses the sparkproperties hashmap from SparkSubmitArguments.
 
 ```
  private[deploy] def prepareSubmitEnvironment(
