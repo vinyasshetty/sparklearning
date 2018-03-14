@@ -74,7 +74,7 @@ val spark = SparkSession.builder // returns a Builder object
     */
 ```
 
-* Before moving further ahead ,i follow the SparkContext.getOrCreate\(sparkconf\) path.
+* Before moving further ahead ,i will follow the SparkContext.getOrCreate\(sparkconf\) path.
 
 Firstly care is taken to make sure only one SparkContext is active per JVM/application by default.If we require multiple context ,we set the \(set spark.driver.allowMultipleContexts = true\),have to come back to this.Once the SparkContext is created ,its set to :
 
