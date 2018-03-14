@@ -74,6 +74,72 @@ val spark = SparkSession.builder // returns a Builder object
     */
 ```
 
+* Before moving further ahead ,i follow the SparkContext.getOrCreate\(sparkconf\) path.
+
+Firstly care is taken to make sure only one SparkContext is active per JVM/application by default.If we require multiple context ,we set the \(set spark.driver.allowMultipleContexts = true\),have to come back to this.Once the SparkContext is created ,its set to :
+
+```
+ private val activeContext: AtomicReference[SparkContext] =
+    new AtomicReference[SparkContext](null) .This is member of SparkContext companion object.
+```
+
+So basically a SparkContext object is created and this SparkContext object has lot of information in it in the form of several private fields.Below are the initial defaults
+
+    /**
+     * Main entry point for Spark functionality. A SparkContext represents the connection to a Spark
+     * cluster, and can be used to create RDDs, accumulators and broadcast variables on that cluster.
+     *
+     * Only one SparkContext may be active per JVM.  You must `stop()` the active SparkContext before
+     * creating a new one.  This limitation may eventually be removed; see SPARK-2243 for more details.
+     *
+     * @param config a Spark Config object describing the application configuration. Any settings in
+     *   this config overrides the default configs as well as system properties.
+     */
+    class SparkContext(config: SparkConf) extends Logging {
+      private var _conf: SparkConf = _
+      private var _eventLogDir: Option[URI] = None
+      private var _eventLogCodec: Option[String] = None
+      private var _listenerBus: LiveListenerBus = _
+      private var _env: SparkEnv = _
+      private var _statusTracker: SparkStatusTracker = _
+      private var _progressBar: Option[ConsoleProgressBar] = None
+      private var _ui: Option[SparkUI] = None
+      private var _hadoopConfiguration: Configuration = _
+      private var _executorMemory: Int = _
+      private var _schedulerBackend: SchedulerBackend = _
+      private var _taskScheduler: TaskScheduler = _
+      private var _heartbeatReceiver: RpcEndpointRef = _
+      @volatile private var _dagScheduler: DAGScheduler = _
+      private var _applicationId: String = _
+      private var _applicationAttemptId: Option[String] = None
+      private var _eventLogger: Option[EventLoggingListener] = None
+      private var _executorAllocationManager: Option[ExecutorAllocationManager] = None
+      private var _cleaner: Option[ContextCleaner] = None
+      private var _listenerBusStarted: Boolean = false
+      private var _jars: Seq[String] = _
+      private var _files: Seq[String] = _
+      private var _shutdownHookRef: AnyRef = _
+      private var _statusStore: AppStatusStore = _
+
+      try {
+        _conf = config.clone()
+        _conf.validateSettings()
+
+        if (!_conf.contains("spark.master")) {
+          throw new SparkException("A master URL must be set in your configuration")
+        }
+        if (!_conf.contains("spark.app.name")) {
+          throw new SparkException("An application name must be set in your configuration")
+        }
+
+
+
+SparkContext object creation always expects to have a SparkConf to be sent. Now when SparkContext Object is created at that within the class all these parameters are set .
+
+
+
+
+
 * SparkSession needs a SparkContext , Option\[SharedState\], Option\[SessionState\] , SparkSessionExtensions.
 
 * SparkContext object creation initializes several things :
