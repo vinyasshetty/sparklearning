@@ -1,5 +1,7 @@
 ## Here Starts our User Class Main Method Execution Order:
 
+I am trying to follow the default path ,so will exclude some code.
+
 SparkSession is a companion object which has the builder method which returns a Builder Object,.
 
 ```
@@ -7,16 +9,72 @@ val spark = SparkSession.builder // returns a Builder object
             .appName("")  //calls config("spark.app.name",value)
             .master("")   //calls config("spark.master",value)
             .config(key,value)
-            .getOrCreate() 
+            .getOrCreate()
+            
+        
+    class Builder extends Logging {
+    private[this] val options = new scala.collection.mutable.HashMap[String, String]
+    private[this] val extensions = new SparkSessionExtensions
+    private[this] var userSuppliedContext: Option[SparkContext] = None
+    private[spark] def sparkContext(sparkContext: SparkContext): Builder = synchronized {
+      userSuppliedContext = Option(sparkContext)
+      this
+    }             
+            
 ```
 
 * Builder has fields : options which is a mutable HashMap\[String,String\] ,  extension:SparkExtensions object , userSuppliedContext:Option\[SparkContext\] which set to None.
 
-      
-
 * SparkExtensions =&gt; This seems to be the the place for all the Rules Builders for different Plans.Will come back to this.
 * Builder class also has methods as appName,master,config\(k,v\).
 * So **Fluent Interface **is used to create a SparkSession object ie We have builder method inside SparkSession Companion object ,then when we call a builder method where a Builder object is returned then we can use this to set various values using the setter method which sets the value\(using a HashMap ,options\) and returns the builder object ,finally when we call a getOrCreate method in builder object ,this will create a SparkSession object using the options HashMap.
+
+       /** The active SparkSession for the current thread. */
+      private val activeThreadSession = new InheritableThreadLocal[SparkSession]
+
+      /** Reference to the root SparkSession. */
+      private val defaultSession = new AtomicReference[SparkSession]
+
+      in getOrCreate we first check if we have active or default SParkSession available ,if not then :
+
+
+            // No active nor global default session. Create a new one.
+            val sparkContext = userSuppliedContext.getOrElse {
+              val sparkConf = new SparkConf()
+              options.foreach { case (k, v) => sparkConf.set(k, v) } // This is created from whatever config,appname,master you have used in builder.
+
+              // set a random app name if not given.
+              if (!sparkConf.contains("spark.app.name")) {
+                sparkConf.setAppName(java.util.UUID.randomUUID().toString)
+              }
+
+              SparkContext.getOrCreate(sparkConf)
+              // Do not update `SparkConf` for existing `SparkContext`, as it's shared by all sessions.
+            }
+            session = new SparkSession(sparkContext, None, None, extensions)
+
+
+
+
+            /*
+            class SparkSession private(
+        @transient val sparkContext: SparkContext,
+        @transient private val existingSharedState: Option[SharedState],
+        @transient private val parentSessionState: Option[SessionState],
+        @transient private[sql] val extensions: SparkSessionExtensions)*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 * SparkSession needs a SparkContext , Option\[SharedState\], Option\[SessionState\] , SparkSessionExtensions.
 
 * SparkContext object creation initializes several things :
@@ -92,5 +150,7 @@ val spark = SparkSession.builder // returns a Builder object
 `private[spark] def isEventLogEnabled: Boolean = _conf.getBoolean("spark.eventLog.enabled", false)`
 
 * 
+
+
 
 
