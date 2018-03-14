@@ -134,15 +134,13 @@ So basically a SparkContext object is created and this SparkContext object has l
 
 SparkContext object creation always expects to have a SparkConf to be sent. Now when SparkContext Object is created at that within the class all these parameters are set it to "java.util.UUID.randomUUID\(\).toString"
 
-
-
 \*\*\*
 
-In SparkContext ,there is check to make sure SparkConf always contains spark.app.name and spark.app.master.Now as a user if i dont give spark.app.name then in SparkSession we have a code to set 
+In SparkContext ,there is check to make sure SparkConf always contains spark.app.name and spark.app.master. Now as a user if i dont give spark.app.name then in SparkSession we have a code to set  it to java.util.UUID.randomUUID\(\).toString. 
+
+Also spark.app.master ,in SparkSubmitArguments class ,is master is not set then it gets defaulted to "local\[\*\]" 
 
 \*\*
-
-
 
 * SparkSession needs a SparkContext , Option\[SharedState\], Option\[SessionState\] , SparkSessionExtensions.
 
