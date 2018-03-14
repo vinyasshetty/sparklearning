@@ -172,11 +172,7 @@ val DRIVER_IDENTIFIER = "driver"
   _conf.set("spark.executor.id", SparkContext.DRIVER_IDENTIFIER)
 ```
 
-
-
-Basically all the events of your application is logged ,use a hdfs directory.Create the directory first .Inside that directory spark will create one more directory with name as applicationid and log info.U can turn on compression also.It will use watever is set in `s`park.io.compression.codec
-
-.
+Basically all the events of your application is logged ,use a hdfs directory.Create the directory first .Inside that directory spark will create one more directory with name as applicationid and log info.U can turn on compression also.It will use whatever is set in spark.io.compression.codec
 
 ```
   private[spark] def isEventLogEnabled: Boolean = _conf.getBoolean("spark.eventLog.enabled", false)
