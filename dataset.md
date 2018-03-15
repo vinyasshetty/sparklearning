@@ -24,7 +24,9 @@ ds1: org.apache.spark.sql.Dataset[Employee] = [id: int, name: string ... 2 more 
 
 Now DataSet will have all the methods that was available on dataframe but we will certain minor changes:
 
-When you do operation like select,filter,groupBy,join etc on DataSet, it will return a DataFrame.To convert that back to DataSet you need again use a encoder
+When you do operation like** \*select, join ,agg,explode,withColumn,withColumnRenamed,drop,describe,summary** on DataSet, it will return a DataFrame. See like whenever there is a possibility of the Columns changing then such datasets return a Dataframe which would make sense since we don't know what new structure we would get.
+
+To convert that back to DataSet you need again use a encoder
 
 ```
 scala> ds1.select($"name",$"age")
@@ -36,8 +38,6 @@ defined class Emp
 scala> ds1.select($"name",$"age").as[Emp]
 res41: org.apache.spark.sql.Dataset[Emp] = [name: string, age: int]
 ```
-
-
 
 The Encoder object name and type should match with dataframe columns ,but you can have fewer and order also can be different.We will talk about map further.See the ordering and number of columns is different.
 
@@ -72,8 +72,36 @@ scala> ds1.select($"name",$"age",$"id").as[Emp1].map(x=>x.age).show
 <console>:37: error: value age is not a member of Emp1
        ds1.select($"name",$"age",$"id").as[Emp1].map(x=>x.age).show
                                                           ^
+```
+
+We can select on DataSet return a DataSet but this will have a encoder of Tuple.
 
 ```
+scala> val ds99 = ds1.select($"name".as[String],$"age".as[Int])
+ds99: org.apache.spark.sql.Dataset[(String, Int)] = [name: string, age: int]
+
+//Can still do this
+scala> ds1.select($"name".as[String],$"age".as[Int]).select($"name")
+res58: org.apache.spark.sql.DataFrame = [name: string]
+
+
+//But not below since x is a tuple now
+scala> ds99.map(x=>x.name)
+<console>:37: error: value name is not a member of (String, Int)
+       ds99.map(x=>x.name)
+                     ^
+                    
+scala> ds99.map(x=>x._1)
+res61: org.apache.spark.sql.Dataset[String] = [value: string]
+
+scala> ds99.map(x=>x._2)
+res62: org.apache.spark.sql.Dataset[Int] = [value: int]
+
+```
+
+
+
+
 
 
 
