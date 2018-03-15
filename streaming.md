@@ -42,8 +42,7 @@ object StreamingPort1 {
     ssc.start()
     ssc.awaitTermination()
   }
-
 ```
 
-
+When you say "start" on the StreamingContext is when the process will actually start running and if you have a action like print,saveAsFile,foreach then the corresponding transformation is run.Note "count" is NOT a action.
 
