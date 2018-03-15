@@ -24,7 +24,7 @@ ds1: org.apache.spark.sql.Dataset[Employee] = [id: int, name: string ... 2 more 
 
 Now DataSet will have all the methods that was available on dataframe but we will certain minor changes:
 
-When you do operation like** \*select, join ,agg,explode,withColumn,withColumnRenamed,drop,describe,summary** on DataSet, it will return a DataFrame. See like whenever there is a possibility of the Columns changing then such datasets return a Dataframe which would make sense since we don't know what new structure we would get.
+When you do operation like** \*select, join ,agg,explode,withColumn,withColumnRenamed,drop,describe,summary** on DataSet, it will return a DataFrame. Seems like whenever there is a possibility of the Columns changing then such datasets return a Dataframe which would make sense since we don't know what new structure we would get.
 
 To convert that back to DataSet you need again use a encoder
 
@@ -90,18 +90,13 @@ scala> ds99.map(x=>x.name)
 <console>:37: error: value name is not a member of (String, Int)
        ds99.map(x=>x.name)
                      ^
-                    
+
 scala> ds99.map(x=>x._1)
 res61: org.apache.spark.sql.Dataset[String] = [value: string]
 
 scala> ds99.map(x=>x._2)
 res62: org.apache.spark.sql.Dataset[Int] = [value: int]
-
 ```
-
-
-
-
 
 
 
