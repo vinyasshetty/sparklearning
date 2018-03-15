@@ -76,5 +76,5 @@ Now you may wonder why we need windowDuration and slideDuration and why not just
 
 
 
-
+Most of the ByKey and some non ByKey operators on dstreams provide in support for sending windowDuration and slideDuration
 
