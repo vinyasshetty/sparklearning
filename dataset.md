@@ -141,12 +141,50 @@ res76: org.apache.spark.sql.DataFrame = [_1.name: string]
 We can use all the map , flatMap , mapPartitions operations on DataSet,but be careful on its return type.
 
 ```
+//As you see it returns a DataSet[Int]
+scala> ds1.map(r=>r.id+10)
+res0: org.apache.spark.sql.Dataset[Int] = [value: int]
+
+scala> ds1.map(r=>(r.name,r.id+10))
+res1: org.apache.spark.sql.Dataset[(String, Int)] = [_1: string, _2: int]
+
+scala> ds1.map(r=>(r.name,r.id+10)).select($"_1",$"_2").show
++--------+---+
+|      _1| _2|
++--------+---+
+|  vinyas| 11|
+|  shetty| 12|
+|namratha| 13|
++--------+---+
+
+
+scala> ds1.map(r=>Emp99(r.id,r.amt+10))
+res4: org.apache.spark.sql.Dataset[Emp99] = [id: int, amt: double]
+
+scala> ds1.map(r=>Emp99(r.id,r.amt+10)).show
++---+-----+
+| id|  amt|
++---+-----+
+|  1|86.34|
+|  2| 77.2|
+|  3| 75.2|
++---+-----+
+
+
+scala> ds1.flatMap(r=>List(Emp99(r.id,r.amt+10)))
+res9: org.apache.spark.sql.Dataset[Emp99] = [id: int, amt: double]
+
+scala> ds1.flatMap(r=>List(Emp99(r.id,r.amt+10))).show
++---+-----+
+| id|  amt|
++---+-----+
+|  1|86.34|
+|  2| 77.2|
+|  3| 75.2|
++---+-----+
+
 
 ```
-
-
-
-
 
 
 
