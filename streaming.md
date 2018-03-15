@@ -24,5 +24,7 @@ val ssc = StreamingContext(sc,Seconds(60))
 //will be the data which has comes at every spark.streaming.blockInterval
 ```
 
- StreamingContext at every spark.streaming.blockInterval duration informs the BlockManager process which replicates this data on memory ussually the StorageLevel is MEMORY\_
+StreamingContext at every spark.streaming.blockInterval duration informs the BlockManager process which replicates/persists this data on memory/disk,same way we used to persist/cache rdd ie like StorageLevel.MEMORY\_AND\_DISK\_SER\_2.
+
+So remember two important times Block Interval\(set with spark.streaming.blockInterval\) and Batch Interval\(while creating StreamingContext\). MillisecondsSeconds ,Minutes are objects of Duration. Eg : Minutes\(1\).
 
