@@ -50,3 +50,21 @@ Now point to make sure is one the first 10 Seconds is done,then a complete one R
 
 So best practice is to make sure to complete your process within the "batch duration".
 
+Now sometimes you may want to run your process on a combinations of RDD's instead of just one for that we can use windows:
+
+```
+val dstream2 = dstream1.window(Seconds(300)) 
+dstream2.<some transformation>
+dstream2.<some action>
+```
+
+ Now say our batch duration was set to Seconds\(60\), so we will one RDD per 60 seconds and dstream2 will end up having 5 RDD's and on that trans/action will be done.One problem here is your trans/action on dstream2 will run every 5 minutes but if you want it to run more frequently\(say 2 minutes\) but with last 5 RDD's\(5 minutes\) worth data the say :
+
+```
+val dstream2 = dstream1.window(windowDuration=Seconds(300),slideDuration=Seconds(120)) 
+dstream2.<some transformation>
+dstream2.<some action>
+```
+
+
+
