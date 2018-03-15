@@ -27,7 +27,6 @@ Now DataSet will have all the methods that was available on dataframe but we wil
 When you do operation like select,filter,groupBy,join etc on DataSet, it will return a DataFrame.To convert that back to DataSet you need again use a encoder
 
 ```
-
 scala> ds1.select($"name",$"age")
 res40: org.apache.spark.sql.DataFrame = [name: string, age: int]
 
@@ -36,6 +35,43 @@ defined class Emp
 
 scala> ds1.select($"name",$"age").as[Emp]
 res41: org.apache.spark.sql.Dataset[Emp] = [name: string, age: int]
+```
+
+
+
+The Encoder object name and type should match with dataframe columns ,but you can have fewer and order also can be different.We will talk about map further.See the ordering and number of columns is different.
+
+```
+scala> case class Emp1(id:Int,name:String)
+defined class Emp1
+
+scala> ds1.select($"name",$"age",$"id").as[Emp1]
+res49: org.apache.spark.sql.Dataset[Emp1] = [name: string, age: int ... 1 more field]
+
+scala> ds1.select($"name",$"age",$"id").as[Emp1].map(x=>x.id).show
++-----+
+|value|
++-----+
+|    1|
+|    2|
+|    3|
++-----+
+
+
+scala> ds1.select($"name",$"age",$"id").as[Emp1].map(x=>x.name).show
++--------+
+|   value|
++--------+
+|  vinyas|
+|  shetty|
+|namratha|
++--------+
+
+
+scala> ds1.select($"name",$"age",$"id").as[Emp1].map(x=>x.age).show
+<console>:37: error: value age is not a member of Emp1
+       ds1.select($"name",$"age",$"id").as[Emp1].map(x=>x.age).show
+                                                          ^
 
 ```
 
