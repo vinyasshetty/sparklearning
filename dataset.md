@@ -119,9 +119,10 @@ res68: org.apache.spark.sql.Dataset[(Employee, Employee)] = [_1: struct<id: int,
 scala> j1.map(x=>x._1)
 res69: org.apache.spark.sql.Dataset[Employee] = [id: int, name: string ... 2 more fields]
 
+scala> j1.select($"_1"("name"))
+res73: org.apache.spark.sql.DataFrame = [_1.name: string]
+
 ```
-
-
 
 
 
