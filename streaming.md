@@ -28,3 +28,22 @@ StreamingContext at every spark.streaming.blockInterval duration informs the Blo
 
 So remember two important times Block Interval\(set with spark.streaming.blockInterval\) and Batch Interval\(while creating StreamingContext\). MillisecondsSeconds ,Minutes are objects of Duration. Eg : Minutes\(1\).
 
+We will have one task of the executor per dstream which will act as a receiver.
+
+```
+object StreamingPort1 {
+  def main(args:Array[String])={
+    val sc =  new SparkContext(new SparkConf().setMaster("local[*]").setAppName("Streaming1"))
+    val ssc = new StreamingContext(sc,Seconds(10))
+    val dstream1 = ssc.socketTextStream("localhost",5800,StorageLevel.MEMORY_AND_DISK_SER_2) 
+    //When you create a dstream connection ,
+    //at that time we can give the StorageLevel as to what sort of persisting u want on the block
+    dstream1.map(x => x + "VIN").print(10)
+    ssc.start()
+    ssc.awaitTermination()
+  }
+
+```
+
+
+
