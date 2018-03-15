@@ -20,6 +20,22 @@ defined class Employee
 
 scala> val ds1 = df1.as[Employee]
 ds1: org.apache.spark.sql.Dataset[Employee] = [id: int, name: string ... 2 more fields]
+```
+
+Now DataSet will have all the methods that was available on dataframe but we will certain minor changes:
+
+When you do operation like select,filter,groupBy,join etc on DataSet, it will return a DataFrame.To convert that back to DataSet you need again use a encoder
+
+```
+
+scala> ds1.select($"name",$"age")
+res40: org.apache.spark.sql.DataFrame = [name: string, age: int]
+
+scala> case class Emp(name:String,age:Int)
+defined class Emp
+
+scala> ds1.select($"name",$"age").as[Emp]
+res41: org.apache.spark.sql.Dataset[Emp] = [name: string, age: int]
 
 ```
 
