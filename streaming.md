@@ -44,5 +44,9 @@ object StreamingPort1 {
   }
 ```
 
-When you say "start" on the StreamingContext is when the process will actually start running and if you have a action like print,saveAsFile,foreach then the corresponding transformation is run.Note "count" is NOT a action.
+When you say "start" on the StreamingContext is when the process will actually start running and if you have a action like print,saveAsFile,foreach then the corresponding transformation is run.Note "count" is NOT a action.awaitTeramination basically makes sure that process does not while and is always active for streams of data to process.
+
+Now point to make sure is one the first 10 Seconds is done,then a complete one RDD is formed and all the corresponding transformation and action you have created will run,when this is happening the receiver will continue to get the data and creating RDD,but the new RDD transformation/action is NOT triggered until the existing RDD is done with its transformation/action.
+
+So best practice is to make sure to complete your process within the "batch duration".
 
