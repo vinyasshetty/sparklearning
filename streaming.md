@@ -1,5 +1,3 @@
-
-
 Spark Streaming uses micro batch architecture  where we continuosuly receieve data and those are converted into micro-batches which is nothing but RDD's and on that we do processing.
 
 Spark Streams is built on a abstraction called DStreams\(Discretized Stream\).A DStream is just a sequence of RDD's which are being processed one at a time\(group of RDD's can also be processed using window\).
@@ -71,6 +69,10 @@ dstream2.<some action>
 //worth of data(Since 5 minutes worth of data is still not avialable ,
 //but after that it will run every 2 minutes with last 5 minutes worth of data.
 ```
+
+Now you may wonder why we need windowDuration and slideDuration and why not just adjust the "batch duration" .Well we can do it but if say we multiple processing worth differnt times to be done then we can have one main batch duration as 1 minute and then mutiple dstreams with window duration of 5 ,6 ,7 etc . Also longer we keep the batch duration its more risker of losing data due to failure\(well spark can recover,we will ahead fault tolerance.But you lose precious time\).
+
+One thing to note here is windowDuration and slideDuration should always be a multiple of batch duration.And Batch duration should be mutiple of block interval.Also batch duration cannot be Seconds\(6.5\) ,the value u send should be a long.
 
 
 
