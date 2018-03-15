@@ -1,3 +1,5 @@
+
+
 Spark Streaming uses micro batch architecture  where we continuosuly receieve data and those are converted into micro-batches which is nothing but RDD's and on that we do processing.
 
 Spark Streams is built on a abstraction called DStreams\(Discretized Stream\).A DStream is just a sequence of RDD's which are being processed one at a time\(group of RDD's can also be processed using window\).
@@ -58,12 +60,16 @@ dstream2.<some transformation>
 dstream2.<some action>
 ```
 
- Now say our batch duration was set to Seconds\(60\), so we will one RDD per 60 seconds and dstream2 will end up having 5 RDD's and on that trans/action will be done.One problem here is your trans/action on dstream2 will run every 5 minutes but if you want it to run more frequently\(say 2 minutes\) but with last 5 RDD's\(5 minutes\) worth data the say :
+Now say our batch duration was set to Seconds\(60\), so we will one RDD per 60 seconds and dstream2 will end up having 5 RDD's and on that trans/action will be done.One problem here is your trans/action on dstream2 will run every 5 minutes but if you want it to run more frequently\(say 2 minutes\) but with last 5 RDD's\(5 minutes\) worth data the say :
 
 ```
 val dstream2 = dstream1.window(windowDuration=Seconds(300),slideDuration=Seconds(120)) 
 dstream2.<some transformation>
 dstream2.<some action>
+
+//PS: First time it will run with 2 minutes worth of data and second time it will run with 4 minutes 
+//worth of data(Since 5 minutes worth of data is still not avialable ,
+//but after that it will run every 2 minutes with last 5 minutes worth of data.
 ```
 
 
