@@ -121,7 +121,20 @@ res69: org.apache.spark.sql.Dataset[Employee] = [id: int, name: string ... 2 mor
 
 scala> j1.select($"_1"("name"))
 res73: org.apache.spark.sql.DataFrame = [_1.name: string]
+```
 
+
+
+"joinWith" with two dataframes .df1 and df2 are two dataframes
+
+```
+scala> val j2 = df1.joinWith(df2,df1("id") <=> df2("id"))
+j2: org.apache.spark.sql.Dataset[(org.apache.spark.sql.Row, org.apache.spark.sql.Row)] = [_1: struct<id: int, name: string ... 2 more fields>, _2: struct<id: int, name: string ... 2 more fields>]
+
+scala> j2.select($"_1"("name"))
+res76: org.apache.spark.sql.DataFrame = [_1.name: string]
+
+//Difference it its a DataSet[(Row,Row)]
 ```
 
 
