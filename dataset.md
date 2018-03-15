@@ -9,6 +9,9 @@ id,name,age,amt
 2,shetty,30,67.2
 3,namratha,28,65.2
 
+scala> import org.apache.spark.sql.types._
+import org.apache.spark.sql.types._
+
 scala> val sch = StructType(StructField("id",IntegerType)::StructField("name",StringType)::StructField("age",IntegerType)::StructField("amt",DoubleType)::Nil)
 sch: org.apache.spark.sql.types.StructType = StructType(StructField(id,IntegerType,true), StructField(name,StringType,true), StructField(age,IntegerType,true), StructField(amt,DoubleType,true))
 
@@ -123,8 +126,6 @@ scala> j1.select($"_1"("name"))
 res73: org.apache.spark.sql.DataFrame = [_1.name: string]
 ```
 
-
-
 "joinWith" with two dataframes .df1 and df2 are two dataframes
 
 ```
@@ -136,6 +137,16 @@ res76: org.apache.spark.sql.DataFrame = [_1.name: string]
 
 //Difference it its a DataSet[(Row,Row)]
 ```
+
+We can use all the map , flatMap , mapPartitions operations on DataSet,but be careful on its return type.
+
+```
+
+```
+
+
+
+
 
 
 
