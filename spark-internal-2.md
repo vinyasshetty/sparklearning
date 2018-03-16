@@ -76,22 +76,20 @@ val spark = SparkSession.builder // returns a Builder object
 
 * Before moving further ahead ,i will follow the SparkContext.getOrCreate\(sparkconf\) path.
 
+## SparkConf
 
-
-## SparkConf  
-
-A SparkConf has two important fields : 
+A SparkConf has two important fields :
 
 1. loadDefaults: Boolean
-2.  private val settings = new ConcurrentHashMap\[String, String\]\(\)
+2. private val settings = new ConcurrentHashMap\[String, String\]\(\)
 
 SparkConf takes a boolean as input when you create a object if you don't give anything then its set to true,basically that boolean is used to determine whether to add the Java System Properties starting with "spark." into SparkConf settings hashmap.
 
 Settings hashmap has keys like "spark.app.name" and its corresponding value in the value part.It has a several setters and getters.All its Setters returns a SparkConf and hence we can build a chain.
 
-
-
 ## SparkContext:
+
+SparkContext always runs on the driver and its the gateway between driver and the executors.
 
 Firstly care is taken to make sure only one SparkContext is active per JVM/application by default.If we require multiple context ,we need to set the \(set spark.driver.allowMultipleContexts = true\),have to come back to this.Once the SparkContext is created ,its set to :
 
@@ -151,8 +149,6 @@ try {
 _conf = config.clone()  
 _conf.validateSettings()
 ```
-
-
 
 In SparkContext ,there is check to make sure SparkConf always contains spark.app.name and spark.app.master. Now as a user if i dont give spark.app.name\(ie appName method on builder\) then in SparkSession we have a code to set  it to java.util.UUID.randomUUID\(\).toString.Also spark.app.master ,in SparkSubmitArguments class ,is master is not set then it gets defaulted to "local\[\*\]"
 
