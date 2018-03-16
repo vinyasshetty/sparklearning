@@ -197,3 +197,15 @@ Basically all the events of your application is logged ,use a hdfs directory.Cre
 
 
 
+We can set log level on your app using SparkContext's  below method:
+
+```
+ /** Control our logLevel. This overrides any user-defined log settings.
+   * @param logLevel The desired log level as a string.
+   * Valid log levels include: ALL, DEBUG, ERROR, FATAL, INFO, OFF, TRACE, WARN
+   */
+  def setLogLevel(logLevel: String)
+```
+
+
+
