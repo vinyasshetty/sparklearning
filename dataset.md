@@ -182,9 +182,7 @@ scala> ds1.flatMap(r=>List(Emp99(r.id,r.amt+10))).show
 |  2| 77.2|
 |  3| 75.2|
 +---+-----+
-
-
 ```
 
-
+We can persist/cache a DataSet also
 

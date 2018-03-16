@@ -122,7 +122,7 @@ ssc.stop() => Stops the StreamingContext and SparkContext(even if its created ou
 ssc.stop(stopSparkContext=false)
 ssc.stop(stopSparkContext=false,stopGracefully=true) //stops gracefully by waiting for the processing of all
   //received data to be completed
-  
+
   ssc.getState()
 ```
 
