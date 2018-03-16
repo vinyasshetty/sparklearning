@@ -1,5 +1,5 @@
 * DataSet is a distributed collection of typed data.
-* It needs a encoder which will convert your scala types to Spark Internal types.Now i know DataFrame is just a DataSet\[Row\] ,but below i will talk as if they are two separate things just for my understanding to understand its subtle differences..
+* It needs a encoder which will convert your scala types to Spark Internal types.Now i know DataFrame is just a DataSet\[Row\] ,but below i will talk as if they are two separate things just for my understanding to understand its subtle differences.In package.scala of sql =&gt; type DataFrame = Dataset\[Row\]
 * Things to note below,when you read a external data ie SparkSession read method will still return a DataFrameReader,so you would have first create a dataframe and then use a Encoder \(with as\) and convert that to a Scala object\(below Employee object\)
 
 ```
