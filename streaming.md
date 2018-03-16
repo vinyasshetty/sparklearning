@@ -113,17 +113,17 @@ ie say ,our cluster can handle 12 tasks in parallel and we plan to run two recie
 
 StreamingContext has different states when it executes:
 
-Initialized : This is the initial state of the streamingContext,the control has not yet reached ssc.start\(\) and we can still add new dstreams, add transformations/actions.
-
-Active : Now the ssc.start\(\) is executed ,then StreamingContext goes into Active State and no new dstreams,transformations or actions can be added,in Active state only dstream based transformation,action is executed.
-
-Stopped : Now ssc is stopped . 
+1. Initialized : This is the initial state of the streamingContext,the control has not yet reached ssc.start\(\) and we can still add new dstreams, add transformations/actions.
+2. Active : Now the ssc.start\(\) is executed ,then StreamingContext goes into Active State and no new dstreams,transformations or actions can be added,in Active state only dstream based transformation,action is executed.
+3. Stopped : Now ssc is stopped .
 
 ```
 ssc.stop() => Stops the StreamingContext and SparkContext(even if its created outsideStreming Context.
 ssc.stop(stopSparkContext=false)
 ssc.stop(stopSparkContext=false,stopGracefully=true) //stops gracefully by waiting for the processing of all
   //received data to be completed
+  
+  ssc.getState()
 ```
 
 
