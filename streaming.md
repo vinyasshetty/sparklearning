@@ -74,7 +74,11 @@ Now you may wonder why we need windowDuration and slideDuration and why not just
 
 **One thing to note here is windowDuration and slideDuration should always be a multiple of batch duration.And Batch duration should be mutiple of block interval.Also batch duration cannot be Seconds\(6.5\) ,the value u send should be a long.**
 
+Most of the ByKey and some non ByKey operators on dstreams provide in support for sending windowDuration and slideDuration.
+
+```
+dstream1.reduceByKeyAndWindow((x,y)=>x+y,Seconds(10),Seconds(2))
+```
 
 
-Most of the ByKey and some non ByKey operators on dstreams provide in support for sending windowDuration and slideDuration
 
