@@ -220,5 +220,11 @@ We can set log level on your app using SparkContext's  below method:
   def setLogLevel(logLevel: String)
 ```
 
+ListenerBus Creation :
+
+```
+ _listenerBus = new LiveListenerBus(_conf)
+```
+
 
 
