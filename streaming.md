@@ -103,5 +103,28 @@ object UnionDStream {
 }
 ```
 
+How do we select a good batch interval or a block interval .The number of tasks that can run on our cluster can be equal to number of cores \* number of executors.
+
+batch interval = \(number of cores \* number of executors\) / \(\(number of receivers\) \*\(block interval\)\)
+
+ie say ,our cluster can handle 12 tasks in parallel and we plan to run two recievers ,with block interval 1 seconds\(this is very high,just a example\),then our batch interval is 6 seconds.
+
+"Stateless" : Usually the dstream operations which are NOt using window are called stateless because they do NOT depend on previous or future RDD's.We will talk later about State Based dstream operator.
+
+StreamingContext has different states when it executes:
+
+Initialized : This is the initial state of the streamingContext,the control has not yet reached ssc.start\(\) and we can still add new dstreams, add transformations/actions.
+
+Active : Now the ssc.start\(\) is executed ,then StreamingContext goes into Active State and no new dstreams,transformations or actions can be added,in Active state only dstream based transformation,action is executed.
+
+Stopped : Now ssc is stopped . 
+
+```
+ssc.stop() => Stops the StreamingContext and SparkContext(even if its created outsideStreming Context.
+ssc.stop(stopSparkContext=false)
+ssc.stop(stopSparkContext=false,stopGracefully=true) //stops gracefully by waiting for the processing of all
+  //received data to be completed
+```
+
 
 
