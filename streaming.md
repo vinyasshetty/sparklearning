@@ -80,5 +80,28 @@ Most of the ByKey and some non ByKey operators on dstreams provide in support fo
 dstream1.reduceByKeyAndWindow((x,y)=>x+y,Seconds(10),Seconds(2))
 ```
 
+We can mutiple input initial dstreams created .Now we will have two tasks which will act as receivers and will keep receiving data and this data will be unionized.Make Sure dstreams which we union has the same type and also the same slide duration
+
+```
+object UnionDStream {
+  def main(args:Array[String])={
+    val sc = new SparkContext(new SparkConf().setMaster("local[*]").setAppName("UnionStream"))
+    val ssc = new StreamingContext(sc,Seconds(20))
+
+    val dstream1 = ssc.socketTextStream("localhost",5400)
+    val dstream2 = ssc.socketTextStream("localhost",5401)
+
+    val dstream3 = ssc.union(Array(dstream1,dstream2))
+
+    dstream3.map(x => x + "VIN").print(10)
+
+    ssc.start()
+    ssc.awaitTermination()
+
+  }
+
+}
+```
+
 
 
