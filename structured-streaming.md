@@ -99,5 +99,35 @@ We can inferschema in Streaming,but it will make all columns as string type and 
 //.option("inferSchema","true") on a DataStreamReader does NOt work.
 ```
 
+Better Way to Do it :
+
+```
+case class User(name:String,city:String,country:String,age:Int)
+object St_Refelection_File {
+
+  def main(args: Array[String]): Unit = {
+    val spark = SparkSession.builder().appName("ref1").master("local[*]").getOrCreate()
+    import spark.implicits._
+    spark.sparkContext.setLogLevel("ERROR")
+
+
+    val userschema = ScalaReflection.schemaFor[User].dataType.asInstanceOf[StructType]
+    //For Reflection to work the User case class should NOt be nested   
+ 
+
+    val rstream = spark.readStream
+      .format("csv")
+      .option("header",true)
+      .option("maxFilesPerTrigger",1)
+      .schema(userschema)
+      .load("/Users/vinyasshetty/data_spark_structured_streaming/data/people/").as[User]
+
+    println(rstream.printSchema())
+
+    val wstream = rstream.writeStream.outputMode("append").format("console").start()
+
+    wstream.awaitTermination(10000)
+```
+
 
 
