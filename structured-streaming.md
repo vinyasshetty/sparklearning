@@ -102,7 +102,9 @@ We can inferschema in Streaming,but it will make all columns as string type and 
 Better Way to Do it :
 
 ```
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.ScalaReflection
+import org.apache.spark.sql.types.StructType
 case class User(name:String,city:String,country:String,age:Int)
 object St_Refelection_File {
 
