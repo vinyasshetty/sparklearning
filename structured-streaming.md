@@ -25,3 +25,17 @@ res.awaitTermination()
 
 In Structured Streaming,we think of a input stream as a unbounded table ,where as a data comes it becomes appended as new rows to the unbounded table.
 
+The transformation on the input will generate a "output result table" ,this output result table is wat will be written to the sink.
+
+Now this output result table writing to sink can be handled in different Modes:
+
+"Complete" =&gt; Entire updated result table will be written to sink.
+
+"Append" =&gt; Only the new rows appended the the result table will be written to sink.It does NOT expect the existing result table values to change and hence this can be applied only on such queries.
+
+"Update" =&gt; Here the result table will have only the records that have changed from the last time.The way this is different from "Complete" is this will have the information of only the updated records and this will behave same as "append" mode for non-aggregation operations.
+
+Because of these above definitions,spark will put some limitations on the type of queries u can run on the input stream data.
+
+Way it works is ,spark takes a existing unbounded input data table and does the transformation you have given and stores the result in a "result table" within itself.Now once we get new records on the input unbounded data table,spark will run transformation on the new records and based on the "output mode" it will aggregate the information with the existing result table.Now due to this spark sets some limitations like you cannot do a aggregation operation on a "append" mode,since as per append definition it cannot combine old result table with the new output.\[We will talk more\]
+
