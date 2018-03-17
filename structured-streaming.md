@@ -23,5 +23,5 @@ val res = cnts.writeStream // DataStreamWriter
 res.awaitTermination()
 ```
 
-In Structured Streaming,we think of a input stream as a unbounded table ,where as a data comes it becomes appended as new rows to the table.
+In Structured Streaming,we think of a input stream as a unbounded table ,where as a data comes it becomes appended as new rows to the unbounded table.
 
