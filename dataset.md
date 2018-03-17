@@ -186,10 +186,6 @@ scala> ds1.flatMap(r=>List(Emp99(r.id,r.amt+10))).show
 
 We can persist/cache a DataSet also.
 
-
-
-
-
 We have groupByKey operator on a DataSet.
 
 ```
@@ -206,9 +202,6 @@ ds1.show
 
 import org.apache.spark.sql.functions._
 ds1.groupByKey(x=>x.id).agg(sum($"amt").as("summed").as[Double]).show
-
-
-
 ```
 
 
