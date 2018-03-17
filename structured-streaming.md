@@ -9,7 +9,7 @@ val stream1 = spark.readStream //DataStreamReader
                    .option("hostname","localhost")
                    .option("port",5401)
                    .load()
-                   
+
 val words = stream1.as[String].flatMap(_.split("\\s+"))
 val cnts = words.groupBy($"value").count() //Is this a action???
 
@@ -21,10 +21,7 @@ val res = cnts.writeStream // DataStreamWriter
               //result on hdfs,use .option("path","<location>")
 
 res.awaitTermination()
-                   
 ```
 
-
-
-
+In Structured Streaming,we think of a input stream as a unbounded table ,where as a data comes it becomes appended as new rows to the table.
 
