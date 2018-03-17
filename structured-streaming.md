@@ -52,11 +52,11 @@ val fstream = spark.readStream
                    .load("path")
 ```
 
-Kafka : We will discuss this in detail ahead.
+**Kafka** : We will discuss this in detail ahead.
 
-Socket : As see earlier .This is for testing only
+**Socket **: As see earlier .This is for testing only
 
-Rate Source : This is only for testing ,creates a DataFrame with two columns \(timestamp and value\).
+**Rate Source **: This is only for testing ,creates a DataFrame with two columns \(timestamp and value\).
 
 ```
  val rstream = spark.readStream
@@ -84,7 +84,13 @@ Rate Source : This is only for testing ,creates a DataFrame with two columns \(t
 |2018-03-17 09:04:21.096|305  |
 ```
 
+These examples generate streaming DataFrames that are untyped, meaning that the schema of the DataFrame is not checked at compile time, only checked at runtime when the query is submitted. Some operations like `map`, `flatMap`, etc. need the type to be known at compile time. To do those, you can convert these untyped streaming DataFrames to typed streaming Datasets using the same methods as static DataFrame.
 
+
+
+```
+rstream.isStreaming => to check if this is a streaming dataframe/dataset
+```
 
 
 
