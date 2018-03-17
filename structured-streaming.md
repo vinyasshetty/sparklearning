@@ -52,6 +52,8 @@ val fstream = spark.readStream
                    .load("path")
 ```
 
+Kafka : We will discuss this in detail ahead.
+
 Socket : As see earlier .This is for testing only
 
 Rate Source : This is only for testing ,creates a DataFrame with two columns \(timestamp and value\).
@@ -70,7 +72,7 @@ Rate Source : This is only for testing ,creates a DataFrame with two columns \(t
       .start()
 
     wstream.awaitTermination()
-    
+
     +-----------------------+-----+
 |timestamp              |value|
 +-----------------------+-----+
