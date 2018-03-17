@@ -186,3 +186,28 @@ scala> ds1.flatMap(r=>List(Emp99(r.id,r.amt+10))).show
 
 We can persist/cache a DataSet also
 
+
+
+We have groupByKey operator on a DataSet.
+
+```
+ds.groupByKey(x=>x.name) // Now it will group by x.name,This returns 
+a KeyValueGroupedDataset which is different from what is returned by groupBy ie RelationalGroupedDataset
+
+
+import org.apache.spark.sql.types._
+
+case class Employee(id:Int,name:String,amt:Double)
+val sch = new StructType().add("id",IntegerType).add("name",StringType).add("amt",DoubleType) 
+val ds1 = spark.read.schema(sch).csv("/FileStore/tables/vin.csv").as[Employee]
+ds1.show
+
+import org.apache.spark.sql.functions._
+ds1.groupByKey(x=>x.id).agg(sum($"amt").as("summed").as[Double]).show
+
+
+
+```
+
+
+
