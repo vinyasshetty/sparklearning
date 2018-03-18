@@ -46,7 +46,13 @@ Always date is expected to be in yyyy-mm-dd format in spark
 ```
 
 ```
+df1.select(date_add($"start_time",2))
 
+//date_add,date_sub works on date and timestamp type but it returns a date type
+
+
+//datediff takes two date or timestamp type and returns a int(can be negative also).Works 
+//when one is date and other is timestamp type
 ```
 
 
