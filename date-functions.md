@@ -1,0 +1,34 @@
+```
+import org.apache.spark.sql.types._
+val data = List(
+  ("2015-01-01 23:59:59", "2015-01-02 00:01:02",1),
+  ("2015-01-02 23:00:00", "2015-01-02 23:59:59",2),
+  ("2015-01-02 22:59:58", "2015-01-02 23:59:59",3))
+
+val df1 = spark.createDataFrame(data).select($"_1".cast(TimestampType).as("start_time")
+                                             ,$"_2".cast(TimestampType).as("end_time"),$"_3".as("id"))
+df1.show(false)
+
+
+```
+
+
+
+```
+import org.apache.spark.sql.functions._
+val condition = (to_date($"start_time") === to_date($"end_time")) &&  ($"start_time" + expr("INTERVAL 1 HOUR") >= $"end_time")
+df1.filter(condition).show
+
+//to_date function gets just the date type and only the date part of it
+df1.select(to_date($"start_time"),$"start_time").printSchema
+
+//This is really helpful to add/subtract from date and timestamp :
+df1.select($"start_time",$"start_time" + expr("INTERVAL 1 HOUR")).show
+
+df1.select(to_date($"start_time") + expr("INTERVAL 2 DAY"),to_date($"start_time")).show
+
+//expr("INTERVAL VALUE UNIT") .Available units are YEAR, MONTH, uDAY, HOUR, MINUTE, SECOND, MILLISECOND, and MICROSECOND
+```
+
+
+
