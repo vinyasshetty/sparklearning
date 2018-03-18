@@ -25,11 +25,7 @@ df1.select(to_date($"start_time") + expr("INTERVAL 2 DAY"),to_date($"start_time"
 
 //expr("INTERVAL VALUE UNIT") .Available units are YEAR, MONTH, uDAY, HOUR, MINUTE,
 // SECOND, MILLISECOND, and MICROSECOND
-
-
 ```
-
-
 
 ```
 //add_months(Column,n:Int).WOrks on date and timestamp
@@ -37,7 +33,7 @@ df1.select(to_date($"start_time") + expr("INTERVAL 2 DAY"),to_date($"start_time"
 df1.select(add_months($"start_time",2),add_months(to_date($"start_time"),2),$"start_time").show
 
 //cuurent date
-df1.select(current_date()).show
+df1.select(current_date(),current_timestamp()).show(false)
 ```
 
 
