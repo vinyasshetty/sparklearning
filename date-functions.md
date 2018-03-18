@@ -28,7 +28,7 @@ df1.select(to_date($"start_time") + expr("INTERVAL 2 DAY"),to_date($"start_time"
 ```
 
 ```
-//add_months(Column,n:Int).WOrks on date and timestamp
+//add_months(Column,n:Int).WOrks on date and timestamp,but converts to Date.
 
 df1.select(add_months($"start_time",2),add_months(to_date($"start_time"),2),$"start_time").show
 
@@ -41,10 +41,12 @@ df1.select(date_format(lit("2010-05-21").as("col1"),"yyyy.dd.MM"),
           date_format($"start_time","yyyy.dd.MM")).show()
 ```
 
-
-
 ```
 Always date is expected to be in yyyy-mm-dd format in spark
+```
+
+```
+
 ```
 
 
