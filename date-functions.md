@@ -42,7 +42,10 @@ df1.select(date_format(lit("2010-05-21").as("col1"),"yyyy.dd.MM"),
 ```
 
 ```
-Always date is expected to be in yyyy-mm-dd format in spark
+If you have a string in other type then,you can convert to date as  :
+
+df1.select(to_date(lit("21.12.2019"),"dd.MM.yyyy")).show
+
 ```
 
 ```
@@ -51,8 +54,9 @@ df1.select(date_add($"start_time",2))
 //date_add,date_sub works on date and timestamp type but it returns a date type
 
 
-//datediff takes two date or timestamp type and returns a int(can be negative also).Works 
+//datediff takes two date or timestamp type and returns a int(can be negative also).Also Works 
 //when one is date and other is timestamp type
+df1.select(datediff($"start_time",to_date($"end_time"))).show
 ```
 
 
