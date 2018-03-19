@@ -241,6 +241,8 @@ scala> ids.show
 +---+
 
 scala> ids.groupBy(($"id" % 2).as("grp")).agg(sum("id")).show
+ //We can do some expression on groupBy and use that to group and also we can rename,but that new column is NOT
+ //available for aggregation ,see next statement.
 +---+-------+
 |grp|sum(id)|
 +---+-------+
