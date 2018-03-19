@@ -284,7 +284,76 @@ scala> ids.join(summ,$"id" % 2 <=> $"grp").show
 |  8|  0|    20|
 |  9|  1|    25|
 +---+---+------+
+
+
+//If we need to collect all elements from a groupBy
+scala> ids.groupBy(($"id" % 2).as("grp")).agg(collect_list($"id"))
+res45: org.apache.spark.sql.DataFrame = [grp: bigint, collect_list(id): array<bigint>]
+
+scala> ids.groupBy(($"id" % 2).as("grp")).agg(collect_list($"id")).show
++---+----------------+
+|grp|collect_list(id)|
++---+----------------+
+|  0| [0, 2, 4, 6, 8]|
+|  1| [1, 3, 5, 7, 9]|
++---+----------------+
+
+scala> ids.groupBy(($"id" % 2).as("grp")).agg(collect_list($"id"))
+res45: org.apache.spark.sql.DataFrame = [grp: bigint, collect_list(id): array<bigint>]
+
+scala> ids.groupBy(($"id" % 2).as("grp")).agg(collect_set($"id")).show
++---+----------------+
+|grp|collect_list(id)|
++---+----------------+
+|  0| [0, 2, 4, 6, 8]|
+|  1| [1, 3, 5, 7, 9]|
++---+----------------+
+
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
