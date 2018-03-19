@@ -220,11 +220,49 @@ We can set log level on your app using SparkContext's  below method:
   def setLogLevel(logLevel: String)
 ```
 
-ListenerBus Creation :
+ListenerBus Creation\(**Will Come back to this\)** :
 
 ```
  _listenerBus = new LiveListenerBus(_conf)
 ```
+
+
+
+TaskScheduler Creatiion \(SInce my knowledge on yarn internals is limited,i may have to look at how the local\[\*\] mode is implemented  :
+
+```
+val (sched, ts) = SparkContext.createTaskScheduler(this, master, deployMode)
+    _schedulerBackend = sched
+    _taskScheduler = ts
+
+
+ private def createTaskScheduler(
+      sc: SparkContext,
+      master: String,
+      deployMode: String): (SchedulerBackend, TaskScheduler) = {
+    import SparkMasterRegex._
+    // When running locally, don't try to re-execute tasks on failure.
+    val MAX_LOCAL_TASK_FAILURES = 1
+    
+    master match {
+    case LOCAL_N_REGEX(threads) =>
+        def localCpuCount: Int = Runtime.getRuntime.availableProcessors() //This will give the number of cpu/cores in ur machine
+        // local[*] estimates the number of cores on the machine; local[N] uses exactly N threads.
+        val threadCount = if (threads == "*") localCpuCount else threads.toInt
+        if (threadCount <= 0) {
+          throw new SparkException(s"Asked to run locally with $threadCount threads")
+        }
+        val scheduler = new TaskSchedulerImpl(sc, MAX_LOCAL_TASK_FAILURES, isLocal = true)
+        val backend = new LocalSchedulerBackend(sc.getConf, scheduler, threadCount)
+        scheduler.initialize(backend)
+        (backend, scheduler)
+```
+
+
+
+Here we create a TaskSchedulerImpl and LocalSchedulerBackend:
+
+Different Clusters have different SchedulerBackend Implemented.It determines scheduling across jobs.Clients should first call initialize\(\) and start\(\), then submit task sets through the runTasks method.
 
 
 
