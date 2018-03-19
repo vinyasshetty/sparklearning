@@ -204,5 +204,21 @@ import org.apache.spark.sql.functions._
 ds1.groupByKey(x=>x.id).agg(sum($"amt").as("summed").as[Double]).show
 ```
 
+Aggregation :
+
+```
+scala> val ids = spark.range(10)
+ids: org.apache.spark.sql.Dataset[Long] = [id: bigint]
+
+scala> ids.agg(sum($"id").as("sum"))
+res0: org.apache.spark.sql.DataFrame = [sum: bigint]
+
+/*
+Now as you see ,we can run all aggregations operator directly on the DataSet,since if you look the DataSet code,
+agg operator first does a empty groupBy() ie groupBy on all the columns and then does a agg.
+
+*/
+```
+
 
 
