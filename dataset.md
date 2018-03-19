@@ -223,3 +223,68 @@ agg implementation is actually on the RelationalGroupedDataset class
 
 
 
+Group By :
+
+```
+scala> ids.show
++---+
+| id|
++---+
+|  0|
+|  1|
+|  2|
+|  3|
+|  4|
+|  5|
+|  6|
+|  7|
+|  8|
+|  9|
++---+
+
+scala> ids.groupBy(($"id" % 2).as("grp")).agg(sum("id")).show
++---+-------+
+|grp|sum(id)|
++---+-------+
+|  0|     20|
+|  1|     25|
++---+-------+
+
+
+scala> ids.groupBy(($"id" % 2).as("grp")).agg(sum("grp")).show //This will throw Error
+
+scala> ids.groupBy(($"id" % 2).as("grp")).sum("id").show
++---+-------+
+|grp|sum(id)|
++---+-------+
+|  0|     20|
+|  1|     25|
++---+-------+
+
+
+scala> val summ = ids.groupBy(($"id" % 2).as("grp")).agg(sum("id").as("summed"))
+summ: org.apache.spark.sql.DataFrame = [grp: bigint, summed: bigint]
+
+
+scala> ids.join(summ,$"id" % 2 <=> $"grp").show
++---+---+------+
+| id|grp|summed|
++---+---+------+
+|  0|  0|    20|
+|  1|  1|    25|
+|  2|  0|    20|
+|  3|  1|    25|
+|  4|  0|    20|
+|  5|  1|    25|
+|  6|  0|    20|
+|  7|  1|    25|
+|  8|  0|    20|
+|  9|  1|    25|
++---+---+------+
+
+
+
+```
+
+
+
