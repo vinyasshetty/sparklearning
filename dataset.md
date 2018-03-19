@@ -285,6 +285,25 @@ scala> ids.join(summ,$"id" % 2 <=> $"grp").show
 |  9|  1|    25|
 +---+---+------+
 
+scala> val wndw = Window.partitionBy($"id" % 2)
+wndw: org.apache.spark.sql.expressions.WindowSpec = org.apache.spark.sql.expressions.WindowSpec@3ad3b062
+
+scala> ids.select($"id",$"id"%2,sum($"id").over(wndw).as("sum")).show
++---+--------+---+
+| id|(id % 2)|sum|
++---+--------+---+
+|  0|       0| 20|
+|  2|       0| 20|
+|  4|       0| 20|
+|  6|       0| 20|
+|  8|       0| 20|
+|  1|       1| 25|
+|  3|       1| 25|
+|  5|       1| 25|
+|  7|       1| 25|
+|  9|       1| 25|
++---+--------+---+
+
 
 //If we need to collect all elements from a groupBy
 scala> ids.groupBy(($"id" % 2).as("grp")).agg(collect_list($"id"))
@@ -308,52 +327,7 @@ scala> ids.groupBy(($"id" % 2).as("grp")).agg(collect_set($"id")).show
 |  0| [0, 2, 4, 6, 8]|
 |  1| [1, 3, 5, 7, 9]|
 +---+----------------+
-
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+4 Query Plan in a DataSet.3 are Logical and 1 is Physical.
 
