@@ -226,8 +226,6 @@ ListenerBus Creation\(**Will Come back to this\)** :
  _listenerBus = new LiveListenerBus(_conf)
 ```
 
-
-
 TaskScheduler Creatiion \(SInce my knowledge on yarn internals is limited,i may have to look at how the local\[\*\] mode is implemented  :
 
 ```
@@ -243,7 +241,7 @@ val (sched, ts) = SparkContext.createTaskScheduler(this, master, deployMode)
     import SparkMasterRegex._
     // When running locally, don't try to re-execute tasks on failure.
     val MAX_LOCAL_TASK_FAILURES = 1
-    
+
     master match {
     case LOCAL_N_REGEX(threads) =>
         def localCpuCount: Int = Runtime.getRuntime.availableProcessors() //This will give the number of cpu/cores in ur machine
@@ -258,11 +256,7 @@ val (sched, ts) = SparkContext.createTaskScheduler(this, master, deployMode)
         (backend, scheduler)
 ```
 
-
-
 Here we create a TaskSchedulerImpl and LocalSchedulerBackend:
 
-Different Clusters have different SchedulerBackend Implemented.It determines scheduling across jobs.Clients should first call initialize\(\) and start\(\), then submit task sets through the runTasks method.
-
-
+Different Clusters have different SchedulerBackend Implemented.It determines scheduling across jobs.Clients should first call initialize\(\) and start\(\), then submit task sets through the runTasks method.As you can see in above code ,for local mode LocalSchedulerBackend is created and the TaskChedulerImpl is iniitialized with it.
 
