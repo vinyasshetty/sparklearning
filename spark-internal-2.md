@@ -313,47 +313,7 @@ setupAndStartListenerBus()
 
 "spark.default.parallelism" if NOT set,then in localmode  its set to totalcores in the system, but i dont believe in yarn mode ,its defaulted to anything.
 
-
-
-## DataSet Creation : 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## DataSet Creation :
 
 
 
