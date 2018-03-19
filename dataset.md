@@ -215,7 +215,8 @@ res0: org.apache.spark.sql.DataFrame = [sum: bigint]
 
 /*
 Now as you see ,we can run all aggregations operator directly on the DataSet,since if you look the DataSet code,
-agg operator first does a empty groupBy() ie groupBy on all the columns and then does a agg.
+agg operator first does a empty groupBy() ie groupBy on all the columns and then does a agg.Actual 
+agg implementation is actually on the RelationalGroupedDataset class
 
 */
 ```
