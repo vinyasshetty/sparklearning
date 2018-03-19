@@ -286,3 +286,24 @@ val SPECULATION_INTERVAL_MS = conf.getTimeAsMs("spark.speculation.interval", "10
 
 Everything created inside SparkContext runs on driver like TaskScheduler, DAGScheduler etc
 
+Now TaskScheduler is started and  to the livelisterner a event is posted about with SparkListenerExecutorAdded
+
+```
+taskScheduler.start() // listenerBus.post(SparkListenerExecutorAdded
+```
+
+```
+setupAndStartListenerBus()
+//This is will add any custom listeners to livelistenerbus queue : listenerBus.addToSharedQueue(listener)
+// --conf spark.extraListeners=pl.jaceklaskowski.spark.CustomSparkListener else u can also call sc.addSparkListener(<>)
+
+ postEnvironmentUpdate()
+ postApplicationStart()
+ 
+ //Posts different events to livelistener bus
+```
+
+
+
+
+
