@@ -221,8 +221,6 @@ agg implementation is actually on the RelationalGroupedDataset class
 */
 ```
 
-
-
 Group By :
 
 ```
@@ -253,7 +251,7 @@ scala> ids.groupBy(($"id" % 2).as("grp")).agg(sum("id")).show
 
 scala> ids.groupBy(($"id" % 2).as("grp")).agg(sum("grp")).show //This will throw Error
 
-scala> ids.groupBy(($"id" % 2).as("grp")).sum("id").show
+scala> ids.groupBy(($"id" % 2).as("grp")).sum("id").show //We can directly use sum,max,min,avg on RelationalGroupedDataSet
 +---+-------+
 |grp|sum(id)|
 +---+-------+
@@ -281,9 +279,6 @@ scala> ids.join(summ,$"id" % 2 <=> $"grp").show
 |  8|  0|    20|
 |  9|  1|    25|
 +---+---+------+
-
-
-
 ```
 
 
