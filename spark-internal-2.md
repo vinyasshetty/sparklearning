@@ -140,6 +140,14 @@ Below are the initial defaults of the private fields in SparkContext.
       private var _shutdownHookRef: AnyRef = _
       private var _statusStore: AppStatusStore = _
 
+
+      /**
+       * Default min number of partitions for Hadoop RDDs when not given by user
+       * Notice that we use math.min so the "defaultMinPartitions" cannot be higher than 2.
+       * The reasons for this are discussed in https://github.com/mesos/spark/pull/718
+       */
+      def defaultMinPartitions: Int = math.min(defaultParallelism, 2)
+
 Now SparkContext starts setting values for above parameters:
 
 As you see a clone of SparkConf is given to SparkContext ,so basically once u set the SparkConf and pass it to SparkContext,trying to get the conf back from sparkcontext and changing its values will NOT work. SparkConf is set only once.
@@ -299,11 +307,9 @@ setupAndStartListenerBus()
 
  postEnvironmentUpdate()
  postApplicationStart()
- 
+
  //Posts different events to livelistener bus
 ```
 
-
-
-
+"spark.default.parallelism" if NOT set,then in localmode  its set to totalcores in the system, but i dont believe in yarn mode ,its defaulted to anything.
 
