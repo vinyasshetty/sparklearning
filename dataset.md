@@ -259,6 +259,9 @@ scala> ids.groupBy(($"id" % 2).as("grp")).sum("id").show //We can directly use s
 |  1|     25|
 +---+-------+
 
+scala> ids.sum("id")
+<console>:26: error: value sum is not a member of org.apache.spark.sql.Dataset[Long]
+
 
 scala> val summ = ids.groupBy(($"id" % 2).as("grp")).agg(sum("id").as("summed"))
 summ: org.apache.spark.sql.DataFrame = [grp: bigint, summed: bigint]
