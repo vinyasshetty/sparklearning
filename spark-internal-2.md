@@ -269,25 +269,20 @@ val SPECULATION_INTERVAL_MS = conf.getTimeAsMs("spark.speculation.interval", "10
 
  // CPUs to request per task
   val CPUS_PER_TASK = conf.getInt("spark.task.cpus", 1)
-  
+
   //Default Scheduling Mode is FIFO
   private val schedulingModeConf = conf.get(SCHEDULER_MODE_PROPERTY, SchedulingMode.FIFO.toString)
-  
 ```
 
 **DAGSCHEDULER:**
 
-1. DagScheduler forms a dag of stages for each Job.
+1. **DagScheduler forms a dag of stages for each Job**.
 2. It submits stages as TaskSet to underlying implementations of TaskSchedulerImpl.
 3. TaksSet can run independently on the data which already on hdfs
 4. DagScheduler creates Stages by breaking the RDD graphs whenever there is shuffle ie one first part of the stage writes map output to disk and the next stage starts with reading the data from the disk.At the end each stage will only have shuffle dependencies on other stages.
-5. Within a stage multiple operations are combined and these same operations are run on different partitions of the same input data.DagScheduler also tells on which location data ,tasks should run.
-6. If a task within a stage fails then TaskSchedulerImpl restarts it a couple of time before killing the whole stage.
+5. Within a stage multiple operations are combined and these same operations are run on different partitions of the same input data.**DagScheduler also tells on which location data ,tasks should run**.
+6. If a task within a stage fails then TaskSchedulerImpl restarts it a couple of time before killing the whole stage.Failures caused due to shuffle files being lost is handled by DAGScheduler since now DAGScheduler has to resubmit that stage.
 7. Two types of Stages : ShuffleMapStage and ResultStage\(final stage that executes the final action ie say count ,then the final transformed RDD is taken and and the count from each partitions taken and added and returned to driver\) 
 
-
-
 Everything created inside SparkContext runs on driver like TaskScheduler, DAGScheduler etc
-
-
 
