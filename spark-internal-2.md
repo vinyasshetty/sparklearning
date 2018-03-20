@@ -438,11 +438,15 @@ Now lets see the Encoders.Long
     scala>   val schema1 = serializer.dataType
     schema1: org.apache.spark.sql.types.StructType = StructType(StructField(id,IntegerType,true), StructField(name,StringType,true))
 
+    scala> import scala.reflect.ClassTag
+    import scala.reflect.ClassTag
+
+    scala> ClassTag[Am](cls)
+    res9: scala.reflect.ClassTag[Am] = Am
 
 
 
-
-So bacically :
+So basically :
 
 ```
 new ExpressionEncoder[T](
@@ -459,15 +463,11 @@ flat is true
 
 When T is a case class ,then 
 StructType(StructField(id,IntegerType,true), StructField(name,StringType,true))
-flat is false 
+flat is false
+
+Also ExpressionEncoder extends a Trait :
 
 ```
-
-
-
-
-
-
 
 
 
