@@ -359,16 +359,115 @@ new Range(0,11,1,Some(2),List(AttributeReference("id",LongType)()),false)
 
 Now lets see the Encoders.Long
 
+     import org.apache.spark.sql.Encoders.LONG
+
+     object Encoders {
+
+     def LONG: Encoder[java.lang.Long] = ExpressionEncoder()
+
+      }
+
+      //From ExpressionEncoder Documentation :
+     /  * A factory for constructing encoders that convert objects and primitives to and from the
+     * internal row format using catalyst expressions and code generation.  By default, the
+     * expressions used to retrieve values from an input row when producing an object will be created as
+     * follows:
+     *  - Classes will have their sub fields extracted by name using [[UnresolvedAttribute]] expressions
+     *    and [[UnresolvedExtractValue]] expressions.
+     *  - Tuples will have their subfields extracted by position using [[BoundReference]] expressions.
+     *  - Primitives will have their values extracted from the first ordinal with a schema that defaults
+     *    to the name `value`.
+     */
+
+     In this Expression Encoder Class ,a ExpressionEncoder Object is created :
+     new ExpressionEncoder[T](
+          schema,
+          flat,
+          serializer.flatten,
+          deserializer,
+          ClassTag[T](cls))
+      }
+
+      where schema is the StructType will have :
+      import org.apache.spark.sql.catalyst.{InternalRow, JavaTypeInference, ScalaReflection}
+      import scala.reflect.runtime.universe.{typeTag, TypeTag}
+
+      scala> val tpe = typeTag[java.lang.Long].in(mirror).tpe
+    tpe: org.apache.spark.sql.catalyst.ScalaReflection.universe.Type = java.lang.Long
+
+     scala> val cls = mirror.runtimeClass(tpe)
+    cls: Class[_] = class java.lang.Long
+
+    scala> val flat = !ScalaReflection.definedByConstructorParams(tpe)
+    flat: Boolean = true
+
+    scala>  import org.apache.spark.sql.catalyst.expressions.BoundReference
+
+    scala> val nullSafeInput = inputObject
+    nullSafeInput: org.apache.spark.sql.catalyst.expressions.BoundReference = input[0, bigint, true]
+
+    scala> val serializer = ScalaReflection.serializerFor[Long](nullSafeInput)
+    serializer: org.apache.spark.sql.catalyst.expressions.CreateNamedStruct = named_struct(value, input[0, bigint, true])
+
+    scala> val deserializer = ScalaReflection.deserializerFor[Long]
+    deserializer: org.apache.spark.sql.catalyst.expressions.Expression = upcast(getcolumnbyordinal(0, LongType), LongType, - root class: "scala.Long")
+
+    scala> val schema = serializer.dataType
+    schema: org.apache.spark.sql.types.StructType = StructType(StructField(value,LongType,true))
+
+    ********************
+    If we have a case class instead of just Long:
+    scala> case class Am(id:Int,name:String)
+    defined class Am
+
+    scala> val tpe1 = typeTag[Am].in(mirror).tpe
+    tpe1: org.apache.spark.sql.catalyst.ScalaReflection.universe.Type = Am
+
+    scala>  val cls = mirror.runtimeClass(tpe1)
+    cls: Class[_] = class Am
+
+    scala>  val flat = !ScalaReflection.definedByConstructorParams(tpe1)
+    flat: Boolean = false
+
+    scala>  val inputObject1 = BoundReference(0, ScalaReflection.dataTypeFor[Am], nullable = !cls.isPrimitive)
+    inputObject1: org.apache.spark.sql.catalyst.expressions.BoundReference = input[0, Am, true]
+
+    scala> val serializer = ScalaReflection.serializerFor[Am](inputObject1)
+    serializer: org.apache.spark.sql.catalyst.expressions.CreateNamedStruct = named_struct(id, input[0, Am, true].id, name, staticinvoke(class org.apache.spark.unsafe.types.UTF8String, StringType, fromString, input[0, Am, true].name, true))
+
+    scala>   val schema1 = serializer.dataType
+    schema1: org.apache.spark.sql.types.StructType = StructType(StructField(id,IntegerType,true), StructField(name,StringType,true))
+
+
+
+
+
+So bacically :
+
 ```
- import org.apache.spark.sql.Encoders.LONG
- 
- object Encoders {
- 
- def LONG: Encoder[java.lang.Long] = ExpressionEncoder()
-  
-  }
-  
+new ExpressionEncoder[T](
+schema,
+flat,
+serializer.flatten,
+deserializer,
+ClassTag[T](cls))
+}
+
+When T is say Long ,then :
+schema is StructType(StructField(value,LongType,true))
+flat is true
+
+When T is a case class ,then 
+StructType(StructField(id,IntegerType,true), StructField(name,StringType,true))
+flat is false 
+
 ```
+
+
+
+
+
+
 
 
 
