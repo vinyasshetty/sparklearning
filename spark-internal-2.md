@@ -318,7 +318,13 @@ setupAndStartListenerBus()
 Will start with a basic example of creation of a DataSet using spark.range
 
 ```
-val ds = spark.range(0,11,,1,2)
+val ds = spark.range(0,11,1,2) //Calls below method
+
+  def range(start: Long, end: Long, step: Long, numPartitions: Int): Dataset[java.lang.Long] = {
+    new Dataset(self, Range(start, end, step, numPartitions), Encoders.LONG)
+  }
+  
+  
 ```
 
 

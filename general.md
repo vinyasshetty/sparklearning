@@ -24,8 +24,29 @@ To change logging information while running spark :
 
 ```
 --conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=log4j-spark.properties" 
---conf "spark.executor.extraJavaOptions=-Dlog4j.configuration=log4j-spark.properties"  
+--conf "spark.executor.extraJavaOptions=-Dlog4j.configuration=log4j-spark.properties"
 ```
 
 We can put the properties file in the resources folder while building the jar else make sure properties file is in the classpath.
+
+
+
+
+
+```
+case class Am(x:List[Int]){
+def recurs(a:List[Int],f1:Int=>Int):List[Int]={
+a match {
+case Nil => Nil
+case y::ys => f1(y) :: recurs(ys,f1)
+}
+}
+def map1(f:Int => Int)={
+val l = recurs(x,f)
+Am(l)
+}
+}
+```
+
+
 
