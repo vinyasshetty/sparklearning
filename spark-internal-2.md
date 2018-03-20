@@ -359,3 +359,16 @@ new Range(0,11,1,Some(2),List(AttributeReference("id",LongType)()),false)
 
 Now lets see the Encoders.Long
 
+```
+ import org.apache.spark.sql.Encoders.LONG
+ 
+ object Encoders {
+ 
+ def LONG: Encoder[java.lang.Long] = ExpressionEncoder()
+  
+  }
+  
+```
+
+
+
