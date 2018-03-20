@@ -339,7 +339,9 @@ object Range {
   }
 }
 
-import org.apache.spark.sql.catalyst._
+import org.apache.spark.sql.types.{StructType,StructField,LongType}
+
+import org.apache.spark.sql.catalyst.expressions.AttributeReference
 
 val output = StructType(StructField("id", LongType, nullable = false) :: Nil).toAttributes
 //Basically returns a Seq[AttributeReference] like this :
@@ -350,12 +352,10 @@ val output = StructType(StructField("id", LongType, nullable = false) :: Nil).to
 /******************************This is the Range Object that gets returned to dataSet above******/
 //The last false ,is the isStreaming boolean which was added i think in spark 2.1
 
+scala> import org.apache.spark.sql.catalyst.plans.logical.Range
+
 new Range(0,11,1,Some(2),List(AttributeReference("id",LongType)()),false)
-
-
-
-
 ```
 
-
+Now lets see the Encoders.Long
 
