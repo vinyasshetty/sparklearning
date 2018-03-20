@@ -403,6 +403,8 @@ Now lets see the Encoders.Long
 
     scala>  import org.apache.spark.sql.catalyst.expressions.BoundReference
 
+     val inputObject = BoundReference(0, ScalaReflection.dataTypeFor[T], nullable = !cls.isPrimitive)
+
     scala> val nullSafeInput = inputObject
     nullSafeInput: org.apache.spark.sql.catalyst.expressions.BoundReference = input[0, bigint, true]
 
