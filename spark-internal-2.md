@@ -323,8 +323,38 @@ val ds = spark.range(0,11,1,2) //Calls below method
   def range(start: Long, end: Long, step: Long, numPartitions: Int): Dataset[java.lang.Long] = {
     new Dataset(self, Range(start, end, step, numPartitions), Encoders.LONG)
   }
-  
-  
+```
+
+Now lets see the Range Object here:
+
+```
+object Range {
+  def apply(start: Long, end: Long, step: Long,
+            numSlices: Option[Int], isStreaming: Boolean = false): Range = {
+    val output = StructType(StructField("id", LongType, nullable = false) :: Nil).toAttributes
+    new Range(start, end, step, numSlices, output, isStreaming)
+  }
+  def apply(start: Long, end: Long, step: Long, numSlices: Int): Range = {
+    Range(start, end, step, Some(numSlices))
+  }
+}
+
+import org.apache.spark.sql.catalyst._
+
+val output = StructType(StructField("id", LongType, nullable = false) :: Nil).toAttributes
+//Basically returns a Seq[AttributeReference] like this :
+
+// val output =   List(AttributeReference("id",LongType)())
+
+
+/******************************This is the Range Object that gets returned to dataSet above******/
+//The last false ,is the isStreaming boolean which was added i think in spark 2.1
+
+new Range(0,11,1,Some(2),List(AttributeReference("id",LongType)()),false)
+
+
+
+
 ```
 
 
