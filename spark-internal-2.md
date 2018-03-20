@@ -315,7 +315,11 @@ setupAndStartListenerBus()
 
 ## DataSet Creation :
 
+Will start with a basic example of creation of a DataSet using spark.range
 
+```
+val ds = spark.range(0,11,,1,2)
+```
 
 
 

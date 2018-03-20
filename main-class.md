@@ -9,3 +9,12 @@
 
 
 
+
+
+* spark.default.parallelism
+* sparkapp.id
+* spark.task.cpus ,default 1
+* spark.speculation.interval ,default 100ms
+
+
+
