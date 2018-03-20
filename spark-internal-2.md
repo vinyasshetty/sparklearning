@@ -475,3 +475,13 @@ Also ExpressionEncoder extends a Trait : Encoder .
 
 
 
+* Each DataSet is a Collection of strongly typed domain specific Objects which can be transformed suing DSL or sql like relational operators in parallel.Each DataSet also has a Untyped View which is a DataFrame ie DataSet\[Row\].
+* They have transformation and actions.
+* DataSets are lazy.DataSet  basically just contains a logical plan based on the transformation you have done and once you ask for a action then the Catalyst Optimizer convert this Logical Plan into a Physical Plan\(It also does optimization of logical plan\).
+* To support domain specific objects, a Encoder is required .A Encoder maps a type T into a Spark's internal type System .
+* Say we have a type of case class Am\(id:Int,name:String\)  ,then Spark Encode will take this type and convert into Spark's serialized internal binary data structure  during internal Code generation ,this format will be will have a low memory footprint and also has been optimized for faster processing.
+
+
+
+
+
