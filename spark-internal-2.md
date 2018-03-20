@@ -438,13 +438,16 @@ Now lets see the Encoders.Long
     scala>   val schema1 = serializer.dataType
     schema1: org.apache.spark.sql.types.StructType = StructType(StructField(id,IntegerType,true), StructField(name,StringType,true))
 
+
+    scala> serializer.flatten
+    res7: Seq[org.apache.spark.sql.catalyst.expressions.NamedExpression] = List(input[0, Am, true].id AS id#2, staticinvoke(class org.apache.spark.unsafe.types.UTF8String, StringType, fromString, input[0, Am, true].name, true) AS name#3)
+
+
     scala> import scala.reflect.ClassTag
     import scala.reflect.ClassTag
 
     scala> ClassTag[Am](cls)
     res9: scala.reflect.ClassTag[Am] = Am
-
-
 
 So basically :
 
@@ -465,8 +468,7 @@ When T is a case class ,then
 StructType(StructField(id,IntegerType,true), StructField(name,StringType,true))
 flat is false
 
-Also ExpressionEncoder extends a Trait :
-
+Also ExpressionEncoder extends a Trait : Encoder .
 ```
 
 
