@@ -44,7 +44,9 @@ Because of these above definitions,spark will put some limitations on the type o
 
 Way it works is ,spark takes a existing unbounded input data table and does the transformation you have given and stores the result in a "result table" within itself.Now once we get new records on the input unbounded data table,spark will run transformation on the new records and based on the "output mode" it will aggregate the information with the existing result table.Now due to this spark sets some limitations like you cannot do a aggregation operation on a "append" mode,since as per append definition it cannot combine old result table with the new output.\[We will talk more\].
 
-**Now we will have one Output result table per DataStreamWriter.This will**
+**Now we will have one Output result table per DataStreamWriter.This will result table information varies on output modes.if we we using complete mode,then the result table will maintain full history and it expects to have a key and a value ie a group by and aggregation operations only.**
+
+**In append mode ,result table will have only the latest output data.**
 
 Some InBuilt Input Source :
 
