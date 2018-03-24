@@ -52,7 +52,7 @@ Some InBuilt Input Source :
 
 **FileSources**\(csv,jsao,parquet,text,avro,etc\).Thing to note is file should be atomically placed ie say you place a file and stream reads it,then time you need a add a new file for the stream to read it,if you update the same file,stream will not read it.
 
-This behaves the same way as your static data file sources,but we have two extra features **latestFirst an maxFilesPerTrigger**
+This behaves the same way as your static data file sources,but we have two extra features **latestFirst and maxFilesPerTrigger**
 
 ```
 val fstream = spark.readStream
