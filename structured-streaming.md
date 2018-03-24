@@ -28,6 +28,8 @@ In Structured Streaming,we think of a input stream as a unbounded table ,where a
 
 **start method on the DataStreamWriter returns a StreamingQuery object.This StreamingQuery is the one which continuosly keeps exceuting the queries.It also has the explain method.But to print the plan from explain ,it seems to expect data first.It seems to not work.**
 
+The awaitTermination is on the StreamingQuery
+
 The transformation on the input will generate a "output result table" ,this output result table is wat will be written to the sink.
 
 Now this output result table writing to sink can be handled in different Modes:
