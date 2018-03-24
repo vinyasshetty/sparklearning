@@ -34,9 +34,9 @@ The transformation on the input will generate a "output result table" ,this outp
 
 Now this output result table writing to sink can be handled in different Modes:
 
-"Complete" =&gt; Entire updated result table will be written to sink.
+"Complete" =&gt; Entire updated result table will be written to sink.This will maintian entire history of the result table.
 
-"Append" =&gt; Only the new rows appended the the result table will be written to sink.It does NOT expect the existing result table values to change and hence this can be applied only on such queries.
+"Append" =&gt; Only the new rows appended the the result table will be written to sink.It does NOT expect the existing result table values to change and hence this can be applied only on such queries,basically aggregataions involving count,agg metjods are NOT allowed.
 
 "Update" =&gt; Here the result table will have only the records that have changed from the last time.The way this is different from "Complete" is this will have the information of only the updated records and this will behave same as "append" mode for non-aggregation operations.
 
