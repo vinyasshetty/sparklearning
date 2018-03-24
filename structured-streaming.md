@@ -97,7 +97,7 @@ val fstream = spark.readStream
 
 These examples generate streaming DataFrames that are untyped, meaning that the schema of the DataFrame is not checked at compile time, only checked at runtime when the query is submitted. Some operations like `map`, `flatMap`, etc. need the type to be known at compile time. To do those, you can convert these untyped streaming DataFrames to typed streaming Datasets using the same methods as static DataFrame.
 
-On a Streaming DataFrame ,you cannot perform a action like count,collect etc ie basically the methods on datasets which return a Unit.
+**On a Streaming DataFrame ,you cannot perform a action like count,collect etc ie basically the methods on datasets which return a Unit.**
 
 ```
 rstream.isStreaming => to check if this is a streaming dataframe/dataset
