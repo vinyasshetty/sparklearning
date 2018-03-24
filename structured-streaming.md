@@ -16,7 +16,8 @@ val cnts = words.groupBy($"value").count() //Is this a action???
 val res = cnts.writeStream // DataStreamWriter
               .format("console")
               .outputMode("complete")
-              .start() // DataStreamWriter has a start method which will start the computation
+              .start() // DataStreamWriter has a start method which will start the computation.
+              //This start method returns a StreamingQuery
               //Thing to note here is there is NO save method unlike DataFrameWriter,so to save the 
               //result on hdfs,use .option("path","<location>")
 
@@ -24,6 +25,8 @@ res.awaitTermination()
 ```
 
 In Structured Streaming,we think of a input stream as a unbounded table ,where as a data comes it becomes appended as new rows to the unbounded table.
+
+**start method on the DataStreamWriter returns a StreamingQuery object.This StreamingQuery is the one which continuosly keeps exceuting the queries.It also has the explain method.But to print the plan from explain ,it seems to expect data first.It seems to not work.**
 
 The transformation on the input will generate a "output result table" ,this output result table is wat will be written to the sink.
 
