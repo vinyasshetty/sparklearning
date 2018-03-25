@@ -126,5 +126,7 @@ ssc.stop(stopSparkContext=false,stopGracefully=true) //stops gracefully by waiti
   ssc.getState()
 ```
 
+Wonderful explanation on maintaining State using Pair DStreams:
 
+http://asyncified.io/2016/07/31/exploring-stateful-streaming-with-apache-spark/
 
