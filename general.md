@@ -29,10 +29,6 @@ To change logging information while running spark :
 
 We can put the properties file in the resources folder while building the jar else make sure properties file is in the classpath.
 
-
-
-
-
 ```
 case class Am(x:List[Int]){
 def recurs(a:List[Int],f1:Int=>Int):List[Int]={
@@ -45,6 +41,29 @@ def map1(f:Int => Int)={
 val l = recurs(x,f)
 Am(l)
 }
+}
+```
+
+```
+Handle with case class with has more then 22.Only when u canse scala 2.10 or older
+class Demo(val field1: String,
+    val field2: Int,
+    // .. and so on ..
+    val field23: String)
+
+extends Product 
+//For Spark it has to be Serializable
+with Serializable {
+    def canEqual(that: Any) = that.isInstanceOf[Demo]
+
+    def productArity = 23 // number of columns
+
+    def productElement(idx: Int) = idx match {
+        case 0 => field1
+        case 1 => field2
+        // .. and so on ..
+        case 22 => field23
+    }
 }
 ```
 

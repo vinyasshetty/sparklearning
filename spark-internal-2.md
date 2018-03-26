@@ -497,12 +497,10 @@ class Dataset[T] private[sql](
     @DeveloperApi @InterfaceStability.Unstable @transient val queryExecution: QueryExecution,
     encoder: Encoder[T])
   extends Serializable {
-  
+
   def this(sparkSession: SparkSession, logicalPlan: LogicalPlan, encoder: Encoder[T]) = {
     this(sparkSession, sparkSession.sessionState.executePlan(logicalPlan), encoder)
   }
-  
-  
 ```
 
 
