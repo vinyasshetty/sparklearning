@@ -1,4 +1,10 @@
+* Spark has two main parts : Driver and Executors.Driver maintains the Spark jobs status ,request for resources from yarn and schedules different jobs. Executors are the ones where the actual tasks run on the underlying data and they report back the result to driver.
+
 * Partition corresponds to one task in Spark..This is the basic unit of Parallelism.
+
+* Partition is collection of data/rows on a single physical machine.A dataframe can have zero or more partitions.
+
+* Spark core data structures ie RDD Dataframe and DataSet are immutable. 
 
 * A Rdd without partition ,in that data is assigned based on partition size and data size.
 
