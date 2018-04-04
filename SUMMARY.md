@@ -12,4 +12,5 @@
 * [Streaming](streaming.md)
 * [Structured Streaming](structured-streaming.md)
 * [Date Functions](date-functions.md)
+* [Structured Streaming -1](structured-streaming-1.md)
 
