@@ -40,10 +40,11 @@ Code would like this:
 Now when you do a :
 
 ```
-//think about this as a new column called window is created and each record will have the "window value"
-//populated based on the ts column value .This is same as when you say do a groupBy($"id" % 2)
+/*think about this as a new column called window is created and each record will have the "window value"
+populated based on the ts column value of the current data.This is same as when you say do a groupBy($"id" % 2)
+*/
 
-If i give input as :
+If i give input as for above code:
 Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5432
 vinyas,1,2018-03-17 09:04:21
 namratha,2,2018-03-17 09:04:23
@@ -51,8 +52,8 @@ varsha,3,2018-03-17 09:04:33
 vikas,4,2018-03-17 09:04:44
 vidya,5,2018-03-17 09:04:25
 
-Spark will give result as,look at the new column window,spark decides on the starting range based on the lowest
-value id the data :
+Spark will give result as,look at the new column window,spark decides on the starting range(ie 2018-03-17 09:04:20) 
+based on the lowest value of ts in the current data :
 -------------------------------------------
 Batch: 0
 -------------------------------------------
