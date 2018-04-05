@@ -225,7 +225,7 @@ spark will NOT guarantee if it will behave the same way when we have only update
 Also unlike append,the update mode will give result then and there and it will NOT WAIT.
 ```
 
-Now when we use watermark ,then we can group by without window also ,ie we directly group by  with watermarked column\(EventWaterMarkNoWindow\) :
+Now when we use watermark ,then we can group by without window also ,ie we directly group by  with watermarked column\(EventWaterMarkNoWindow\),All the logic will still be same,but instead looking at range,it will set lower bound as a exact value. :
 
 ```
 val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
