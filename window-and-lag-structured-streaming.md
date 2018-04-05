@@ -231,10 +231,7 @@ Batch: 1
 |[2018-03-17 09:04:35, 2018-03-17 09:04:45]|1    |
 |[2018-03-17 09:04:40, 2018-03-17 09:04:50]|1    |
 +------------------------------------------+-----+
-
-
-
 ```
 
-** Starting value is inclusive but the ending value is excluded**. ie look at the vidya comes in 25 ,so its included in range 25 to 35.But if we had a value as 35,then it would NOT be included in 25 to 35 range.
+** While determining where a ts value fits in the group,Starting value of the range is inclusive but the ending value is excluded**. ie look at the vidya comes in 25 second ,so its included in range 25 to 35.But if we had a value as 35 second,then it would NOT be included in 25 to 35 range,but would come in the range of 30 to 40 and 35 to 45.
 
