@@ -175,7 +175,7 @@ Batch: 0
 |vidya   |5  |2018-03-17 09:04:25|[2018-03-17 09:04:25, 2018-03-17 09:04:35]|
 +--------+---+-------------------+------------------------------------------+
 
-Look closely at window column ,range is still 10 seconds,but its every 5 seconds,this has a 
+Look closely at window column ,range is still 10 seconds,but groups are formed at every 5 seconds,this has a 
 side effect that one record may be available in multiple grouping.Like vinyas is available in two ranges.
 Hence number of records in the output will increase.
 ```
@@ -215,8 +215,8 @@ Batch: 0
 |[2018-03-17 09:04:15, 2018-03-17 09:04:25]|2    |
 +------------------------------------------+-----+
 
-Now see due to the side effect ,we poske about sum of the count(2+1+1+2) is more the actual record count 
-due to one record being available in differnt group range
+Now see due to the side effect ,we spoke about earlier ,sum of the count(2+1+1+2) 
+is more the actual input record count due to one record being available in differnt group range
 
 Now when i pass :
 vikas,4,2018-03-17 09:04:44
@@ -235,5 +235,5 @@ Batch: 1
 +------------------------------------------+-----+
 ```
 
-** While determining where a ts value fits in the group,Starting value of the range is inclusive but the ending value is excluded**. ie look at the vidya comes in 25 second ,so its included in range 25 to 35.But if we had a value as 35 second,then it would NOT be included in 25 to 35 range,but would come in the range of 30 to 40 and 35 to 45.
+** While determining where a ts value fits in the group,Starting value of the range is inclusive but the ending value is excluded**. ie look at the record vidya ,which comes in 25 second ,so its included in range 25 to 35.But if we had a value as 35 second,then it would NOT be included in 25 to 35 range,but would come in the range of 30 to 40 and 35 to 45.
 
