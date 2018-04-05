@@ -138,8 +138,6 @@ Points to remember:
 3. The maximum time which i did above is done on the entire dataset and not  on current record.
 4. When we do Lower Bound = maximum time - \(watermark duration we have given\). Now any ranges and above in which this Lower bound is part of ,then those range values are still kept track of by spark\(which effectively means in append mode,they are NOT printed/outputed yet\)
 
-
-
 Update Mode\(EventTimeWaterMark1\_Update\) . We already know that update maintains history of earlier results/ouput,why we need this watermark feature, now the only reason i can think watermark is useful with update is since streaming applications runs for very long duration ,you may NOT want to keep track of all the history result,so you can set a limit.But having said that spark only gurantees that data coming within the lower bound is NOT LOST ,but does NOT gurantee that it will be filtered out.
 
 Example to explain :
@@ -159,8 +157,6 @@ val df5 = df4.writeStream.outputMode("update") //.trigger(Trigger.ProcessingTime
 
 df5.awaitTermination()
 ```
-
-
 
 ```
 ******Have MADE THE WATERMARK 10 SECOND********
@@ -217,7 +213,9 @@ Batch: 3
 
 Now to put in simple terms ,in "update" mode ,spark works the same with or without watermarking ,provided
 the data is within the lower bound(same way we calculated earlier).
-Now if data is outside lower bound range,then spark will NOT guarantee that it will maintain the result.
+Now if data is outside lower bound range,then when we have update with watermark ,
+spark will NOT guarantee if it will behave the same way when we have only update.
+
 Also unlike append,the update mode will give result then and there and it will NOT WAIT.
 ```
 
