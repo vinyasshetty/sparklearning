@@ -136,7 +136,7 @@ Points to remember:
 1. withWatermark must be done first before any grouping is done.
 2. Column on which you do the watermark should be the same column on which you do the group by and they should be timestamp type.
 3. The maximum time which i did above is done on the entire dataset and not  on current record.
-4. When we do Lower Bound = maximum time - \(watermark duration we have given\). Now any ranges and above in which this Lower bound is part of ,then those range values are still kept track of by spark\(which effectively means in append mode,they are NOT printed/outputed yet\)
+4. When we do Lower Bound = maximum time - \(watermark duration we have given\). Now any ranges and above in which this Lower bound is part of ,then those range values are still kept track of by spark\(which effectively means in append mode,they are NOT printed/outputed yet\).This Point becomes important,when we have slide also when we do window .
 
 Update Mode\(EventTimeWaterMark1\_Update\) . We already know that update maintains history of earlier results/ouput,why we need this watermark feature, now the only reason i can think watermark is useful with update is since streaming applications runs for very long duration ,you may NOT want to keep track of all the history result,so you can set a limit.But having said that spark only gurantees that data coming within the lower bound is NOT LOST ,but does NOT gurantee that it will be filtered out.
 
@@ -200,7 +200,7 @@ I pass data as :
 julie,6,2018-03-17 09:04:24
 
 Spark prints NOthing,this is where watermark makes update behave differently(but this different behaviour is
-NOT guranteed),it could have very well behaved like without watermark also
+NOT guranteed),it could have very well behaved as if  there was NO watermark also and printed 20 to 30 range as 4 count
 -------------------------------------------
 Batch: 3
 -------------------------------------------
@@ -218,6 +218,26 @@ spark will NOT guarantee if it will behave the same way when we have only update
 
 Also unlike append,the update mode will give result then and there and it will NOT WAIT.
 ```
+
+
+
+Now when we use watermark ,then we can group by without window also ,ie we directly group by  with watermarked column :
+
+```
+val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
+
+  val df2 = df1.as[String].map(x=>x.split(","))
+
+  val df3 = df2.select($"value"(0).as("name"),$"value"(1).cast(IntegerType).as("id"),$"value"(2).cast(TimestampType).as("ts"))
+
+  val df4 = df3.withWatermark("ts","20 second").groupBy($"ts").count()
+
+  val df5 = df4.writeStream.outputMode("append") //.trigger(Trigger.ProcessingTime(10 seconds))
+    .format("console").option("truncate","false").start()
+
+```
+
+
 
 
 
