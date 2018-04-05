@@ -21,7 +21,7 @@ Lets first start with "append" ouput mode with watermark.
 
   val df4 = df3.withWatermark("ts","20 second").groupBy(window($"ts","10 second")).count()
    *** Water mark set to 20 second duration ***
-   
+
   val df5 = df4.writeStream.outputMode("append").trigger(Trigger.ProcessingTime(8 seconds))
     .format("console").option("truncate","false").start()
 
@@ -49,11 +49,11 @@ Batch: 0
 +------+-----+
 
 Now spark has started collecting the data but it does not give the output yet,because spark does NOT
-know if more data will coming which may fall in this group.Spark will output the result in append mode only 
+know if more data will be coming which may fall in this group.Spark will output the result in append mode only 
 when it knows it does NOT have to update it again and only way it can get that gurantee is when the given data
 is outside of the calculated watermark bound ie in the above data as you see,the maximum time is 33 second
-,and we have given watermark as 20 second ,so spark will continue to track the result of data
-which can (33-20 =  13 second) ie in the range of 10 to 20 and after and since we all the data is after 10 second,
+,and we have given watermark as 20 second duration ,so spark will continue to track the result of data
+which can (33-20 =  13 second) ie in the range of 10 to 20 second and after and since all the data is after 10 second,
 spark will not output any result
 Lets see this with example :
 
@@ -75,9 +75,10 @@ that it does NOT have to keep track of any data which falls before the 30 to 40 
 range,spark keeps track of records greater then equal to 30 to 40 range) and spark is now ready to print the
 result(Those in the range below 30) ,but it will do it only when the next trigger comes,is when next new data arrives.
 
-Also one more point to note is that pami which as time as 27 actually in logical terminolgy has arrived late.
+Also one more point to note is that pami which has time as 27 , in logical terminolgy has "arrived late".
+ie event has happend at 27 second,but it came to spark late(may be due to any reason)
 Ideally it should have come after namratha,but spark still took care of it ,this is due to watermark.This is
-WHOLE GOAL of watermark that it keeps track of old data.
+WHOLE GOAL of watermark that it keeps track of old data even in append mode.
 
 Next i Pass data:
 julie,8,2018-03-17 09:04:44
