@@ -219,8 +219,6 @@ spark will NOT guarantee if it will behave the same way when we have only update
 Also unlike append,the update mode will give result then and there and it will NOT WAIT.
 ```
 
-
-
 Now when we use watermark ,then we can group by without window also ,ie we directly group by  with watermarked column :
 
 ```
@@ -234,10 +232,9 @@ val df1 = spark.readStream.format("socket").option("host","localhost").option("p
 
   val df5 = df4.writeStream.outputMode("append") //.trigger(Trigger.ProcessingTime(10 seconds))
     .format("console").option("truncate","false").start()
-
 ```
 
+**So watermark provides append with group by capability ,but only with timestamp column datatype**
 
-
-
+**Also watermark has NO effect on "complete" ouput mode ,it  just ignores it.**
 
