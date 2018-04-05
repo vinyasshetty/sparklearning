@@ -1,6 +1,8 @@
-Now talking about watermarking is little tricky.It provides two advantages and based on the window and ouput mode.
+Now talking about watermarking is little tricky.The actual use case of watermarking is explained well enuf in the SPark Streaming Guide,below is few tricky things i had to get my mind around. 
 
-In terms of window: Now as we saw earlier\(Window Chapter\) we are grouping records based on the window in which the "event time" the given records fall in.But in the output mode "update" ,we will keep information about all the earlier records also,sometimes we may not need and we may want to retain information only upto certain time and this can be done with watermark.Watermark may not seem useful in terms of update ,but in append it realy shines.
+Watermark has effect only on update and append mode.
+
+ Now as we saw earlier\(Window Chapter\) we are grouping records based on the window in which the "event time"  of the given records fall in.But in the output mode "update" ,we will keep information about all the earlier records also,sometimes we may not need that and we may want to retain information only upto certain time and this can be done with watermark.Watermark may not seem useful in terms of update ,but in append it really shines.
 
 Till now i have told you that "append" output mode cannot have groupBy on the dataframes, but if we use watermark first and then use a groupBy operations on the same watermark column, spark allows this.Because now spark has a timeframe  till where it needs to keep track of previous result**.This is where watermark really shines the most.**
 
