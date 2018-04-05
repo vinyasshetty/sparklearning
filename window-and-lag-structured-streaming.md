@@ -70,7 +70,7 @@ Batch: 0
 
 ** window function works only on timestamp datatype **
 
-Now coming back to groupBy and count logic\(EventTimeSocket\) :
+Now coming back to groupBy and count logic\(**EventTimeSocket**\) :
 
 ```
 val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
@@ -87,7 +87,7 @@ val df1 = spark.readStream.format("socket").option("host","localhost").option("p
   df5.awaitTermination()
 ```
 
-Now this should be easy to understand and it will behave like any other regular group by .Just to iterate again the Trigger.ProcessingTime\(5 seconds\) ,this only means that spark will trigger the job to run every 5 seconds if there is any new data on the source side \(ie Only if the existing running job is completed\).This is same as your batch time in dstreams.
+Now this should be easy to understand and it will behave like any other regular group by .Just to iterate again the Trigger.ProcessingTime\(5 seconds\) ,this only means that spark will trigger the job to run every 5 seconds if there is any new data on the source side \( also,Only if the existing running job is completed\).This is same as your batch time in dstreams.
 
 ```
 For above code If i pass input as :
