@@ -23,7 +23,6 @@ window($"ts","10 second")
 Code would like this:
 
 ```
-
   val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
 
   val df2 = df1.as[String].map(x=>x.split(","))
@@ -36,13 +35,11 @@ Code would like this:
     .outputMode("update").format("console").start()
 
   df5.awaitTermination()
-
 ```
 
 Now when you do a :
 
 ```
-
 //think about this as a new column called window is created and each record will have the "window value"
 //populated based on the ts column value .This is same as when you say do a groupBy($"id" % 2)
 
@@ -68,12 +65,11 @@ Batch: 0
 |vikas   |4  |2018-03-17 09:04:44|[2018-03-17 09:04:40, 2018-03-17 09:04:50]|
 |vidya   |5  |2018-03-17 09:04:25|[2018-03-17 09:04:20, 2018-03-17 09:04:30]|
 +--------+---+-------------------+------------------------------------------+
-
 ```
 
 ** window function works only on timestamp datatype **
 
-Now coming back to groupBy and count logic :
+Now coming back to groupBy and count logic\(EventTimeSocket\) :
 
 ```
 val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
@@ -88,12 +84,9 @@ val df1 = spark.readStream.format("socket").option("host","localhost").option("p
     .outputMode("update").format("console").start()
 
   df5.awaitTermination()
-
 ```
 
 Now this should be easy to understand and it will behave like any other regular group by .Just to iterate again the Trigger.ProcessingTime\(5 seconds\) ,this only means that spark will trigger the job to run every 5 seconds if there is any new data on the source side \(ie Only if the existing running job is completed\).This is same as your batch time in dstreams.
-
-
 
 ```
 For above code If i pass input as :
