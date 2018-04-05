@@ -131,22 +131,89 @@ Now as you saw above ,window is formed for 10 seconds worth of "event time" data
 **EventTimeSocketSlide**
 
 ```
- val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
+val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
 
   val df2 = df1.as[String].map(x=>x.split(","))
 
   val df3 = df2.select($"value"(0).as("name"),$"value"(1).cast(IntegerType).as("id"),$"value"(2).cast(TimestampType).as("ts"))
 
-  val df4 = df3.select($"*",window($"ts","10 second","5 second")) // See the extra parameter
+  val df4 = df3.select($"*",window($"ts","10 second","5 second")) //See the extra parameter
 
-//I purposefully changed Processingtime to 3 seconds to make sure you understand,grouping has nothing to do with this
-  val df5 = df4.writeStream.trigger(Trigger.ProcessingTime(3 seconds)).option("truncate","false")
-    .outputMode("update").format("console").start()
+  val df5 = df4.writeStream.outputMode("update").option("truncate","false")
+    .trigger(Trigger.ProcessingTime(10 seconds)).format("console").start()
 
   df5.awaitTermination()
 ```
 
 ```
+For input :
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5432
+vinyas,1,2018-03-17 09:04:21
+namratha,2,2018-03-17 09:04:23
+varsha,3,2018-03-17 09:04:33
+vikas,4,2018-03-17 09:04:44
+vidya,5,2018-03-17 09:04:25
+
+Spark O/p:
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++--------+---+-------------------+------------------------------------------+
+|name    |id |ts                 |window                                    |
++--------+---+-------------------+------------------------------------------+
+|vinyas  |1  |2018-03-17 09:04:21|[2018-03-17 09:04:15, 2018-03-17 09:04:25]|
+|vinyas  |1  |2018-03-17 09:04:21|[2018-03-17 09:04:20, 2018-03-17 09:04:30]|
+|namratha|2  |2018-03-17 09:04:23|[2018-03-17 09:04:15, 2018-03-17 09:04:25]|
+|namratha|2  |2018-03-17 09:04:23|[2018-03-17 09:04:20, 2018-03-17 09:04:30]|
+|varsha  |3  |2018-03-17 09:04:33|[2018-03-17 09:04:25, 2018-03-17 09:04:35]|
+|varsha  |3  |2018-03-17 09:04:33|[2018-03-17 09:04:30, 2018-03-17 09:04:40]|
+|vikas   |4  |2018-03-17 09:04:44|[2018-03-17 09:04:35, 2018-03-17 09:04:45]|
+|vikas   |4  |2018-03-17 09:04:44|[2018-03-17 09:04:40, 2018-03-17 09:04:50]|
+|vidya   |5  |2018-03-17 09:04:25|[2018-03-17 09:04:20, 2018-03-17 09:04:30]|
+|vidya   |5  |2018-03-17 09:04:25|[2018-03-17 09:04:25, 2018-03-17 09:04:35]|
++--------+---+-------------------+------------------------------------------+
+
+Look closely at window column ,range is still 10 seconds,but its every 5 seconds,this has a 
+side effect that one record may be available in multiple grouping.Like vinyas is available in two ranges.
+Hence number of records in the output will increase.
+```
+
+If we need to group by and count like earlier:
+
+```
+val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
+
+val df2 = df1.as[String].map(x=>x.split(","))
+
+val df3 = df2.select($"value"(0).as("name"),$"value"(1).cast(IntegerType).as("id"),$"value"(2).cast(TimestampType).as("ts"))
+  
+val df4 = df3.groupBy(window($"ts","10 second","5 second")).count()
+
+val df5 = df4.writeStream.outputMode("update").option("truncate","false")
+    .trigger(Trigger.ProcessingTime(10 seconds)).format("console").start()
+```
+
+```
+For above code If i pass input as :
+
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5432
+vinyas,1,2018-03-17 09:04:21
+namratha,2,2018-03-17 09:04:23
+varsha,3,2018-03-17 09:04:33
+
+Batch: 0
+-------------------------------------------
++--------+---+-------------------+------------------------------------------+
+|name    |id |ts                 |window                                    |
++--------+---+-------------------+------------------------------------------+
+|vinyas  |1  |2018-03-17 09:04:21|[2018-03-17 09:04:15, 2018-03-17 09:04:25]|
+|vinyas  |1  |2018-03-17 09:04:21|[2018-03-17 09:04:20, 2018-03-17 09:04:30]|
+|namratha|2  |2018-03-17 09:04:23|[2018-03-17 09:04:15, 2018-03-17 09:04:25]|
+|namratha|2  |2018-03-17 09:04:23|[2018-03-17 09:04:20, 2018-03-17 09:04:30]|
+|varsha  |3  |2018-03-17 09:04:33|[2018-03-17 09:04:25, 2018-03-17 09:04:35]|
+|varsha  |3  |2018-03-17 09:04:33|[2018-03-17 09:04:30, 2018-03-17 09:04:40]|
++--------+---+-------------------+------------------------------------------+
+
 
 ```
 
