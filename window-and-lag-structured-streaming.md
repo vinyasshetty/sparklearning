@@ -128,7 +128,7 @@ I have used update ouput mode.All the condition we spoke about earlier Basics Ch
 holds good for append and complete.
 ```
 
-Now as you saw above ,window is formed for 10 seconds worth of "event time" data.,but wat if we want to 10 seconds worth of "event time" data ,updated every 5 seconds in terms of "event data" \(NOT SAME AS Processing time\)
+Now as you saw above ,window is formed for 10 seconds worth of "event time" data.,but wat if we want 10 seconds worth of "event time" data ,updated every 5 seconds in terms of "event data" \(NOT SAME AS Processing time\)
 
 **EventTimeSocketSlide**
 
