@@ -13,5 +13,6 @@
 * [Structured Streaming](structured-streaming.md)
 * [Date Functions](date-functions.md)
 * [Basics Structured Streaming](structured-streaming-1.md)
-* [Window and Late Events Structured Streaming](window-and-lag-structured-streaming.md)
+* [Window Structured Streaming](window-and-lag-structured-streaming.md)
+* [Watermarking Structured Streaming](watermarking-structured-streaming.md)
 
