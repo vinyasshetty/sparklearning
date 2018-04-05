@@ -146,7 +146,7 @@ Points to remember:
 
 Update Mode\(EventTimeWaterMark1\_Update\) . We already know that update maintains history of earlier results/ouput,why we need this watermark feature, now the only reason i can think watermark is useful with update is since streaming applications runs for very long duration ,you may NOT want to keep track of all the history result,so you can set a limit.But having said that spark only gurantees that data coming within the lower bound is NOT LOST ,but does NOT gurantee that it will be filtered out.
 
-Example to explain :
+Example to explain\(**EventTimeWaterMark1\_Update**\) :
 
 ```
 val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
@@ -225,7 +225,7 @@ spark will NOT guarantee if it will behave the same way when we have only update
 Also unlike append,the update mode will give result then and there and it will NOT WAIT.
 ```
 
-Now when we use watermark ,then we can group by without window also ,ie we directly group by  with watermarked column :
+Now when we use watermark ,then we can group by without window also ,ie we directly group by  with watermarked column\(EventWaterMarkNoWindow\) :
 
 ```
 val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
