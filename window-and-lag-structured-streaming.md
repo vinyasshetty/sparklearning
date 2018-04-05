@@ -123,7 +123,8 @@ Batch: 1
 |[2018-03-17 09:04:40, 2018-03-17 09:04:50]|1    |
 +------------------------------------------+-----+
 
-Now as you see it behaves as earlier.I have used update ouput mode.All the condition we spoke about earlier
+Now as you see it behaves as earlier(Wat we saw in Basics Chapter).
+I have used update ouput mode.All the condition we spoke about earlier Basics Chapter
 holds good for append and complete.
 ```
 
