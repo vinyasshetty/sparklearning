@@ -12,7 +12,7 @@ vikas,4,2018-03-17 09:04:44
 vidya,5,2018-03-17 09:04:25
 ```
 
-Now i want to look at the count of records every 10 seconds of the "Event Time".
+Now i want to look at the count of records  for 10 seconds worth of the "Event Time" data.
 
 For this spark provides a inbuilt "window function"
 
@@ -124,6 +124,30 @@ Batch: 1
 
 Now as you see it behaves as earlier.I have used update ouput mode.All the condition we spoke about earlier
 holds good for append and complete.
+```
+
+Now as you saw above ,window is formed for 10 seconds worth of "event time" data.,but wat if we want to 10 seconds worth of "event time" data ,updated every 5 seconds in terms of "event data" \(NOT SAME AS Processing time\)
+
+**EventTimeSocketSlide**
+
+```
+ val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5432").load()
+
+  val df2 = df1.as[String].map(x=>x.split(","))
+
+  val df3 = df2.select($"value"(0).as("name"),$"value"(1).cast(IntegerType).as("id"),$"value"(2).cast(TimestampType).as("ts"))
+
+  val df4 = df3.select($"*",window($"ts","10 second","5 second")) // See the extra parameter
+
+//I purposefully changed Processingtime to 3 seconds to make sure you understand,grouping has nothing to do with this
+  val df5 = df4.writeStream.trigger(Trigger.ProcessingTime(3 seconds)).option("truncate","false")
+    .outputMode("update").format("console").start()
+
+  df5.awaitTermination()
+```
+
+```
+
 ```
 
 
