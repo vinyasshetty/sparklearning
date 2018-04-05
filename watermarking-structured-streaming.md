@@ -1,8 +1,8 @@
-Now talking about watermarking is little tricky.The actual use case of watermarking is explained well enuf in the SPark Streaming Guide,below is few tricky things i had to get my mind around. 
+Now talking about watermarking is little tricky.The actual use case of watermarking is explained well enuf in the SPark Streaming Guide,below is few tricky things i had to get my mind around.
 
 Watermark has effect only on update and append mode.
 
- Now as we saw earlier\(Window Chapter\) we are grouping records based on the window in which the "event time"  of the given records fall in.But in the output mode "update" ,we will keep information about all the earlier records also,sometimes we may not need that and we may want to retain information only upto certain time and this can be done with watermark.Watermark may not seem useful in terms of update ,but in append it really shines.
+Now as we saw earlier\(Window Chapter\) we are grouping records based on the window in which the "event time"  of the given records fall in.But in the output mode "update" ,we will keep information about all the earlier records also,sometimes we may not need that and we may want to retain information only upto certain time and this can be done with watermark.Watermark may not seem useful in terms of update ,but in append it really shines.
 
 Till now i have told you that "append" output mode cannot have groupBy on the dataframes, but if we use watermark first and then use a groupBy operations on the same watermark column, spark allows this.Because now spark has a timeframe  till where it needs to keep track of previous result**.This is where watermark really shines the most.**
 
@@ -20,7 +20,8 @@ Lets first start with "append" ouput mode with watermark.
   val df3 = df2.select($"value"(0).as("name"),$"value"(1).cast(IntegerType).as("id"),$"value"(2).cast(TimestampType).as("ts"))
 
   val df4 = df3.withWatermark("ts","20 second").groupBy(window($"ts","10 second")).count()
-
+   *** Water mark set to 20 second duration ***
+   
   val df5 = df4.writeStream.outputMode("append").trigger(Trigger.ProcessingTime(8 seconds))
     .format("console").option("truncate","false").start()
 
@@ -30,6 +31,8 @@ Lets first start with "append" ouput mode with watermark.
 Now as you see i have used withWatermark function and have given the ts column and the "20 second" as the amount of time i want spark to keep track of the  result data.Also as you see my output mode is "append" and i have still used groupBy function.This is the power of watermark on append.
 
 ```
+**In the Notes below ,instead of saying 2018-03-17 09:04:33, for brevity sake i will just say 39 second**
+
 I send this data as input
 Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5432
 vinyas,1,2018-03-17 09:04:21
