@@ -22,12 +22,7 @@ SnapShot Data :
 |1  |vinyas  |shetty|60611|23.22|2018-04-01 00:00:00.0|2099-12-31 00:00:00.0|
 |2  |namratha|shetty|2811 |30.23|2018-04-01 00:00:00.0|2099-12-31 00:00:00.0|
 +---+--------+------+-----+-----+---------------------+---------------------+
-
-
-
 ```
-
-
 
 Application conf :
 
@@ -48,13 +43,18 @@ cdc-type2 {
 Certain Rules/Pre- Requisitities:
 
 ```
-Schema of history and snapshot data should be same
+Schema of history and snapshot data should be same else will fail
+history should NOT have dups (ie for a given unique columns there should be only one record where end_dt is end_value)
 end_dt_logic : basically subtracts the new record start dt value with end_dt_logic value
                and puts that value as end_dt of the old record ,which needs to be updated.
                we can use MINUTE,HOUR,SECOND,DAY etc.
-unique_column : columns which make the records unqiue,can be comma separated if multiple.Do NOT include start_dt end_dt columns
+unique_column : columns which make the records unique,can be comma separated if multiple.Do NOT include start_dt end_dt columns.
 
+If we have active record with same unique column,start_dt in both history and snapshot,then code 
+will randomly pick one and drop the other because it will NOT know which is the correct one
 ```
+
+
 
 
 
