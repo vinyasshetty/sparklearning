@@ -2,8 +2,6 @@ In databases ,there is a implementation of Slow Changing Dimension Type 2 .So be
 
 I am implementing SCD Type 2.
 
-
-
 ```
 Say we have a Actual Data(Current) like below :
 
@@ -26,6 +24,35 @@ SnapShot Data :
 +---+--------+------+-----+-----+---------------------+---------------------+
 
 
+
+```
+
+
+
+Application conf :
+
+```
+cdc-type2 {
+  start_dt="start_dt"
+  end_dt="end_dt"
+  end_value="2099-12-31 00:00:00"
+  unique_columns="id"
+  end_dt_logic="1 HOUR"
+  history_path="<hdfs_location>"
+  snapshot_path="<hdfs_location>"
+  output_path="<hdfs_location>"
+  format="parquet"
+}
+```
+
+Certain Rules/Pre- Requisitities:
+
+```
+Schema of history and snapshot data should be same
+end_dt_logic : basically subtracts the new record start dt value with end_dt_logic value
+               and puts that value as end_dt of the old record ,which needs to be updated.
+               we can use MINUTE,HOUR,SECOND,DAY etc.
+unique_column : columns which make the records unqiue,can be comma separated if multiple.Do NOT include start_dt end_dt columns
 
 ```
 
