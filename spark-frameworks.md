@@ -1,3 +1,5 @@
+## SDC Type 2 
+
 In databases ,there is a implementation of Slow Changing Dimension Type 2 .So below will help us to implement the same in Spark.
 
 I am implementing SCD Type 2.
@@ -218,8 +220,6 @@ object cdcType2 {
 
 }
 ```
-
-
 
 
 
