@@ -51,10 +51,8 @@ end_dt_logic : basically subtracts the new record start dt value with end_dt_log
 unique_column : columns which make the records unique,can be comma separated if multiple.Do NOT include start_dt end_dt columns.
 
 If we have active record with same unique column,start_dt in both history and snapshot,then code 
-will randomly pick one and drop the other because it will NOT know which is the correct one
+will randomly pick one and drop the other because it will NOT know which is the correct one.
 ```
-
-
 
 
 
