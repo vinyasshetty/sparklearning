@@ -34,7 +34,6 @@ End Result :
 |2  |namratha|shetty|2811 |30.23|2018-04-01 00:00:00.0|2099-12-31 00:00:00.0|
 |3  |harold  |finc  |2877 |56.43|2018-05-01 00:00:00.0|2099-12-31 00:00:00.0|
 +---+--------+------+-----+-----+---------------------+---------------------+
-
 ```
 
 Application conf :
@@ -66,6 +65,14 @@ unique_column : columns which make the records unique,can be comma separated if 
 If we have active record with same unique column,start_dt in both history and snapshot,then code 
 will randomly pick one and drop the other because it will NOT know which is the correct one.
 ```
+
+
+
+
+
+
+
+
 
 
 
