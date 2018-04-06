@@ -79,9 +79,13 @@ Also one more point to note is that pami which has time as 27 , in logical termi
 ie event has happend at 27 second,but it came to spark late(may be due to any reason)
 Ideally it should have come after namratha,but spark still took care of it ,this is due to watermark.This is
 WHOLE GOAL of watermark that it keeps track of old data even in append mode.
+Also note mike is NOT take into considerations.
 
 Next i Pass data:
 julie,8,2018-03-17 09:04:44
+mike,9,2018-03-17 09:04:23
+
+
 
 Spark Output:
 -------------------------------------------
