@@ -30,5 +30,7 @@ Now "inner_join" is allowed ,regarding outerjoins ,leftouter is allowed when str
 
 ## Stream Stream Join
 
+Starting from Spark 2.3 ,We can join two streams. **Stream-Stream join currently supports only append mode only.**
+
 
 
