@@ -101,14 +101,6 @@ object cdcMain {
     val snap_path = conf.getString("cdc-type2.snapshot_path")
     val opt_path = conf.getString("cdc-type2.output_path")
 
-    /*
-    val sch = (new StructType()).add("id",IntegerType)
-      .add("fname",StringType)
-      .add("lname",StringType)
-      .add("zip",IntegerType)
-      .add("amt",DoubleType)
-      .add("start_dt",TimestampType)
-      .add("end_dt",TimestampType)*/
 
     val hist = spark.read.format(format).load(hist_path)
     val snap = spark.read.format(format).load(snap_path)
