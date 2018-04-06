@@ -51,12 +51,136 @@ val df1 = spark.readStream.format("socket").option("host","localhost").option("p
 
   val res = joindf.writeStream.outputMode("append").trigger(Trigger.ProcessingTime(5 seconds))
     .format("console").option("truncate","false").start()
+```
+
+Spark docs has clearly told that in Stream-Stream join ,they maintain the state of both the streams:
+
+```
+The challenge of generating join results between two data streams is that, at any point of time, 
+the view of the dataset is incomplete for both sides of the join making it much harder to find matches 
+between inputs. Any row received from one input stream can match with any future, yet-to-be-received 
+row from the other input stream. Hence, for both the input streams, we buffer past input as streaming state, 
+so that we can match every future input with past input and accordingly generate joined results.
+```
+
+Lets see some examples to run above code :
+
+```
+Lets start with simple ones:
+
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5431
+vinyas,1,2018-03-17 09:04:21
+namratha,2,2018-03-17 09:04:23
+varsha,3,2018-03-17 09:04:33
+
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5430
+vinyas,1,2018-03-17 09:04:21
+namratha,2,2018-03-17 09:04:23
+varsha,3,2018-03-17 09:04:33
+
+Now same set of keys are avialable in the data and when Trigger Processing time comes,
+we get spark output as :
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++--------+---+-------------------+--------+---+-------------------+
+|name    |id |ts                 |name    |id |ts                 |
++--------+---+-------------------+--------+---+-------------------+
+|vinyas  |1  |2018-03-17 09:04:21|vinyas  |1  |2018-03-17 09:04:21|
+|varsha  |3  |2018-03-17 09:04:33|varsha  |3  |2018-03-17 09:04:33|
+|namratha|2  |2018-03-17 09:04:23|namratha|2  |2018-03-17 09:04:23|
++--------+---+-------------------+--------+---+-------------------+
+
+This is straight forward.
+```
+
+```
+Now with a new fresh run ,lets do this :
+
+Data has come on one stream :
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5431
+vinyas,1,2018-03-17 09:04:21
+namratha,2,2018-03-17 09:04:23
+
+But nothing yet on the other:
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5430
+
+Now spark sees,data has changed and when trigger time recahes,it gives output as :
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++----+---+---+----+---+---+
+|name|id |ts |name|id |ts |
++----+---+---+----+---+---+
++----+---+---+----+---+---+
+
+No data ,since its a inner join.
+
+Next ,the second stream gets data :
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5430
+vinyas,1,2018-03-17 09:04:21
+
+Spark ouput:,as told earlier,spark is keep the state and when second stream comes,it will join stream1 data(state
+which it had kept) with new stream2 data.
+-------------------------------------------
+Batch: 1
+-------------------------------------------
++------+---+-------------------+------+---+-------------------+
+|name  |id |ts                 |name  |id |ts                 |
++------+---+-------------------+------+---+-------------------+
+|vinyas|1  |2018-03-17 09:04:21|vinyas|1  |2018-03-17 09:04:21|
++------+---+-------------------+------+---+-------------------+
+
+
+Now lets say ,we again get fresh set of data on both streams:
+5431:
+rini,8,2018-03-17 09:04:59
+pami,7,2018-03-17 09:04:27
+juil,11,2018-03-17 09:04:33
+
+5430:
+rini,8,2018-03-17 09:04:59
+pami,7,2018-03-17 09:04:27
+
+Spark output(no surprises):
+-------------------------------------------
+Batch: 3
+-------------------------------------------
++----+---+-------------------+----+---+-------------------+
+|name|id |ts                 |name|id |ts                 |
++----+---+-------------------+----+---+-------------------+
+|rini|8  |2018-03-17 09:04:59|rini|8  |2018-03-17 09:04:59|
+|pami|7  |2018-03-17 09:04:27|pami|7  |2018-03-17 09:04:27|
++----+---+-------------------+----+---+-------------------+
+
+
+Now both 5431 and 5430 had received id 1 ,so lets send id 1 again in 5430 only
+vinyas,1,2018-03-17 09:04:28 
+
+Spark output:
+-------------------------------------------
+Batch: 4
+-------------------------------------------
++------+---+-------------------+------+---+-------------------+
+|name  |id |ts                 |name  |id |ts                 |
++------+---+-------------------+------+---+-------------------+
+|vinyas|1  |2018-03-17 09:04:21|vinyas|1  |2018-03-17 09:04:28|
++------+---+-------------------+------+---+-------------------+
+
+**Now somehow sparks knows to take only the latest id 1 data from 5430 and join that with old 5431 data.
+it ignores the old 5430 data.*****
 
 ```
 
-
-
-
+```
+As per my understanding,they way it works is :
+1)Past States/data of both streams are maintained.
+2)Now whenever trigger happens,along with a change in one of the streams,
+then first(think would be left one) streams latest records is joined with latest and old records of stream2
+3)Now next stream2 records which have not been joined already in step2 will check if they can be joined with 
+old stream1 records.
+So point 2 and Point 3 may cause some duplicate scenarios
+```
 
 
 
