@@ -10,7 +10,6 @@
 * [Spark Submit Yarn Flow](spark-internal.md)
 * [Spark Internal -2](spark-internal-2.md)
 * [Streaming](streaming.md)
-* [Structured Streaming](structured-streaming.md)
 * [Date Functions](date-functions.md)
 * [Basics Structured Streaming](structured-streaming-1.md)
 * [Window Structured Streaming](window-and-lag-structured-streaming.md)
