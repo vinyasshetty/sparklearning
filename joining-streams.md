@@ -30,5 +30,9 @@ Now "inner_join" is allowed ,regarding outerjoins ,leftouter is allowed when str
 
 
 
+## Stream Stream Join 
+
+
+
 
 
