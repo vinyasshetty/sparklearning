@@ -15,5 +15,5 @@
 * [Window Structured Streaming](window-and-lag-structured-streaming.md)
 * [Watermarking Structured Streaming](watermarking-structured-streaming.md)
 * [Joining Streams](joining-streams.md)
-* [Spark Frameworks](spark-frameworks.md)
+* [SCD Type2](spark-frameworks.md)
 
