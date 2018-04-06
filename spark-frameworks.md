@@ -58,7 +58,9 @@ Certain Rules/Pre- Requisitities:
 
 ```
 Schema of history and snapshot data should be same else will fail
-history should NOT have dups (ie for a given unique columns there should be only one record where end_dt is end_value)
+history should NOT have dups (ie for a given unique columns there should be only one record where end_dt is end_value).
+snapshot should NOT have dups (ie for a given unique columns there should be only one record where end_dt is end_value).
+
 end_dt_logic : basically subtracts the new record start dt value with end_dt_logic value
                and puts that value as end_dt of the old record ,which needs to be updated.
                we can use MINUTE,HOUR,SECOND,DAY etc.
@@ -70,7 +72,7 @@ will randomly pick one and drop the other because it will NOT know which is the 
 
 Code :
 
-**&lt;Need to Provide GIT Code&gt;**
+**&lt;Need to Provide GIT Code link&gt;**
 
 ```
 package com.vin.cdc
