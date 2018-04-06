@@ -1,4 +1,4 @@
-Joining Streams data with Static data is straight forward.Once you join the data ,on the joined data all the things wrt Basics,window and watermarking is applicable based on output mode same as discussed earlier.
+Joining Streams data with Static data is straight forward.Once you join the data ,on the joined data all the things wrt Basics,window and watermarking is applicable based on output modes same as discussed earlier.
 
 **StreamStaticJoin1**
 
@@ -31,6 +31,32 @@ Now "inner_join" is allowed ,regarding outerjoins ,leftouter is allowed when str
 ## Stream Stream Join
 
 Starting from Spark 2.3 ,We can join two streams. **Stream-Stream join currently supports only append mode only.**
+
+Inner Join without any watermarking ** StreamtToStream1 **:
+
+```
+val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5431").load()
+
+  val df2 = df1.as[String].map(x=>x.split(","))
+
+  val df3 = df2.select($"value"(0).as("name"),$"value"(1).cast(IntegerType).as("id"),$"value"(2).cast(TimestampType).as("ts"))
+
+  val df1_1 = spark.readStream.format("socket").option("host","localhost").option("port","5430").load()
+
+  val df2_1 = df1_1.as[String].map(x=>x.split(","))
+
+  val df3_1 = df2_1.select($"value"(0).as("name"),$"value"(1).cast(IntegerType).as("id"),$"value"(2).cast(TimestampType).as("ts"))
+
+  val joindf = df3.join(df3_1,df3("id") <=> df3_1("id"))
+
+  val res = joindf.writeStream.outputMode("append").trigger(Trigger.ProcessingTime(5 seconds))
+    .format("console").option("truncate","false").start()
+
+```
+
+
+
+
 
 
 
