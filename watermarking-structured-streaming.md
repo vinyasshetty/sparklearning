@@ -244,7 +244,9 @@ val df1 = spark.readStream.format("socket").option("host","localhost").option("p
     .format("console").option("truncate","false").start()
 ```
 
-**So watermark provides append with group by capability ,but only with timestamp column datatype**
+**So watermark provides append with group by capability ,but only with timestamp column datatype.**
+
+**If you use watermark on dataframe/dataset and then not do any aggregations,then watermark has NO affect **
 
 **Also watermark has NO effect on "complete" ouput mode ,it  just ignores it.**
 
