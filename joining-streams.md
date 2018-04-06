@@ -169,15 +169,15 @@ Batch: 4
 
 **Now somehow sparks knows to take only the latest id 1 data from 5430 and join that with old 5431 data.
 it ignores the old 5430 data.*****
-
 ```
 
 ```
 As per my understanding,they way it works is :
 1)Past States/data of both streams are maintained.
 2)Now whenever trigger happens,along with a change in one of the streams,
-then first(think would be left one) streams latest records is joined with latest and old records of stream2
-3)Now next stream2 records which have not been joined already in step2 will check if they can be joined with 
+then first(think would be left one or the one which has changed first) streams latest records is joined 
+with latest and old records of stream2
+3)Now next latest stream2 records which have not been joined already in step2 will check if they can be joined with 
 old stream1 records.
 So point 2 and Point 3 may cause some duplicate scenarios
 ```
