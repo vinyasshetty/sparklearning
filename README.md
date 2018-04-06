@@ -1,3 +1,4 @@
 # My Awesome Book
 
-This file file serves as your book's preface, a great place to describe your book's content and ideas.
+This serves as my notes which i am trying to document while i learn spark.Earlier i used to write down everything on a actual physical notebook,but then was inspired by Jacek way of documenting notes about spark.
+

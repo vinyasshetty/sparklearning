@@ -36,7 +36,7 @@ End Result :
 +---+--------+------+-----+-----+---------------------+---------------------+
 ```
 
-Application conf :
+Application conf in resources directory :
 
 ```
 cdc-type2 {
@@ -67,6 +67,8 @@ will randomly pick one and drop the other because it will NOT know which is the 
 ```
 
 Code :
+
+**&lt;Need to Update in GIt&gt;**
 
 ```
 package com.vin.cdc
@@ -122,7 +124,6 @@ object cdcMain {
   }
 
 }
-
 ```
 
 ```
@@ -216,8 +217,9 @@ object cdcType2 {
   }
 
 }
-
 ```
+
+
 
 
 
