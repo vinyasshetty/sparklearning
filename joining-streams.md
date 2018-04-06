@@ -1,4 +1,4 @@
-Joining Streams data with Static data is straight forward.Once you join the data ,all the things wrt Basics,window and watermarking is applicable based on output mode.
+Joining Streams data with Static data is straight forward.Once you join the data ,on the joined data all the things wrt Basics,window and watermarking is applicable based on output mode same as discussed earlier.
 
 **StreamStaticJoin1**
 
@@ -28,11 +28,7 @@ Joining Streams data with Static data is straight forward.Once you join the data
 
 Now "inner_join" is allowed ,regarding outerjoins ,leftouter is allowed when stream is in the and rightouter is allowed when stream is the right. otherwise spark will not know when to put nulls._
 
-
-
-## Stream Stream Join 
-
-
+## Stream Stream Join
 
 
 
