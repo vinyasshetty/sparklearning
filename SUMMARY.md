@@ -16,5 +16,5 @@
 * [Window Structured Streaming](window-and-lag-structured-streaming.md)
 * [Watermarking Structured Streaming](watermarking-structured-streaming.md)
 * [Joining Streams](joining-streams.md)
-* Structured Streaming Contd -1
+* [Structured Streaming Contd -1](structured-streaming-contd-1.md)
 

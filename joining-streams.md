@@ -405,9 +405,9 @@ Batch: 2
 +--------+---+-------------------+----+----+-------------------+
 ```
 
-So summarize in say left outer join of stream to stream,give watermarking on either side and also a join filtering condition on the watermarked timestamp column.
+**So summarize in say left outer join of stream to stream,give watermarking on either side and also have a join filtering condition on the watermarked timestamp column.**
 
-Then if join conditions are satisfied,then spark outputs the result then and there but if we have records on left side which is not getting joined then it waits until the corresponding left sides ts records becomes greater than the right side lower bound\(calculated by right side highest ts - right side watermark\).See below example
+**Then if join conditions are satisfied,then spark outputs the result then and there but if we have records on left side which is not getting joined then it waits until the right side lower bound\(calculated by right side highest ts - right side watermark\) ** **becomes greater than the corresponding left sides ts records which did not have a corresponding keys **.See below example
 
 ```
 Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5431
