@@ -16,10 +16,7 @@ val df1 = spark.readStream.format("socket").option("host","localhost").option("p
     .option("truncate","false")
     .trigger(Trigger.ProcessingTime(10 second))
     .outputMode("append").start()
-
 ```
-
-
 
 ```
 Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5430
@@ -58,6 +55,12 @@ Batch: 3
 |rini|8  |2018-03-17 09:04:59|
 +----+---+-------------------+
 ```
+
+We can do append,complete,update.Same rules as earlier applies to the ouput mode.
+
+We can also add withWatermark,this makes sure spark will remember the result for  that duration and same waiting of result will happen like earlier .
+
+
 
 
 
