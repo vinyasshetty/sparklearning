@@ -56,9 +56,22 @@ Batch: 3
 +----+---+-------------------+
 ```
 
-We can do append,complete,update.Same rules as earlier applies to the ouput mode.
+**We can do append,complete,update.Same rules as earlier applies to the ouput mode.**
 
-We can also add withWatermark,this makes sure spark will remember the result for  that duration and same waiting of result will happen like earlier .
+**We can also add withWatermark,this makes sure spark will remember the result for  that duration.**
+
+**Like Join , dropDuplicates is not supported after aggregation on a streaming DataFrame/Dataset;**
+
+
+
+### Unsupported Operations {#unsupported-operations}
+
+1. NO distinct allowed
+2. order by only after aggregation and  complete mode.
+3. action like : count,foreach,show,limit not available.
+4. Chained aggregations not allowed.
+5. 
+
 
 
 
