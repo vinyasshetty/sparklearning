@@ -9,11 +9,12 @@
 * [DataSet](dataset.md)
 * [Spark Submit Yarn Flow](spark-internal.md)
 * [Spark Internal -2](spark-internal-2.md)
+* [SCD Type2](spark-frameworks.md)
 * [Streaming](streaming.md)
 * [Date Functions](date-functions.md)
 * [Basics Structured Streaming](structured-streaming-1.md)
 * [Window Structured Streaming](window-and-lag-structured-streaming.md)
 * [Watermarking Structured Streaming](watermarking-structured-streaming.md)
 * [Joining Streams](joining-streams.md)
-* [SCD Type2](spark-frameworks.md)
+* Structured Streaming Contd -1
 
