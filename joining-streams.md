@@ -317,9 +317,13 @@ constraints must be specified for generating correct results.
 
 Now as we know spark stream-stream join supports only append mode and a feature in append mode is once it output the result,it cannot update it.SO as we saw in aggregation append watermark ,it would give the result only once the records went outside the lower bound and there was NO need to update them,same thing happens in "left/right" outer joins ,because before spark outputs a null and says records where NOT available,it has to make sure it will NOT come in future ,so that guarantee  is provided with watermark and hence like aggregation ,left/right outer join with output the result only once the records has ts that have become outside of lower bound. But in inner join ,we had NO such requirement,because if a record was there it would join else it would not join and give empty result.
 
-
-
 Now along with watermark,we need one more filtering that needs to be done along with join for stream-stream left/right outer joins ** StreamtToStream2 **:
+
+So if you use left outer join,we mandatorily need watermaking on right stream and join wise filtering on event time.left stream watermarking is optional.
+
+Similarly for right outer join ,we mandatorily need watermaking on left stream and join wise filtering on event time.right stream watermarking is optional.
+
+Below i have have used watermarking on both streams,but since this was left outer,watermarking on df3 is optional.
 
 ```
  val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5431").load()
@@ -340,14 +344,13 @@ Now along with watermark,we need one more filtering that needs to be done along 
 
   val jfilter = df3("ts") >= df3_1("ts") && df3("ts") <= df3_1("ts") + expr("INTERVAL 1 hour")
   **This is is extra FILTER **
-  
+
   val joindf = df3.join(df3_1,df3("id") <=> df3_1("id") && jfilter,"left_outer")
 
 
 
   val res = joindf.writeStream.outputMode("append").trigger(Trigger.ProcessingTime(5 seconds))
     .format("console").option("truncate","false").start()
-
 ```
 
 
