@@ -495,7 +495,6 @@ As of Spark 2.3, you cannot use other non-map-like operations before joins. Here
 what cannot be used.
 1)Cannot use streaming aggregations before joins.
 2)Cannot use mapGroupsWithState and flatMapGroupsWithState in Update mode before joins.
-
 ```
 
 
