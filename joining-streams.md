@@ -348,12 +348,13 @@ val jfilter = df3("ts") >= df3_1("ts") && df3("ts") <= df3_1("ts") + expr("INTER
 val joindf = df3.join(df3_1,df3("id") <=> df3_1("id") && jfilter,"left_outer")
 
 
-
 val res = joindf.writeStream.outputMode("append").trigger(Trigger.ProcessingTime(5 seconds))
     .format("console").option("truncate","false").start()
 ```
 
 ```
+
+
 
 ```
 
