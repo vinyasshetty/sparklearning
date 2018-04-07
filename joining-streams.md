@@ -481,5 +481,22 @@ Batch: 4
 +--------+---+-------------------+----+----+----+
 ```
 
+Some conditions from Spark docs :
+
+```
+Additional details on supported joins:
+
+Joins can be cascaded, that is, you can do df1.join(df2, ...).join(df3, ...).join(df4, ....).
+
+As of Spark 2.3, you can use joins only when the query is in Append output mode. Other output modes are 
+not yet supported.
+
+As of Spark 2.3, you cannot use other non-map-like operations before joins. Here are a few examples of 
+what cannot be used.
+1)Cannot use streaming aggregations before joins.
+2)Cannot use mapGroupsWithState and flatMapGroupsWithState in Update mode before joins.
+
+```
+
 
 
