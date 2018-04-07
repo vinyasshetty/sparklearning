@@ -323,7 +323,7 @@ So if you use left outer join,we mandatorily need watermaking on right stream an
 
 Similarly for right outer join ,we mandatorily need watermaking on left stream and join wise filtering on event time.right stream watermarking is optional.
 
-Below i have have used watermarking on both streams,but since this was left outer,watermarking on df3 is optional.
+Below i have have used watermarking on both streams,but since this was left outer, watermarking on df3 is optional.
 
 ```
 val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5431").load()
