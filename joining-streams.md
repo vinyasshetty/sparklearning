@@ -32,7 +32,7 @@ Now "inner_join" is allowed ,regarding outerjoins ,leftouter is allowed when str
 
 Starting from Spark 2.3 ,We can join two streams. **Stream-Stream join currently supports only append mode only.**
 
-Inner Join without any watermarking ** StreamtToStream1 **:
+**Inner Join without any watermarking** ** StreamtToStream1 **:
 
 ```
 val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5431").load()
@@ -180,6 +180,132 @@ with latest and old records of stream2
 3)Now next latest stream2 records which have not been joined already in step2 will check if they can be joined with 
 old stream1 records.
 So point 2 and Point 3 may cause some duplicate scenarios
+```
+
+
+
+**Inner Join with watermarking** ** StreamToStream1\_1 **:
+
+```
+val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5431").load()
+
+  val df2 = df1.as[String].map(x=>x.split(","))
+
+  val df3 = df2.select($"value"(0).as("name"),
+    $"value"(1).cast(IntegerType).as("id"),
+    $"value"(2).cast(TimestampType).as("ts")).withWatermark("ts","15 second")
+
+  val df1_1 = spark.readStream.format("socket").option("host","localhost").option("port","5430").load()
+
+  val df2_1 = df1_1.as[String].map(x=>x.split(","))
+
+  val df3_1 = df2_1.select($"value"(0).as("name"),$"value"(1).cast(IntegerType).as("id"),
+    $"value"(2).cast(TimestampType).as("ts")).withWatermark("ts","10 second")
+
+  val joindf = df3.join(df3_1,df3("id") <=> df3_1("id"))
+
+  val res = joindf.writeStream.outputMode("append").trigger(Trigger.ProcessingTime(15 seconds))
+    .format("console").option("truncate","false").start()
+
+Now with this,watermark value is set,ie before the join happens:
+For every stream,We check whats the highest value ts(till date) and based on that we form the lower bound,
+if the records have ts within the lower bound,then they are considered for the joins.
+If join is possible,then join happens then and there and it does NOT wait for the records to becomes 
+out of lower bound to populate the result.
+
+```
+
+```
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5431
+vinyas,1,2018-03-17 09:04:21
+namratha,2,2018-03-17 09:04:23
+
+
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5430
+vinyas,1,2018-03-17 09:04:21
+namratha,2,2018-03-17 09:04:23
+
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++--------+---+-------------------+--------+---+-------------------+
+|name    |id |ts                 |name    |id |ts                 |
++--------+---+-------------------+--------+---+-------------------+
+|vinyas  |1  |2018-03-17 09:04:21|vinyas  |1  |2018-03-17 09:04:21|
+|namratha|2  |2018-03-17 09:04:23|namratha|2  |2018-03-17 09:04:23|
++--------+---+-------------------+--------+---+-------------------+
+
+In 5431 and 5430 i pass:
+rini,8,2018-03-17 09:04:53
+
+-------------------------------------------
+Batch: 1
+-------------------------------------------
++----+---+-------------------+----+---+-------------------+
+|name|id |ts                 |name|id |ts                 |
++----+---+-------------------+----+---+-------------------+
+|rini|8  |2018-03-17 09:04:59|rini|8  |2018-03-17 09:04:59|
++----+---+-------------------+----+---+-------------------+
+
+Now the highest ts is 59 second,so lower bound for stream1 -> 59-15 = 44 and stream2 -> 59-10 = 49
+
+I pass in 541 and 5430 :
+pami,7,2018-03-17 09:04:27
+
+Since 27 is out of range in both streams,its NOT considered
+-------------------------------------------
+Batch: 2
+-------------------------------------------
++----+---+---+----+---+---+
+|name|id |ts |name|id |ts |
++----+---+---+----+---+---+
++----+---+---+----+---+---+
+
+
+Only 5431 :
+rini,8,2018-03-17 09:04:53
+Spark output
+-------------------------------------------
+Batch: 3
+-------------------------------------------
++----+---+-------------------+----+---+-------------------+
+|name|id |ts                 |name|id |ts                 |
++----+---+-------------------+----+---+-------------------+
+|rini|8  |2018-03-17 09:04:53|rini|8  |2018-03-17 09:04:59|
++----+---+-------------------+----+---+-------------------+
+
+
+Now 5431 stream1 lowerbound is 44 and stream2(5430) lowerbound is 49,so i pass :
+5431(Considered out of scope) :
+vicky,11,2018-03-17 09:04:42
+
+5430(In scope):
+vicky,11,2018-03-17 09:04:51
+
+-------------------------------------------
+Batch: 4
+-------------------------------------------
++----+---+---+----+---+---+
+|name|id |ts |name|id |ts |
++----+---+---+----+---+---+
++----+---+---+----+---+---+
+
+
+Now in 5431 ,i pass:
+vicky,11,2018-03-17 09:04:45
+
+-------------------------------------------
+Batch: 7
+-------------------------------------------
++-----+---+-------------------+-----+---+-------------------+
+|name |id |ts                 |name |id |ts                 |
++-----+---+-------------------+-----+---+-------------------+
+|vicky|11 |2018-03-17 09:04:45|vicky|11 |2018-03-17 09:04:51|
++-----+---+-------------------+-----+---+-------------------+
+
+Now ,as the watermarking guarantee as earlier,watermarking guarantee is only ONE SIDE.
+ie it make sure records with a lower bound will NOT be lost,but it cannot gurantee that records 
+outside the lower bound will always be LOST.
 ```
 
 
