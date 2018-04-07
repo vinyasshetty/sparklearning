@@ -182,8 +182,6 @@ old stream1 records.
 So point 2 and Point 3 may cause some duplicate scenarios
 ```
 
-
-
 **Inner Join with watermarking** ** StreamToStream1\_1 **:
 
 ```
@@ -212,7 +210,6 @@ For every stream,We check whats the highest value ts(till date) and based on tha
 if the records have ts within the lower bound,then they are considered for the joins.
 If join is possible,then join happens then and there and it does NOT wait for the records to becomes 
 out of lower bound to populate the result.
-
 ```
 
 ```
@@ -304,7 +301,7 @@ Batch: 7
 +-----+---+-------------------+-----+---+-------------------+
 
 Now ,as the watermarking guarantee as earlier,watermarking guarantee is only ONE SIDE.
-ie it make sure records with a lower bound will NOT be lost,but it cannot gurantee that records 
+ie it make sure records with a lower bound will NOT be lost,but it DOES NOT gurantee that records 
 outside the lower bound will always be LOST.
 ```
 
