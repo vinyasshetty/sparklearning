@@ -91,8 +91,6 @@ Complete : This is used only when we have aggregations.
 
 Update: This is a combination of above .
 
-
-
 ## Sink:
 
 File ,we write to hdfs but only with append mode.We can also use partitionBy,different formats and compressions.
@@ -100,8 +98,31 @@ File ,we write to hdfs but only with append mode.We can also use partitionBy,dif
 ```
 df.writeStream
 .format("parquet")
-.
+.option("path","")
+.partitionBy($"",$"")
+.start()
 ```
+
+Kafka Sink \( All 3 output modes supported\):
+
+```
+df.writeStrea
+.format("kafka")
+.option("bootstrap.servers",",")
+.option("enable.auto.commit","false")
+.option("topic","")
+.start()
+```
+
+Console Sink \( All 3 output modes supported\):
+
+```
+df.writeStream.
+format("console")
+.start()
+```
+
+Memory Mode\(Complete and Append Supported\)
 
 
 
