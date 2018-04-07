@@ -353,8 +353,56 @@ val res = joindf.writeStream.outputMode("append").trigger(Trigger.ProcessingTime
 ```
 
 ```
+Input :
+
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5431
+vinyas,1,2018-03-17 09:04:21
+namratha,2,2018-03-17 09:04:23
+
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5430
+<No records>
+
+Spark gives No output,since ,now 23 is the largest ts and watermarking 10 secon ,so 13 second data state is 
+maintained ,so spark does not know yet if in future we will get id 1 and 2 ,so it does not give any result yet
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++----+---+---+----+---+---+
+|name|id |ts |name|id |ts |
++----+---+---+----+---+---+
++----+---+---+----+---+---+
 
 
+5431 and 5430 :
+rini,8,2018-03-17 09:04:59
+
+Since both the records have same id ,it joins,now max ts is 59 and hence lower bound becomes 49,so
+now as soon as the next ny data comes and trigger happens
+-------------------------------------------
+Batch: 1
+-------------------------------------------
++----+---+-------------------+----+---+-------------------+
+|name|id |ts                 |name|id |ts                 |
++----+---+-------------------+----+---+-------------------+
+|rini|8  |2018-03-17 09:04:59|rini|8  |2018-03-17 09:04:59|
++----+---+-------------------+----+---+-------------------+
+
+
+5431 and 5430 :
+ghy,21,2018-03-17 09:04:55
+
+Spark gives 1 and 2 id values ,since now spark knows that those two ecords are out of bound and they did
+NOT have any correspoding records on right side,hnce nulls come in.
+-------------------------------------------
+Batch: 2
+-------------------------------------------
++--------+---+-------------------+----+----+-------------------+
+|name    |id |ts                 |name|id  |ts                 |
++--------+---+-------------------+----+----+-------------------+
+|vinyas  |1  |2018-03-17 09:04:21|null|null|null               |
+|ghy     |21 |2018-03-17 09:04:55|ghy |21  |2018-03-17 09:04:55|
+|namratha|2  |2018-03-17 09:04:23|null|null|null               |
++--------+---+-------------------+----+----+-------------------+
 
 ```
 
