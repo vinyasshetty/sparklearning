@@ -377,7 +377,7 @@ Batch: 0
 rini,8,2018-03-17 09:04:59
 
 Since both the records have same id ,it joins,now max ts is 59 and hence lower bound becomes 49,so
-now as soon as the next ny data comes and trigger happens
+now as soon as the next any data comes and trigger happens
 -------------------------------------------
 Batch: 1
 -------------------------------------------
