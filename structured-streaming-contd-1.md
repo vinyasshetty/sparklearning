@@ -71,6 +71,38 @@ Batch: 3
 
 ## DataStreamWriter :
 
+```
+df.writeStream //DataStreamWriter
+.format("console") //
+.queryName("uniquename")
+.trigger(Trigger.ProcessingTime(10 second))
+.ouputMode("") //append,complete,update
+.option("checkpointLocation","<hdfs_path>")
+.start() // Returns a Streaming Query
+```
+
+### Output modes:
+
+As discussed earlier,we have complete,append and update mode.
+
+Append : This is the default mode,we can use this for aggregations with watermark only,supports all other non -aggregation operations without watermark.Supports Stream-Stream Join ,along with condition we discussed about.
+
+Complete : This is used only when we have aggregations.
+
+Update: This is a combination of above .
+
+
+
+## Sink:
+
+File ,we write to hdfs but only with append mode.We can also use partitionBy,different formats and compressions.
+
+```
+df.writeStream
+.format("parquet")
+.
+```
+
 
 
 
