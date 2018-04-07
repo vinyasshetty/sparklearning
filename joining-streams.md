@@ -305,5 +305,29 @@ ie it make sure records with a lower bound will NOT be lost,but it DOES NOT gura
 outside the lower bound will always be LOST.
 ```
 
+With Inner Stream-Stream1 Join,watermarking was NOT manadtory,but with left/right outer join its mandatory because as spark docs syas:
+
+```
+While the watermark + event-time constraints is optional for inner joins,
+for left and right outer joins they must be specified. This is because for 
+generating the NULL results in outer join, the engine must know when an input 
+row is not going to match with anything in future. Hence, the watermark + event-time 
+constraints must be specified for generating correct results.
+```
+
+Now as we know spark stream-stream join supports only append mode and a feature in append mode is once it output the result,it cannot update it.SO as we saw in aggregation,it would give the result only once the records went outside the lower bound and there was NO need to update them,same thing happens in "left/right" outer joins ,because before spark outputs a null and says records where NOT available,it has to make sure it will NOT come in future ,so that guarantee  is provided with watermark and hence like aggregation ,left/right outer join with output the result only once the records has ts that have become outside of lower bound. But in inner join ,we had NO such requirement,because if a record was there it would join else it would just wait.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
