@@ -353,5 +353,9 @@ val res = joindf.writeStream.outputMode("append").trigger(Trigger.ProcessingTime
     .format("console").option("truncate","false").start()
 ```
 
+```
+
+```
+
 
 
