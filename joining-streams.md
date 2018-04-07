@@ -403,8 +403,9 @@ Batch: 2
 |ghy     |21 |2018-03-17 09:04:55|ghy |21  |2018-03-17 09:04:55|
 |namratha|2  |2018-03-17 09:04:23|null|null|null               |
 +--------+---+-------------------+----+----+-------------------+
-
 ```
 
+So summarize in say left outer join of stream to stream,give watermarking on either side and also a join filtering condition on the watermarked timestamp column.
 
+Then if join conditions are satisfied,then spark outputs the result then and there but if we have records on left side which is not getting joined then it waits until the corresponding left sides ts becomes outside the right side lower bound.
 
