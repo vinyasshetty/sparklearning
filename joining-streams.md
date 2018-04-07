@@ -441,7 +441,7 @@ ghy,21,2018-03-17 09:04:28
 I expected below to be empty ,since left side highest value was 59 and hence lower bound would be 49.
 But i think this is wat they mean when they say ,spark cannot guarantee if records will be excluded below
 lower bound,but it can only guarantee that records above lower bound will be retained.
-For those thinking why 1 and 2 id has not populated becuase right side lower bound is still 28-10 = 18
+For those thinking why 1 and 2 id has not populated ,its becuase right side lower bound is still 28-10 = 18
 -------------------------------------------
 Batch: 2
 -------------------------------------------
