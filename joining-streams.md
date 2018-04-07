@@ -409,3 +409,75 @@ So summarize in say left outer join of stream to stream,give watermarking on eit
 
 Then if join conditions are satisfied,then spark outputs the result then and there but if we have records on left side which is not getting joined then it waits until the corresponding left sides ts records becomes greater the right side lower bound\(calculated by right side highest ts - right side watermark\).
 
+```
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5431
+vinyas,1,2018-03-17 09:04:21
+namratha,2,2018-03-17 09:04:23
+
+Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5430
+No data
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++----+---+---+----+---+---+
+|name|id |ts |name|id |ts |
++----+---+---+----+---+---+
++----+---+---+----+---+---+
+
+5431:
+rini,8,2018-03-17 09:04:59
+
+-------------------------------------------
+Batch: 1
+-------------------------------------------
++----+---+---+----+---+---+
+|name|id |ts |name|id |ts |
++----+---+---+----+---+---+
++----+---+---+----+---+---+
+
+5430 and 5431 :
+ghy,21,2018-03-17 09:04:28
+
+I expected below to be empty ,since left side highest value was 59 and hence lower bound would be 49.
+But i think this is wat they mean when they say ,spark cannot guarantee if records will be excluded below
+lower bound,but it can only guarantee that records above lower bound will be retained.
+For those thinking why 1 and 2 id has not populated becuase right side lower bound is still 28-10 = 18
+-------------------------------------------
+Batch: 2
+-------------------------------------------
++----+---+-------------------+----+---+-------------------+
+|name|id |ts                 |name|id |ts                 |
++----+---+-------------------+----+---+-------------------+
+|ghy |21 |2018-03-17 09:04:28|ghy |21 |2018-03-17 09:04:28|
++----+---+-------------------+----+---+-------------------+
+
+
+5431 and 5430 :
+finch,34,2018-03-17 09:04:44
+
+Now right side lower bound is 44-10 = 34,so the next trigger will get you the result of 1 and 2.
+-------------------------------------------
+Batch: 3
+-------------------------------------------
++-----+---+-------------------+-----+---+-------------------+
+|name |id |ts                 |name |id |ts                 |
++-----+---+-------------------+-----+---+-------------------+
+|finch|34 |2018-03-17 09:04:44|finch|34 |2018-03-17 09:04:44|
++-----+---+-------------------+-----+---+-------------------+
+
+
+Any side when we get any data now:
+Spark will output the result :
+-------------------------------------------
+Batch: 5
+-------------------------------------------
++--------+---+-------------------+----+----+----+
+|name    |id |ts                 |name|id  |ts  |
++--------+---+-------------------+----+----+----+
+|vinyas  |1  |2018-03-17 09:04:21|null|null|null|
+|namratha|2  |2018-03-17 09:04:23|null|null|null|
++--------+---+-------------------+----+----+----+
+```
+
+
+
