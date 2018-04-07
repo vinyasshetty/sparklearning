@@ -326,30 +326,30 @@ Similarly for right outer join ,we mandatorily need watermaking on left stream a
 Below i have have used watermarking on both streams,but since this was left outer,watermarking on df3 is optional.
 
 ```
- val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5431").load()
+val df1 = spark.readStream.format("socket").option("host","localhost").option("port","5431").load()
 
-  val df2 = df1.as[String].map(x=>x.split(","))
+val df2 = df1.as[String].map(x=>x.split(","))
 
-  val df3 = df2.select($"value"(0).as("name"),
+val df3 = df2.select($"value"(0).as("name"),
     $"value"(1).cast(IntegerType).as("id"),
     $"value"(2).cast(TimestampType).as("ts")).withWatermark("ts","10 second")
 
-  val df1_1 = spark.readStream.format("socket").option("host","localhost").option("port","5430").load()
+val df1_1 = spark.readStream.format("socket").option("host","localhost").option("port","5430").load()
 
-  val df2_1 = df1_1.as[String].map(x=>x.split(","))
+val df2_1 = df1_1.as[String].map(x=>x.split(","))
 
-  val df3_1 = df2_1.select($"value"(0).as("name"),
+val df3_1 = df2_1.select($"value"(0).as("name"),
     $"value"(1).cast(IntegerType).as("id"),
     $"value"(2).cast(TimestampType).as("ts")).withWatermark("ts","10 second")
 
-  val jfilter = df3("ts") >= df3_1("ts") && df3("ts") <= df3_1("ts") + expr("INTERVAL 1 hour")
+val jfilter = df3("ts") >= df3_1("ts") && df3("ts") <= df3_1("ts") + expr("INTERVAL 1 hour")
   **This is is extra FILTER **
 
-  val joindf = df3.join(df3_1,df3("id") <=> df3_1("id") && jfilter,"left_outer")
+val joindf = df3.join(df3_1,df3("id") <=> df3_1("id") && jfilter,"left_outer")
 
 
 
-  val res = joindf.writeStream.outputMode("append").trigger(Trigger.ProcessingTime(5 seconds))
+val res = joindf.writeStream.outputMode("append").trigger(Trigger.ProcessingTime(5 seconds))
     .format("console").option("truncate","false").start()
 ```
 
