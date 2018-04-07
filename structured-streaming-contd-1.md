@@ -62,16 +62,14 @@ Batch: 3
 
 **Like Join , dropDuplicates is not supported after aggregation on a streaming DataFrame/Dataset;**
 
-
-
 ### Unsupported Operations {#unsupported-operations}
 
 1. NO distinct allowed
 2. order by only after aggregation and  complete mode.
 3. action like : count,foreach,show,limit not available.
 4. Chained aggregations not allowed.
-5. 
 
+## DataStreamWriter :
 
 
 
