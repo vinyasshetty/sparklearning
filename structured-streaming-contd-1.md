@@ -119,12 +119,16 @@ Console Sink \( All 3 output modes supported\):
 ```
 df.writeStream.
 format("console")
+.option("numRows",20)
+.option("truncate","false")
 .start()
 ```
 
 Memory Mode\(Complete and Append Supported\)
 
 
+
+Foreach\(All 3 modes\)
 
 
 
