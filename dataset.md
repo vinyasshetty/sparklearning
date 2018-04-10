@@ -331,8 +331,6 @@ scala> ids.groupBy(($"id" % 2).as("grp")).agg(collect_set($"id")).show
 
 4 Query Plan in a DataSet.3 are Logical and 1 is Physical.
 
-
-
 **Convert case Objects to StructType ** :
 
 ```
