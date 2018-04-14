@@ -238,8 +238,17 @@ Whenever open is called, close will also be called (unless the JVM exits due to 
 This is true even if open returns false. If there is any error in processing and writing the data,
  close will be called with the error. It is your responsibility to clean up state (e.g. connections, 
  transactions, etc.) that have been created in open such that there are no resource leaks.
-
 ```
+
+## Trigger :
+
+This will determine when with the spark run the process.If you dont give any Trigger then it will run whenever there is a change is the input and existing process has completed.
+
+Things to remember:
+
+If existing process is running ,then spark will wait if we get input data during that time or even if we have reached the Trigger Processing time. If the current processing exceeds the next Trigger Processing time,then as soon as the current process finishes,the next trigger will run provided there was a change in the input.
+
+Spark docs explains the different Trigger Processing time well enough.
 
 
 
