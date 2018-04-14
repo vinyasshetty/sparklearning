@@ -233,7 +233,7 @@ Batch: 0
 +--------+---+-------------------+--------+---+-------------------+
 
 In 5431 and 5430 i pass:
-rini,8,2018-03-17 09:04:53
+rini,8,2018-03-17 09:04:59
 
 -------------------------------------------
 Batch: 1
@@ -246,7 +246,7 @@ Batch: 1
 
 Now the highest ts is 59 second,so lower bound for stream1 -> 59-15 = 44 and stream2 -> 59-10 = 49
 
-I pass in 541 and 5430 :
+I pass in 5431 and 5430 :
 pami,7,2018-03-17 09:04:27
 
 Since 27 is out of range in both streams,its NOT considered
@@ -300,7 +300,7 @@ Batch: 7
 |vicky|11 |2018-03-17 09:04:45|vicky|11 |2018-03-17 09:04:51|
 +-----+---+-------------------+-----+---+-------------------+
 
-Now ,as the watermarking guarantee as earlier,watermarking guarantee is only ONE SIDE.
+Watermarking guarantee is only ONE SIDE.
 ie it make sure records with a lower bound will NOT be lost,but it DOES NOT gurantee that records 
 outside the lower bound will always be LOST.
 ```
