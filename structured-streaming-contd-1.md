@@ -1,6 +1,6 @@
 DropDuplicates:
 
-Spark keeps tracking of all the records and emits only one set of records,if the id had already come in the fast ,then it will not output it again.
+Spark keeps tracking of all the records and emits only one set of records,if the id had already come in the past ,then it will not output it again.
 
 ```
 val df1 = spark.readStream.format("socket").option("host","localhost").option("port",5430).load()
@@ -126,9 +126,5 @@ format("console")
 
 Memory Mode\(Complete and Append Supported\)
 
-
-
 Foreach\(All 3 modes\)
-
-
 
