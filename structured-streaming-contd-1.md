@@ -250,5 +250,20 @@ If existing process is running ,then spark will wait if we get input data during
 
 Spark docs explains the different Trigger Processing time well enough.
 
+```
+Run as soon as possible :
+df.writeStream.format("").option("","").start()
+
+Fixed Micro Batches:
+df.writeStream.format("").option("","").trigger(Trigger.ProcessingTime(10 second)).start()
+
+Just Runs One Time and shuts down after that.Also makes sure data is already available before it starts.
+df.writeStream.format("").option("","").trigger(Trigger.Once()).start()
+```
+
+## Streaming Query:
+
+As you have seen till now ,when we call a start on the DataStreamWriter ,it returns a StreamingQuery object.
+
 
 
