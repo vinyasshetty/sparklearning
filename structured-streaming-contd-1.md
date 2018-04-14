@@ -238,6 +238,7 @@ Whenever open is called, close will also be called (unless the JVM exits due to 
 This is true even if open returns false. If there is any error in processing and writing the data,
  close will be called with the error. It is your responsibility to clean up state (e.g. connections, 
  transactions, etc.) that have been created in open such that there are no resource leaks.
+
 ```
 
 
