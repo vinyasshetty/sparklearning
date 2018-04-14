@@ -154,10 +154,9 @@ Some Details on Foreach :
   val sq = df2.writeStream.trigger(Trigger.ProcessingTime(20 second)).foreach(ob1).start()
 
   sq.awaitTermination()
-  
 ```
 
-I have implemented a ForeachWriter\[String\] since when i do a foreach on df2 ,i gets strings,if you use a Dataframe then you need to implement a ForeachWriter\[Row\]
+I have implemented a ForeachWriter\[String\] since when i do a foreach on df2 ,i gets strings,if you use a Dataframe then you need to implement a ForeachWriter\[Row\].
 
 open method is run when a trigger  is done and for every trigger its runs for each partition.Below as you see, by default 4 partitions are created for my input data.Now version is zero since this is run from the first trigger.this method returns a boolean,now if it returns a boolean for a given partition,then below process method is NOT called for that partition.
 
@@ -213,7 +212,7 @@ class Foreachimpl extends ForeachWriter[String] with Serializable{
   val sq = df2.writeStream.trigger(Trigger.ProcessingTime(20 second)).foreach(ob1).start()
 
   sq.awaitTermination()
-  
+
   Input:
   Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5430
 vinyas,1,2018-03-17 09:04:21
