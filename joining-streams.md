@@ -120,7 +120,7 @@ Next ,the second stream gets data :
 Vinyass-MacBook-Pro:~ vinyasshetty$ nc -lk 5430
 vinyas,1,2018-03-17 09:04:21
 
-Spark ouput:,as told earlier,spark is keep the state and when second stream comes,it will join stream1 data(state
+Spark ouput:,as told earlier,spark keeps the state and when second stream comes,it will join stream1 data(state
 which it had kept) with new stream2 data.
 -------------------------------------------
 Batch: 1
@@ -176,7 +176,7 @@ As per my understanding,they way it works is :
 1)Past States/data of both streams are maintained.
 2)Now whenever trigger happens,along with a change in one of the streams,
 then first(think would be left one or the one which has changed first) streams latest records is joined 
-with latest and old records of stream2
+with latest and then old records of stream2
 3)Now next latest stream2 records which have not been joined already in step2 will check if they can be joined with 
 old stream1 records.
 So point 2 and Point 3 may cause some duplicate scenarios
