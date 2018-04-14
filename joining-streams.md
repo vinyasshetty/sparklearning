@@ -301,7 +301,7 @@ Batch: 7
 +-----+---+-------------------+-----+---+-------------------+
 
 Watermarking guarantee is only ONE SIDE.
-ie it make sure records with a lower bound will NOT be lost,but it DOES NOT gurantee that records 
+ie it makes sure records outside the lower bound will NOT be lost,but it DOES NOT gurantee that records 
 outside the lower bound will always be LOST.
 ```
 
