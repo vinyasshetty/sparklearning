@@ -91,7 +91,7 @@ Complete : This is used only when we have aggregations.
 
 Update: This is a combination of above .
 
-## Sink:
+## Sinks:
 
 File ,we write to hdfs but only with append mode.We can also use partitionBy,different formats and compressions.
 
