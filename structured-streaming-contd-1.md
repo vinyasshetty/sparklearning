@@ -1,4 +1,4 @@
-DropDuplicates:
+## DropDuplicates:
 
 Spark keeps tracking of all the records and emits only one set of records,if the id had already come in the past ,then it will not output it again.
 
@@ -147,8 +147,6 @@ val df1 = spark.readStream.format("socket").option("host","localhost").option("p
     spark.sql("select * from dummy_table").show()
     Thread.sleep(10000)
   }
-
-
 ```
 
 Foreach\(All 3 modes\):
@@ -289,6 +287,4 @@ df.writeStream.format("").option("","").trigger(Trigger.Once()).start()
 ## Streaming Query:
 
 As you have seen till now ,when we call a start on the DataStreamWriter ,it returns a StreamingQuery object.
-
-
 
