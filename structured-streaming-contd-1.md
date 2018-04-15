@@ -124,7 +124,32 @@ format("console")
 .start()
 ```
 
-Memory Mode\(Complete and Append Supported\)
+Memory Mode\(Complete and Append Supported\):
+
+```
+val df1 = spark.readStream.format("socket").option("host","localhost").option("port",5430).load()
+
+  val df2 = df1.as[String].map(x=>x.split(","))
+
+  val df3 = df2.select($"value"(0).as("name"),
+    $"value"(1).cast(IntegerType).as("id"),
+    $"value"(2).cast(TimestampType).as("ts"))
+
+  val sq = df3.writeStream
+    .format("memory")
+    .queryName("dummy_table")
+    .option("truncate","false")
+    .trigger(Trigger.ProcessingTime(10 second))
+    .outputMode("append").start()
+
+
+  while(sq.isActive){
+    spark.sql("select * from dummy_table").show()
+    Thread.sleep(10000)
+  }
+
+
+```
 
 Foreach\(All 3 modes\):
 
