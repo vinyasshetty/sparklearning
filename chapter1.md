@@ -10,6 +10,7 @@
 * Advantage of Key Value type data comes from the fact that each key and its corresponding value can be calcualted in parallel.
 * **flatMap** is very useful method it can be used to as a combination of map+filter and also can be used to increade the count of RDD elements.
 * **df.rdd.flatMap\(row =&gt; Range\(0,df.columns.length\).map\(x=&gt;\(x,row.get\(x\)\)\)**
+* lookup is a action on RDD\[\(K,V\)\] and returns a Seq\[V\] . lookup causes a shuffle if the rdd is NOT partitioned 
 * Actons usually move data out of the executors into either driver or to some external target like hdfs.
 * countByKey,lookup,collect,collectAsMap are all actions.
 * **Key/value transformations can also cause memory errors, most often in the executors,if they require all the data associated with one key to be kept in memory on one partition.**
