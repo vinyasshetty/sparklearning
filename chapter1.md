@@ -2,7 +2,7 @@
 
 * Spark has its PairRDDFunctions class which has all the functions which can be used on Pair RDD's.Its made available via implicits. &lt;NEED TO UNDERSTAND BELOW IMPLICIT AND TYPE CONCEPT&gt;
 * `class PairRDDFunctions[K, V](self: RDD[(K, V)]) (implicit kt: ClassTag[K], vt: ClassTag[V], ord: Ordering[K] = null) extends Logging with Serializable {`
-* OrderedRDDFunctions class has the ordering related method for RDD\[\(K,V\)\] where ordering for keys K should be available available.Functions: sortByKey, repartitionAndSortWithinPartitions and filterByRange.For most ofthe basic types ordering of K types are already available but if you have complex K type then u have give the Ordering explicitly
+* **OrderedRDDFunctions** class has the ordering related method for RDD\[\(K,V\)\] where ordering for keys K should be available available.Functions: sortByKey, repartitionAndSortWithinPartitions and filterByRange.For most of the basic types ordering of K types are already available but if you have complex K type then u have give the Ordering explicitly
 * These methods in PairRDDFunctions and OrderedRDDFunctions are the expensive ones since they include wide transformations.
 * They can cause different types of errors like : Out of Memory Error at Driver, Out of Memory Error at Exceutor, Shuffling Failure and Tasks straggling due to large compute time.
 * Out of Memory Error at Driver is caused mainly due to action collecting lots of data at driver others are caused due to shuffling related.
@@ -80,7 +80,7 @@ Some narrow transformations like mapValues preserve the partitioning.
 
 * We can sort Keys in RDD by first repartitioning using RangePartitioning and then use mapPartitions to sort the Key data,but internally spark's sortByKey is more efficient since it sorts within the shuffle stage onto the individaul machines.
 
-* SecondarySort is a technique  where if you want sort a value along with a key ,then you make the key as composite and then sort this composite key.This technique is called SecondarySort.To implement this in spark we have the reaprtitionAndSortWithinPartitions functions.This is a wide transformation and it takes a Partitioner object and implicit Ordering of the keys of the RDD.
+* SecondarySort is a technique  where if you want sort a value along with a key ,then you make the key as composite and then sort this composite key.This technique is called SecondarySort.To implement this in spark we have the reprtitionAndSortWithinPartitions functions.This is a wide transformation and it takes a Partitioner object and implicit Ordering of the keys of the RDD.
 
 * ** If we are using hash partitioning, this function does not actually sort values by the first key. Rather, it groups keys with the same hash value on the same machine. Thus, if we run the function of the values one through five and use four partitions, the first partition will contain one and five. To force the keys to appear in true sorted order, we would need to define a range partitioner. **
 
