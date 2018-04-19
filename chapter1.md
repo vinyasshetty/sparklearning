@@ -64,7 +64,6 @@ Some narrow transformations like mapValues preserve the partitioning.
   | :--- | :--- |
   | Requires Number of partitions and also RDD | Requires Number of partitions |
   | Expects,the Key\(K\) to have Ordering implemented in RDD\[\(K,V\)\] | K can be of any types |
-
 * **CustomPartitioning** : This can be done by extending Partitioner class and implementing numPartitions:Int  and getPartition\(key:Ant\):Int  .  Optional methods =&gt; equals\(other:Any\):Boolean and hashcode\(\):Int
 
 * **Concept of Partitioner comes into picture only for RDD of Key Value Pair Type.**
