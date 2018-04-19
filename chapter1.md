@@ -56,7 +56,8 @@ Some narrow transformations like mapValues preserve the partitioning.
 ## Partitioning
 
 * **Hashpartitioning **does the hashing of the keys and determines to which partition the key and its value should go.This requires the key and the number of partitions which is determined using the deafultPartition method.
-* **RangePartitioning** : Here every rdd partition is sampled to determine the range to keys and for equal optimized distribution .Based on that each key and its value are sent to a partition based on the range of the partition.This is used for sorting.
+* **RangePartitioning** : Here every rdd partition is sampled to determine the range of keys and for equal optimized distribution .Based on that each key and its value are sent to a partition based on the range of the partition.Now we need to sort the partitions and now the whole rdd gets sorted by key.This is used for sorting.
+
 * Creating a RangePartitioner not only requires the number of partitions but also required the RDD of key value type ,so that sampling can be done on keys and it expects keys to have Ordering defined.SInce sampling of RDD needs to be done RangePartitioner is slower then HashPartitioner.
 * **CustomPartitioning** : This can be done by extending Partitioner class and implementing numPartitions:Int  and getPartition\(key:Ant\):Int  .  Optional methods =&gt; equals\(other:Any\):Boolean and hashcode\(\):Int
 
