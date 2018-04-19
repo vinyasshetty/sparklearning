@@ -14,6 +14,7 @@
 * Actons usually move data out of the executors into either driver or to some external target like hdfs.
 * countByKey,lookup,collect,collectAsMap are all actions.
 * **Key/value transformations can also cause memory errors, most often in the executors,if they require all the data associated with one key to be kept in memory on one partition.**
+* **Some actions causes a shuffle depending of the last rdd was partitioned or no. Ex : lookup**
 * One of the dangerous function is groupByKey because this will make all the values belonging to a key to be avaiable in exceutor memory at once and if it cant fit then it causes OOM in Executor.
 * aggregateByKey,combineByKey in these operators a "combining" of values belonging to the same happens once on the map side also,hence the number of values for a given key to shuffle is less.
 * Most of the bykey operations is built on "combineByKey" 
