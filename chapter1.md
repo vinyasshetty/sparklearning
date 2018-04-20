@@ -37,7 +37,6 @@ def defaultPartitioner(rdd: RDD[_], others: RDD[_]*): Partitioner = {
   }
   }
 }
-
 ```
 
 * Main difference between reduceByKey/foldByKey vs combineByKey/aggregateByKey is reduce expects the output value type also to be same as the input value type while in combine the output value type needs to same as the intial value type set by us which can be different from the input dataset value type.See above the U and V types .Look at the method signature  in PairRDDFunctions.scala.
@@ -79,7 +78,32 @@ Some narrow transformations like mapValues preserve the partitioning.
 
 * When using two or more RDD's ,think about co-location and co-partitioning of RDD's.
 
-* **RDD's can be co-located if RDD's have the same Partitioner  and data associated with them is in the same excutor.This will happen if they partitioned during the lineage of the same job. ==&gt; com.acc.vin.CoLocated **
+* **RDD's can be co-located if RDD's have the same Partitioner  and data associated with them is in the same excutor.This will happen if they partitioned during the lineage of the same job. ==&gt; com.acc.vin.CoLocated **scala&gt; val a = sc.makeRDD\(List\(\(1,12\),\(1,14\),\(2,13\),\(3,17\),\(3,23\)\)\)
+
+```
+a: org.apache.spark.rdd.RDD[(Int, Int)] = ParallelCollectionRDD[28] at makeRDD at <console>:31
+
+scala> val b = sc.makeRDD(List((1,12),(1,1),(2,13),(2,1),(3,2)))
+b: org.apache.spark.rdd.RDD[(Int, Int)] = ParallelCollectionRDD[29] at makeRDD at <console>:31
+
+scala> val a1 = a.aggregateByKey(0)((x:Int,y:Int)=>x+y,(a:Int,b:Int)=>a+b)
+a1: org.apache.spark.rdd.RDD[(Int, Int)] = ShuffledRDD[30] at aggregateByKey at <console>:34
+
+scala> val a1 = a.aggregateByKey(0,new org.apache.spark.HashPartitioner(2))((x:Int,y:Int)=>x+y,(a:Int,b:Int)=>a+b)
+a1: org.apache.spark.rdd.RDD[(Int, Int)] = ShuffledRDD[31] at aggregateByKey at <console>:34
+
+scala> val b1 = b.aggregateByKey(0,new org.apache.spark.HashPartitioner(2))((x:Int,y:Int)=>x+y,(a:Int,b:Int)=>a+b)
+b1: org.apache.spark.rdd.RDD[(Int, Int)] = ShuffledRDD[32] at aggregateByKey at <console>:34
+
+scala> val c = a1.cogroup(b1)
+c: org.apache.spark.rdd.RDD[(Int, (Iterable[Int], Iterable[Int]))] = MapPartitionsRDD[34] at cogroup at <console>:34
+
+scala> c.collect()
+res23: Array[(Int, (Iterable[Int], Iterable[Int]))] = Array((2,(CompactBuffer(13),CompactBuffer(14))), (1,(CompactBuffer(26),CompactBuffer(13))), (3,(CompactBuffer(40),CompactBuffer(2))))
+
+```
+
+![](/assets/Screen Shot 2018-04-19 at 9.26.36 PM.png)
 
 * ** “same partitioner” means the partitioner objects are equal according to the equality function defined in the partitioner class.So this basically means for HashPartitioner the number of partitions also should be same.**
 
