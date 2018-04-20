@@ -86,6 +86,8 @@ Some narrow transformations like mapValues preserve the partitioning.
 
 * Sorting By Key Manually:
 
+* We can sort Keys in RDD by first repartitioning using RangePartitioning and then use mapPartitions to sort the Key data,but internally spark's sortByKey is more efficient since it sorts within the shuffle stage onto the individaul machine
+
 ```
 scala> rdd
 res15: org.apache.spark.rdd.RDD[(Int, Double)] = MapPartitionsRDD[5] at flatMap at <console>:29
@@ -96,12 +98,9 @@ r1: org.apache.spark.rdd.RDD[(Int, Double)] = ShuffledRDD[16] at partitionBy at 
 
 scala> val r2 = r1.mapPartitions(i => i.toArray.sortBy(x=>x._1).toIterator,preservesPartitioning=true)
 r2: org.apache.spark.rdd.RDD[(Int, Double)] = MapPartitionsRDD[13] at mapPartitions at <console>:29
-
 ```
 
 * OrderedRDDFunctions =&gt; sortByKey returns a RDD with RangePartitioner and also for sortByKey,it expects key to have implemented Ordered ,now most of the the regular scala basic types like Int,String Double etch have already Ordered implemented.Also scala has **Tuple2 **type Ordered implemented so if you have a RDD\[\(\(K1,K2\),V\)\] works fine if you sortByKey=&gt; ** com.acc.vin.SortByKeyTupl2 **
-
-* We can sort Keys in RDD by first repartitioning using RangePartitioning and then use mapPartitions to sort the Key data,but internally spark's sortByKey is more efficient since it sorts within the shuffle stage onto the individaul machines.
 
 * SecondarySort is a technique  where if you want sort a value along with a key ,then you make the key as composite and then sort this composite key.This technique is called SecondarySort.To implement this in spark we have the reprtitionAndSortWithinPartitions functions.This is a wide transformation and it takes a Partitioner object and implicit Ordering of the keys of the RDD.
 
