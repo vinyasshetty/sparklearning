@@ -106,9 +106,7 @@ r2: org.apache.spark.rdd.RDD[(Int, Double)] = MapPartitionsRDD[13] at mapPartiti
 
 * ** If we are using hash partitioning, this function does not actually sort values by the first key. Rather, it groups keys with the same hash value on the same machine. Thus, if we run the function of the values one through five and use four partitions, the first partition will contain one and five. To force the keys to appear in true sorted order, we would need to define a range partitioner.**
 
-* A scenario where we want to group by a key and then sort by a value ,then we can use repartitionAndSortWIthinPartitions.say a RDD\[\(\(k,s\),v\)\] where we want to partition/group by k and within that group sort by s.
-
-
+* A scenario where we want to group by a key and then sort by a value ,then we can use **repartitionAndSortWIthinPartitions**. Say a RDD\[\(\(k,s\),v\)\] where we want to partition/group by k and within that group sort by s.
 
 
 
