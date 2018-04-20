@@ -102,9 +102,13 @@ r2: org.apache.spark.rdd.RDD[(Int, Double)] = MapPartitionsRDD[13] at mapPartiti
 
 * OrderedRDDFunctions =&gt; sortByKey returns a RDD with RangePartitioner and also for sortByKey,it expects key to have implemented Ordered ,now most of the the regular scala basic types like Int,String Double etch have already Ordered implemented.Also scala has **Tuple2 **type Ordered implemented so if you have a RDD\[\(\(K1,K2\),V\)\] works fine if you sortByKey=&gt; ** com.acc.vin.SortByKeyTupl2 **
 
-* SecondarySort is a technique  where if you want sort a value along with a key ,then you make the key as composite and then sort this composite key.This technique is called SecondarySort.To implement this in spark we have the reprtitionAndSortWithinPartitions functions.This is a wide transformation and it takes a Partitioner object and implicit Ordering of the keys of the RDD.
+* SecondarySort is a technique  where if you want sort a value along with a key ,then you make the key as composite and then sort this composite key.This technique is called SecondarySort.To implement this in spark we have the repartitionAndSortWithinPartitions function.This is a wide transformation and it takes a Partitioner object and implicit Ordering of the keys of the RDD.
 
 * ** If we are using hash partitioning, this function does not actually sort values by the first key. Rather, it groups keys with the same hash value on the same machine. Thus, if we run the function of the values one through five and use four partitions, the first partition will contain one and five. To force the keys to appear in true sorted order, we would need to define a range partitioner.**
+
+* A scenario where we want to group by a key and then sort by a value ,then we can use repartitionAndSortWIthinPartitions.say a RDD\[\(\(k,s\),v\)\] where we want to partition/group by k and within that group sort by s.
+
+
 
 
 
