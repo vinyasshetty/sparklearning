@@ -122,10 +122,9 @@ res27: Array[(Int, Int)] = Array((1,12), (1,14), (2,13), (3,17), (3,23))
 
 scala> a
 res28: org.apache.spark.rdd.RDD[(Int, Int)] = ParallelCollectionRDD[28] at makeRDD at <console>:31
-
 ```
 
-* Sorting By Key Manually:
+* **Sorting By Key Manually:**
 
 * We can sort Keys in RDD by first repartitioning using RangePartitioner and then use mapPartitions to sort the Key data,but internally spark's sortByKey is more efficient since it sorts within the shuffle stage onto the individaul machine
 
