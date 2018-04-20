@@ -86,7 +86,7 @@ Some narrow transformations like mapValues preserve the partitioning.
 
 * Sorting By Key Manually:
 
-* We can sort Keys in RDD by first repartitioning using RangePartitioning and then use mapPartitions to sort the Key data,but internally spark's sortByKey is more efficient since it sorts within the shuffle stage onto the individaul machine
+* We can sort Keys in RDD by first repartitioning using RangePartitioner and then use mapPartitions to sort the Key data,but internally spark's sortByKey is more efficient since it sorts within the shuffle stage onto the individaul machine
 
 ```
 scala> rdd
