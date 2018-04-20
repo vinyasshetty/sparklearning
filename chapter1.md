@@ -100,7 +100,6 @@ c: org.apache.spark.rdd.RDD[(Int, (Iterable[Int], Iterable[Int]))] = MapPartitio
 
 scala> c.collect()
 res23: Array[(Int, (Iterable[Int], Iterable[Int]))] = Array((2,(CompactBuffer(13),CompactBuffer(14))), (1,(CompactBuffer(26),CompactBuffer(13))), (3,(CompactBuffer(40),CompactBuffer(2))))
-
 ```
 
 ![](/assets/Screen Shot 2018-04-19 at 9.26.36 PM.png)
@@ -110,6 +109,21 @@ res23: Array[(Int, (Iterable[Int], Iterable[Int]))] = Array((2,(CompactBuffer(13
 * **Co-Partitioned RDD's mean that two rdds have been partitioned using the same partitioner but as a part of two different jobs,now this means that when you join them it does NOT need a full shuffle but the partitions needs to be aligned so there will be some network transfer.=&gt;com.acc.vin.CoPartitioned**
 
 * rdd.keys will return RDD\[K\],here keys will not be distinct if input has duplicate keys, we also have rdd.values=&gt; RDD\[V\]
+
+```
+scala> a.keys.collect
+res25: Array[Int] = Array(1, 1, 2, 3, 3)
+
+scala> a.keys.distinct.collect
+res26: Array[Int] = Array(1, 2, 3)
+
+scala> a.collect
+res27: Array[(Int, Int)] = Array((1,12), (1,14), (2,13), (3,17), (3,23))
+
+scala> a
+res28: org.apache.spark.rdd.RDD[(Int, Int)] = ParallelCollectionRDD[28] at makeRDD at <console>:31
+
+```
 
 * Sorting By Key Manually:
 
