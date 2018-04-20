@@ -22,20 +22,23 @@
 * aggregateByKey\(z:U\)\(f:\(U,V\)=&gt;U,f1:\(U,U\)=&gt;U\):RDD\[\(K,U\)\],same as combineByKey but iniitial is a value instead of a function.
 * all the ByKey functions are overloaded into 3 types,where 1\)is just the function,2\) is it takes the function and the numPartitions:Int ,3\)is it takes the function and the partitioner:org.apache.spark.Partitioner.
 * **ByKey and join operators in RDD ,the partitioner and partition count is selected using below method:**
-* `def defaultPartitioner(rdd: RDD[_], others: RDD[_]*): Partitioner = {`  
-    `val rdds = (Seq(rdd) ++ others)`  
-    `val hasPartitioner = rdds.filter(_.partitioner.exists(_.numPartitions > 0))`  
-    `if (hasPartitioner.nonEmpty) {`  
-    `hasPartitioner.maxBy(_.partitions.length).partitioner.get`  
-    `} else {`  
-    `if (rdd.context.conf.contains("spark.default.parallelism")) {`  
-    `new HashPartitioner(rdd.context.defaultParallelism)`  
-    `} else {`  
-    `new HashPartitioner(rdds.map(_.partitions.length).max)`  
-    `}`  
-    `}`
 
-  `}`
+```
+def defaultPartitioner(rdd: RDD[_], others: RDD[_]*): Partitioner = {
+  val rdds = (Seq(rdd) ++ others)
+  val hasPartitioner = rdds.filter(_.partitioner.exists(_.numPartitions > 0))
+  if (hasPartitioner.nonEmpty) {
+  hasPartitioner.maxBy(_.partitions.length).partitioner.get
+  } else {
+  if (rdd.context.conf.contains("spark.default.parallelism")) {
+  new HashPartitioner(rdd.context.defaultParallelism)
+  } else {
+  new HashPartitioner(rdds.map(_.partitions.length).max)
+  }
+  }
+}
+
+```
 
 * Main difference between reduceByKey/foldByKey vs combineByKey/aggregateByKey is reduce expects the output value type also to be same as the input value type while in combine the output value type needs to same as the intial value type set by us which can be different from the input dataset value type.See above the U and V types .Look at the method signature  in PairRDDFunctions.scala.
 
