@@ -81,11 +81,27 @@ val spark = SparkSession.builder().appName("KafkaWc").master("local[*]").getOrCr
   val df4 = df3.writeStream.format("console")
     .trigger(Trigger.ProcessingTime(10 seconds))
     .option("truncate","false")
-      .option("numRows","50")
+    .option("numRows","50")
     .outputMode("complete")
     .start()
 
   df4.awaitTermination()
+```
+
+Now When spark reads from Kafka ,the dataframe it gets has the below schema\(df1\)  ie 7 columns
+
+```
+root
+ |-- key: binary (nullable = true)
+ |-- value: binary (nullable = true)
+ |-- topic: string (nullable = true)
+ |-- partition: integer (nullable = true)
+ |-- offset: long (nullable = true)
+ |-- timestamp: timestamp (nullable = true)
+ |-- timestampType: integer (nullable = true)
+ 
+ As you see key and value comes in binary format and they can be converted first to String only and 
+ then if need be you can cast to other types.
  
 ```
 
