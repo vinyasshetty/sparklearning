@@ -99,13 +99,29 @@ root
  |-- offset: long (nullable = true)
  |-- timestamp: timestamp (nullable = true)
  |-- timestampType: integer (nullable = true)
- 
+
  As you see key and value comes in binary format and they can be converted first to String only and 
  then if need be you can cast to other types.
- 
 ```
 
+** Observed that key was being pouplated as null even after i casted to string in spark,but in Kafka producer if i changed the key type to string and write it then spark was able to convert them correctly when  i casted them to string.**
 
+```
+//This is after i changed above KafkaProducer Code to have key as String
+-------------------------------------------
+Batch: 0
+-------------------------------------------
++---+-----------------------------------------------------------+------+---------+------+-----------------------+-------------+
+|key|value                                                      |topic |partition|offset|timestamp              |timestampType|
++---+-----------------------------------------------------------+------+---------+------+-----------------------+-------------+
+|125|125,vidya,shetty,3145.95,2017-03-31,2018-02-25 08:02:30    |cards1|0        |0     |2018-04-26 19:38:07.262|0            |
+|123|123,vinyas,shetty,4598.32,2017-03-31,2018-02-25 08:02:23   |cards1|2        |0     |2018-04-26 19:38:07.254|0            |
+|124|124,namratha,rao,4562.51,2017-03-31,2018-02-25 08:02:25    |cards1|2        |1     |2018-04-26 19:38:07.261|0            |
+|126|126,abhishek,shetty,4612.87,2017-03-31,2018-02-25 08:02:42 |cards1|2        |2     |2018-04-26 19:38:07.262|0            |
+|120|120,varsha,shetty,3145.95,2017-03-31,2018-02-25 08:02:22   |cards1|1        |0     |2018-04-26 19:38:07.262|0            |
+|127|127,shrinivas,shetty,5672.56,2017-03-31,2018-02-25 08:02:55|cards1|1        |1     |2018-04-26 19:38:07.262|0            |
++---+-----------------------------------------------------------+------+---------+------+-----------------------+-------------+
+```
 
 
 
