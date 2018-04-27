@@ -107,7 +107,8 @@ root
 ** Observed that key was being pouplated as null even after i casted to string in spark,but in Kafka producer if i changed the key type to string and write it then spark was able to convert them correctly when  i casted them to string.**
 
 ```
-//This is after i changed above KafkaProducer Code to have key as String
+//This is after i changed above KafkaProducer Code to have key as String and wrote to a 
+new topic called cards1
 -------------------------------------------
 Batch: 0
 -------------------------------------------
