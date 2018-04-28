@@ -124,5 +124,9 @@ Batch: 0
 +---+-----------------------------------------------------------+------+---------+------+-----------------------+-------------+
 ```
 
+## Offsets 
+
+In Structured Streaming,we can read data from a particular partition and from a from a particular offset range.
+
 
 
