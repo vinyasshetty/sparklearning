@@ -25,6 +25,9 @@
 
   2)Key Distribution Type : Same Keys ie values that are of same column are put into together in one slice or 
   in on node.
+
+  3)All distribution type : Whole data is loaded into every node.This is very slow. Use for small tables which 
+  will be used to join.
   ```
 
 
