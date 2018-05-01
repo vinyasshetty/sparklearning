@@ -9,5 +9,7 @@
 
 * **Disk storage for each node/slave is split into \# of vcpus.**
 
+* Slave Nodes have two classification : 1\) ** Dense Compute **2\)** Dense Storage **
+
 
 
