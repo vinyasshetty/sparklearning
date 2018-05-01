@@ -15,5 +15,11 @@
 
 * Idea files size\(post-compressed\) between 1MB-1GB
 
+* Records are distributed in Redshift in on of the 3 types:
+
+       1\)**Even Distribution Type :** Here the row counts is looked at and in round robin fashion ,data in distributed into different slices of the slave nodes.Values of the columns are not taken into consideration.This is good when you use all the rows while querying and not using this for any joining
+
+      2\)
+
 
 
