@@ -7,9 +7,11 @@
 
 * Data when loaded goes directly into slave and it does not need to go through master.
 
-* **Disk storage for each node/slave is split into \# of vcpus.**
+* **Disk storage for each node/slave is split into \# of vcpus.These are called as slices**
 
 * Slave Nodes have two classification : 1\) ** Dense Compute **2\)** Dense Storage **
+
+* When you upload the files from s3 , the number of splits of files is ideal to be equal to the total number of slices  in your aws redshift cluster.
 
 
 
