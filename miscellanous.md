@@ -23,7 +23,8 @@
    consideration.This is good when you use all the rows while querying and not using this for any
    joining.
 
-  2)Key Distribution Type : 
+  2)Key Distribution Type : Same Keys ie values that are of same column are put into together in one slice or 
+  in on node.
   ```
 
 
