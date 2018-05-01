@@ -13,5 +13,7 @@
 
 * When you upload the files from s3 , the number of splits of files is ideal to be equal to the total number of slices  in your aws redshift cluster.
 
+* Idea files size\(post-compressed\) between 1MB-1GB
+
 
 
