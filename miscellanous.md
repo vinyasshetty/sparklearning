@@ -5,5 +5,9 @@
 
 * Also data is replicated  in redshift and when you instantiate 100 gb redshift cluster,you get raw 100 gb space without taking into account the replication.
 
+* Data when loaded goes directly into slave and it does not need to go through master.
+
+* **Disk storage for each node/slave is split into \# of vcpus.**
+
 
 
