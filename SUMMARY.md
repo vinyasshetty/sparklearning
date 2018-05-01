@@ -18,4 +18,5 @@
 * [Joining Streams](joining-streams.md)
 * [Structured Streaming Contd -1](structured-streaming-contd-1.md)
 * [Kafka-StructuredStreaming](kafka-structuredstreaming.md)
+* [Miscellanous](miscellanous.md)
 
