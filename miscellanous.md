@@ -83,3 +83,5 @@ It has 3 main components :
 
 3\)Job Execution : Based on time or we can do dependency.
 
+AWS Glue Crawler can go through any data on s3 and create a data catalog.This can be used then by other services.
+
