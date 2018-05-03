@@ -58,9 +58,13 @@ psql -h <redshift_end_point> -U <user> -d <dbname> -p 5439
 \d+ <tablename> (to describe table)
 
 Load data from s3 to redshift:
-copy  part from 's3://s3testemr/redshiftdata/part-csv.tbl' credentials 'aws_access_key_id=<>;aws_secret_access_key=<>' csv
-null as '\000';
+copy  part from 's3://s3testemr/redshiftdata/part-csv.tbl' credentials 'aws_access_key_id=<>;aws_secret_access_key=<>' 
+csv null as '\000';
 
+copy  part from 's3://s3testemr/redshiftdata/part-csv.tbl' credentials 'aws_access_key_id=<>;aws_secret_access_key=<>' 
+delimiter ('|')
+null as '\000'
+region 'us-east1';   // ie if s3 and and redshift are in different regions ,then mention the region of s3
 ```
 
 
