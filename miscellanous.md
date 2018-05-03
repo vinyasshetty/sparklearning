@@ -64,6 +64,7 @@ csv null as '\000';
 copy  part from 's3://s3testemr/redshiftdata/part-csv.tbl' credentials 'aws_access_key_id=<>;aws_secret_access_key=<>' 
 delimiter ('|')
 null as '\000'
+gzip
 region 'us-east1';   // ie if s3 and and redshift are in different regions ,then mention the region of s3
 ```
 
