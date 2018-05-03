@@ -36,5 +36,35 @@ But i will try something different.I will launch a Ec2 cluster and attach Ec2 IA
 
 Then i will ssh into ec2 using the pem file\(key value pair\) and then use ec2 instance to access s3 using aws cli or access redshift by installing pgsql .
 
-psql -h &lt;redshift\_end\_point&gt; -U &lt;user&gt; -d &lt;dbname&gt; -p 5439
+```
+psql -h <redshift_end_point> -U <user> -d <dbname> -p 5439
+
+ CREATE TABLE part                                                                                                                                                (
+  p_partkey     INTEGER NOT NULL,
+  p_name        VARCHAR(22) NOT NULL,
+  p_mfgr        VARCHAR(6) NOT NULL,
+  p_category    VARCHAR(7) NOT NULL,
+  p_brand1      VARCHAR(9) NOT NULL,
+  p_color       VARCHAR(11) NOT NULL,
+  p_type        VARCHAR(25) NOT NULL,
+  p_size        INTEGER NOT NULL,
+  p_container   VARCHAR(10) NOT NULL
+);
+
+\dt (to list tables)
+
+\l (to list databases)
+
+\d+ <tablename> (to describe table)
+
+Load data from s3 to redshift:
+
+
+```
+
+
+
+
+
+
 
