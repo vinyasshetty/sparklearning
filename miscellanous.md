@@ -73,3 +73,17 @@ region 'us-east1';   // ie if s3 and and redshift are in different regions ,then
 
 
 
+## AWS GLUE:
+
+Its ETL Tool on AWS.
+
+It has 3 main components : 
+
+1\)Data Catalog : STores all the metadata related to your data.
+
+2\)Job Authoring : Helps in create Transformation Code.This generates code which we can modify also.
+
+3\)
+
+
+
