@@ -61,10 +61,10 @@ Load data from s3 to redshift:
 
 **Make sure the user whose aws key id you using has s3fullaccess and redshiftfullaccess policy.
 
-copy  part from 's3://s3testemr/redshiftdata/part-csv.tbl' credentials 'aws_access_key_id=<>;aws_secret_access_key=<>' 
+copy  part from 's3://<>/redshiftdata/part-csv.tbl' credentials 'aws_access_key_id=<>;aws_secret_access_key=<>' 
 csv null as '\000';
 
-copy  part from 's3://s3testemr/redshiftdata/part-csv.tbl' credentials 'aws_access_key_id=<>;aws_secret_access_key=<>' 
+copy  part from 's3://<>/part-csv.tbl' credentials 'aws_access_key_id=<>;aws_secret_access_key=<>' 
 delimiter ('|')
 null as '\000'
 gzip
