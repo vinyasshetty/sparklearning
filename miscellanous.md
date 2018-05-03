@@ -30,17 +30,11 @@
   will be used to join.
   ```
 
-
-
 Now once i have launched a Redshift cluster .TO access that either i can use my computer and have sqlbench installed.
 
 But i will try something different.I will launch a Ec2 cluster and attach Ec2 IAM Role Policy to have S3 and Redshift access to it.
 
 Then i will ssh into ec2 using the pem file\(key value pair\) and then use ec2 instance to access s3 using aws cli or access redshift by installing pgsql .
 
- psql -h &lt;end\_point&gt; -U &lt;user&gt; -d &lt;dbname&gt; -p 5439
-
-
-
-
+psql -h &lt;redshift\_end\_point&gt; -U &lt;user&gt; -d &lt;dbname&gt; -p 5439
 
