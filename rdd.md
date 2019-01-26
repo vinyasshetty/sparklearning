@@ -1,3 +1,5 @@
+RDD is lazily evaluated,statically typed and distributed collection.
+
 ** Internally, each RDD is characterized by five main properties:**
 
 * A list of partitions  =&gt;  protected def getPartitions: Array\[Partition\]

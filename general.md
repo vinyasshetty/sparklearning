@@ -4,7 +4,7 @@
 
 * Partition is collection of data/rows on a single physical machine.A dataframe can have zero or more partitions.
 
-* Spark core data structures ie RDD Dataframe and DataSet are immutable. 
+* Spark core data structures ie RDD Dataframe and DataSet are immutable.
 
 * A Rdd without partition ,in that data is assigned based on partition size and data size.
 
@@ -72,6 +72,27 @@ with Serializable {
     }
 }
 ```
+
+In the code when SparkContext is created that starts a driver and the corresponding executors.Each executor is its own JVM.
+
+# **Schema**
+
+StructType is similar to case class.
+
+Structtype consists of list of StructFields.
+
+Each StructField represents a column.
+
+Schema is eagerly evaluated on dataframe transformations.See below
+
+    scala> df1.select($"id1")
+    org.apache.spark.sql.AnalysisException: cannot resolve '`id1`' given input columns: [id, attributes, zip, pt, happy];;
+    'Project ['id1]
+    +- LocalRelation [id#16L, zip#17, pt#18, happy#19, attributes#20]
+
+
+
+
 
 
 
