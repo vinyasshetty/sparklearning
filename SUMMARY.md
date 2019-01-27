@@ -9,6 +9,7 @@
 * [DataSet](dataset.md)
 * [Spark Submit Yarn Flow](spark-internal.md)
 * [Spark Internal -2](spark-internal-2.md)
+* [Spark Configurations](spark-configurations.md)
 * [SCD Type2](spark-frameworks.md)
 * [Streaming](streaming.md)
 * [Date Functions](date-functions.md)
