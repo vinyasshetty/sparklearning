@@ -92,7 +92,25 @@ Schema is eagerly evaluated on dataframe transformations.See below
 
 
 
+###### The number of tasks that run depends on the number of partitions of the child rdd/dataframe.So if you have like below :
 
+```
+scala> df2.rdd.partitions.length
+res48: Int = 30
+
+scala> val df3 = df2.filter($"_1" > 2).select($"_1" + 10).coalesce(10)
+df3: org.apache.spark.sql.Dataset[org.apache.spark.sql.Row] = [(_1 + 10): int]
+
+scala> df3.count
+res49: Long = 1
+
+scala> df3.rdd.partitions.length
+res50: Int = 10
+
+
+```
+
+So as you see above the number of partition the filter and map runs on is 10 instead of 20. Check the Spark UI  for the count job and you will see 10 tasks that would have run
 
 
 
