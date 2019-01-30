@@ -3,7 +3,7 @@
 * Things to note below,when you read a external data ie SparkSession read method will still return a DataFrameReader,so you would have first create a dataframe and then use a Encoder \(with as\) and convert that to a Scala object\(below Employee object\)
 
 ```
-bash-4.1$ hadoop fs -cat /user/lg489741/test1/vin.txt
+bash-4.1$ hadoop fs -cat /user/loc1/test1/vin.txt
 id,name,age,amt
 1,vinyas,28,76.34
 2,shetty,30,67.2
